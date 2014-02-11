@@ -1,4 +1,17 @@
 <div class="container-fluid">
+
+    <!-- Shows current projects titles. -->
+    <ul class="current-projects-list">
+        <li ng-repeat="project in projects | filter: {is_archived: false}">{{project.name}}</li>
+        <!-- Add filter to only show {is_hidden: false}. -->
+    </ul>
+
+    <!-- Shows archived projects titles. -->
+    <ul class="archived-projects-list">
+        <li ng-repeat="project in projects | filter: {is_archived: true}">{{project.name}}</li>
+        <!-- Add filter to only show {is_hidden: false}. -->
+    </ul>
+
     <div ng-repeat="project in projects">
         <img src="/resources/img/dwarf.png" style="height: 150px" />
         <h1>{{project.name}}</h1>
