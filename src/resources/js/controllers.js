@@ -2,20 +2,43 @@ var dedeControllers = angular.module("dedeControllers", []);
 
 dedeControllers.controller("ProjectsCtrl", ["$scope", "Projects", function($scope, Projects) {
     $scope.projects = Projects.get();
+    $scope.$on("tagFilterChange", function(e, tagFilters) {
+        console.log("ProjectsCtrl received event: " + e.name);
+        $scope.tagFilters = tagFilters;
+        logTagFilters("ProjectsCtrl");
+    });
+    function logTagFilters(prefix) {
+        for (var i = 0; i < $scope.tagFilters.length; ++i) {
+            console.log("(" + prefix + ") " + $scope.tagFilters[i].ind
+                + " : " + $scope.tagFilters[i].display_text
+                + " : " + $scope.tagFilters[i].is_active);
+        }
+    }
 }]);
 
 dedeControllers.controller("NewsCtrl", ["$scope", "News", function($scope, News) {
     $scope.news = News.get();
+    $scope.$on("tagFilterChange", function(e, tagFilters) {
+        console.log("NewsCtrl received event: " + e.name);
+        $scope.tagFilters = tagFilters;
+        logTagFilters("NewsCtrl");
+    });
+    function logTagFilters(prefix) {
+        for (var i = 0; i < $scope.tagFilters.length; ++i) {
+            console.log("(" + prefix + ") " + $scope.tagFilters[i].ind
+                + " : " + $scope.tagFilters[i].display_text
+                + " : " + $scope.tagFilters[i].is_active);
+        }
+    }
 }]);
 
-dedeControllers.controller("TagsCtrl", ["$scope", "Tags", function($scope, Tags) {
-    // $scope.tags = Tags.get();
+dedeControllers.controller("TagsCtrl", ["$scope", "Tags", "$rootScope", function($scope, Tags, $rootScope) {
 
+    // Ugly to put all of this here?
+    // Should maybe re-work this into a directive.
 
-    $scope.tagFilters = []; // Ugly to put all of this here?
-
-    // Tags.get().then(function() {}, function() {}, function() {});
-    // Tags.get().then(function(tags) {
+    // $scope.tagFilters = [{ ind: -1, display_text: "All", is_active: true }];
+    $scope.tagFilters = [];
     var tagsPromise = Tags.get();
     tagsPromise.$promise.then(function(tags) {
         for (var i = 0; i < tags.length; ++i) {
@@ -26,13 +49,11 @@ dedeControllers.controller("TagsCtrl", ["$scope", "Tags", function($scope, Tags)
                 is_active: false
             });
         }
+        $rootScope.$broadcast("tagFilterChange", $scope.tagFilters);
         logTagFilters();
     }, function(reason) {
         alert("Could not retrieve tags. Reason: " + reason);
     });
-
-    // Should re-work this into a directive.
-    
 
     $scope.toggleTagFilter = function(tagDisplayText) {
         console.log("toggleTagFilter called with: " + tagDisplayText);
@@ -42,6 +63,7 @@ dedeControllers.controller("TagsCtrl", ["$scope", "Tags", function($scope, Tags)
                 break;
             }
         }
+        $rootScope.$broadcast("tagFilterChange", $scope.tagFilters);
         logTagFilters();
     }
 
