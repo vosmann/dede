@@ -1,9 +1,12 @@
 <div class="container-fluid">
 
+    <!-- Should re-work this into a directive. -->
     <!-- Use this and wrap every button in a btn-group to spread them equally across whole parent width. -->
     <!-- <div class="btn-group btn-group-justified"> -->
     <div class="btn-group" ng-controller="TagsCtrl">
-        <button type="button" class="btn btn-default" ng-repeat="tag in tags">{{tag.display_text}}</button>
+        <button type="button" class="btn btn-default" ng-repeat="tagFilter in tagFilters"
+            ng-class="{false: 'btn-default', true: 'btn-success'}[tagFilter.is_active]"
+            ng-click="toggleTagFilter(tagFilter.display_text)">{{tagFilter.display_text}}</button>
     </div>
 
     <!-- Filter out the hidden ones server-side. -->
