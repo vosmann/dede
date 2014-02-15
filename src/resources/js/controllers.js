@@ -38,7 +38,7 @@ dedeControllers.controller("TagsCtrl", ["$scope", "Tags", "$rootScope", function
     // Should maybe re-work this into a directive.
 
     // $scope.tagFilters = [{ ind: -1, display_text: "All", is_active: true }];
-    $scope.tagFilters = [];
+    $scope.tagFilters = []; // Rename to just "tags".
     var tagsPromise = Tags.get();
     tagsPromise.$promise.then(function(tags) {
         for (var i = 0; i < tags.length; ++i) {

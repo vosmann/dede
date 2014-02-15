@@ -3,6 +3,7 @@
     <!-- Should re-work this into a directive. -->
     <!-- Use this and wrap every button in a btn-group to spread them equally across whole parent width. -->
     <!-- <div class="btn-group btn-group-justified"> -->
+    <!-- Doesn't even have to be set to TagsCtrl; this view's controller has a copy of tagFilters. -->
     <div class="btn-group" ng-controller="TagsCtrl">
         <button type="button" class="btn btn-default" ng-repeat="tagFilter in tagFilters"
             ng-class="{false: 'btn-default', true: 'btn-success'}[tagFilter.is_active]"

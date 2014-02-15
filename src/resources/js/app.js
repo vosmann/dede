@@ -1,7 +1,8 @@
 var dedeApp = angular.module('dedeApp', [
     'ngRoute',
     'dedeControllers',
-    'dedeServices'
+    'dedeServices',
+    'dedeFilters'
 ]);
 
 dedeApp.config(['$routeProvider',

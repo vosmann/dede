@@ -4,7 +4,7 @@ class Project:
         self._id = _id
         self.name = name
         self.date = date
-        self.tag = tag # can be interpreted as a category
+        self.tag = tag # can be interpreted as a category; should change to support multiple "tags"
         self.desc = desc
         self.image_ids = image_ids
         self.cover_image_id = cover_image_id
