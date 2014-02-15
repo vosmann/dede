@@ -1,21 +1,25 @@
 <div class="container-fluid">
 
-    <!-- Shows current projects titles. -->
-    <ul class="current-projects-list">
-        <li ng-repeat="project in projects | filter: {is_archived: false}">{{project.name}}</li>
-        <!-- Add filter to only show {is_hidden: false}. -->
+    <!-- Use this and wrap every button in a btn-group to spread them equally across whole parent width. -->
+    <!-- <div class="btn-group btn-group-justified"> -->
+    <div class="btn-group" ng-controller="TagsCtrl">
+        <button type="button" class="btn btn-default" ng-repeat="tag in tags">{{tag.display_text}}</button>
+    </div>
+
+    <!-- Filter out the hidden ones server-side. -->
+    <ul id="current-projects-list">
+        <li ng-repeat="project in projects | filter: {is_archived: false, is_hidden: false}">{{project.name}}</li>
+    </ul>
+    <ul id="archived-projects-list">
+        <li ng-repeat="project in projects | filter: {is_archived: true, is_hidden: false}">{{project.name}}</li>
     </ul>
 
-    <!-- Shows archived projects titles. -->
-    <ul class="archived-projects-list">
-        <li ng-repeat="project in projects | filter: {is_archived: true}">{{project.name}}</li>
-        <!-- Add filter to only show {is_hidden: false}. -->
-    </ul>
-
-    <div ng-repeat="project in projects">
+    <div ng-repeat="project in projects | filter: {is_archived: false, is_hidden: false}">
+        <!-- <img class="img-responsive" src="/resources/img/dwarf.png" style="height: 150px" /> -->
         <img src="/resources/img/dwarf.png" style="height: 150px" />
         <h1>{{project.name}}</h1>
         <p>{{project.desc}}</p>
     </div>
+
 </div>
 

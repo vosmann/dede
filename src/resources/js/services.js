@@ -14,3 +14,24 @@ dedeServices.factory('News', ['$resource',
         });
     }]);
 
+dedeServices.factory('Tags', ['$resource',
+    function($resource){
+        return $resource('/get-tags', {}, {
+            get: {method:'GET', isArray:true}
+        });
+    }]);
+
+dedeServices.factory('About', ['$resource',
+    function($resource){
+        return $resource('/get-about', {}, {
+            get: {method:'GET', isArray:false}
+        });
+    }]);
+
+dedeServices.factory('Contact', ['$resource',
+    function($resource){
+        return $resource('/get-contact', {}, {
+            get: {method:'GET', isArray:false}
+        });
+    }]);
+

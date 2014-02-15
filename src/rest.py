@@ -13,7 +13,6 @@ RESOURCES_DIR = DIR + "/resources"
 print TEMPLATES_DIR
 print RESOURCES_DIR
 
-#app = Flask(__name__)
 app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=RESOURCES_DIR)
 
 @app.route("/")
@@ -36,6 +35,15 @@ def get_news():
         for news_story in shared_mongo_client.dede.news.find():
             news.append(news_story)
         return json.dumps(news)
+
+@app.route("/get-tags")
+def get_tags():
+    print "call to /get-tags"
+    with app.app_context():
+        tags = []
+        for tag in shared_mongo_client.dede.tags.find():
+            tags.append(tag)
+        return json.dumps(tags)
 
 @app.route("/get-about")
 def get_about():
