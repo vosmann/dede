@@ -24,6 +24,10 @@ dedeApp.config(['$routeProvider',
                 templateUrl: 'resources/templates/contact.html',
                 controller: 'ContactCtrl'
             }).
+            //when('/edit', {
+            //    templateUrl: 'resources/templates/edit.html',
+            //    controller: 'EditCtrl'
+            //}).
             otherwise({
                 redirectTo: '/projects'
             });

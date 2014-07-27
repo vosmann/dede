@@ -1,7 +1,7 @@
 from flask import Flask, send_file
 from pymongo import MongoClient
 from project import Project
-from faker import create_fakes, get_date
+from faker import create_fakes
 import json
 import os
 
@@ -15,9 +15,16 @@ print RESOURCES_DIR
 
 app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=RESOURCES_DIR)
 
+# It would be awesome if adding pages like "projects" or "news stories on the edit page would generate
+# the AngularJS controllers automatically.
+
 @app.route("/")
 def hello():
     return send_file('resources/templates/index.html')
+
+@app.route("/edit")
+def edit():
+    return send_file('resources/templates/edit.html')
 
 @app.route("/get-projects")
 def get_projects():

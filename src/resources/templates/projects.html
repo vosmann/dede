@@ -12,10 +12,14 @@
 
     <!-- Filter out the hidden ones server-side. -->
     <ul id="current-projects-list">
-        <li ng-repeat="project in projects | filter: {is_archived: false, is_hidden: false} | tagFilter:projects:tagFilters">{{project.name}}</li>
+        <li ng-repeat="project in projects | filter: {is_archived: false, is_hidden: false} | tagFilter:projects:tagFilters">
+            {{project.name}}
+        </li>
     </ul>
     <ul id="archived-projects-list">
-        <li ng-repeat="project in projects | filter: {is_archived: true, is_hidden: false} | tagFilter:projects:tagFilters">{{project.name}}</li>
+        <li ng-repeat="project in projects | filter: {is_archived: true, is_hidden: false} | tagFilter:projects:tagFilters">
+            {{project.name}}
+        </li>
     </ul>
 
     <div ng-repeat="project in projects | filter: {is_archived: false, is_hidden: false} | tagFilter:projects:tagFilters">
