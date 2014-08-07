@@ -1,0 +1,33 @@
+<div class="container-fluid">
+
+    <!-- Should re-work this into a directive. -->
+    <!-- Use this and wrap every button in a btn-group to spread them equally across whole parent width. -->
+    <!-- <div class="btn-group btn-group-justified"> -->
+    <!-- Doesn't even have to be set to TagsCtrl; this view's controller has a copy of tagFilters. -->
+    <div class="btn-group" ng-controller="TagsCtrl">
+        <button type="button" class="btn btn-default" ng-repeat="tagFilter in tagFilters"
+            ng-class="{false: 'btn-default', true: 'btn-success'}[tagFilter.is_active]"
+            ng-click="toggleTagFilter(tagFilter.display_text)">{{tagFilter.display_text}}</button>
+    </div>
+
+    <!-- Filter out the hidden ones server-side. -->
+    <ul id="current-projects-list">
+        <li ng-repeat="project in projects | filter: {is_archived: false, is_hidden: false} | tagFilter:projects:tagFilters">
+            {{project.name}}
+        </li>
+    </ul>
+    <ul id="archived-projects-list">
+        <li ng-repeat="project in projects | filter: {is_archived: true, is_hidden: false} | tagFilter:projects:tagFilters">
+            {{project.name}}
+        </li>
+    </ul>
+
+    <div ng-repeat="project in projects | filter: {is_archived: false, is_hidden: false} | tagFilter:projects:tagFilters">
+        <!-- <img class="img-responsive" src="/resources/img/dwarf.png" style="height: 150px" /> -->
+        <img src="/resources/img/dwarf.png" style="height: 150px" />
+        <h1>{{project.name}}</h1>
+        <p>{{project.desc}}</p>
+    </div>
+
+</div>
+
