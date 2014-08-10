@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" ng-app="dedeEditApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dede Edit</title>
+
+    <link rel="stylesheet" href="/static/css/bootstrap-3.2.0-dist/bootstrap.css">
+</head>
+
+<body>
+    <div>
+        <h1>Dede edit</h1>
+        <p>Here you modify the content of your page.</p>
+        <p>{{ 2+3 }}</p>
+    </div> 
+    <p>Now editing: </p>
+
+
+    <p>Page names:</p>
+    <div ng-controller="PageNamesDropdownCtrl">
+        <p ng-repeat="pageName in pageNames">{{pageName}}</p>
+    </div>
+
+    <p>Tags:</p>
+    <div ng-controller="TagsCtrl">
+        <p ng-repeat="tag in tags">{{tag}}</p>
+    </div>
+
+    <p>Entry:</p>
+    <div ng-controller="EntryCtrl">
+        <p>{{entry}}</p>
+    </div>
+
+    <!--<div ng-view></div>-->
+
+    <script src="/static/js/lib/angular-1.2.21/angular.js"></script>
+    <script src="/static/js/lib/angular-1.2.21/angular-route.js"></script>
+    <script src="/static/js/lib/angular-1.2.21/angular-resource.js"></script>
+
+    <script src="/static/js/lib/ui-bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+
+    <script src="/static/js/edit-app/editServices.js"></script>
+    <script src="/static/js/edit-app/editControllers.js"></script>
+    <script src="/static/js/edit-app/editFilters.js"></script>
+    <script src="/static/js/edit-app/editApp.js"></script>
+</body>
+
+</html>
+
+
+<!-- Replace with bootstrap navbar. -->
+<!--<a href="#/projects">projects</a>-->
+<!--<a href="#/news">news</a>-->
+<!--<a href="#/about">about</a>-->
+<!--<a href="#/contact">contact</a>-->
+

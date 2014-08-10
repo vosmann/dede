@@ -9,16 +9,11 @@ from entities.page import Page
 
 shared_mongo_client = MongoClient()
 
-# DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)))
-# TEMPLATES_DIR = DIR + "/templates" # Not using
-# RESOURCES_DIR = DIR + "/resources"
-# print TEMPLATES_DIR
-# print RESOURCES_DIR
-TEMPLATES_DIR = "nothing"
-RESOURCES_DIR = "nothing"
 
-app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=RESOURCES_DIR)
+app = Flask(__name__)
 
+# Have methods returning: - names of all pages
+#                         - names (titles) of all entries. so that not the whole objects have to be retrieved
 
 # Idea on how to load the site into the user's browser:
 #  . The Angular app can simply retrieve all pages with all their entries and elements
@@ -41,11 +36,11 @@ app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=RESOURCES_DIR
 # Delivering HTML
 @app.route("/")
 def hello():
-    return send_file('../resources/templates/view-app/index.html')
+    return send_file('static/view-index.html')
 
 @app.route("/edit")
 def edit():
-    return send_file('../resources/templates/edit-app/edit.html')
+    return send_file('static/edit-index.html')
 
 
 
