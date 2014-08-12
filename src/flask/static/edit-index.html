@@ -30,14 +30,27 @@
             </button>
             <ul class="dropdown-menu" role="menu">
                 <li ng-repeat="pageName in pageNames">
-                    <a ng-click="set(pageName)" href="#">{{pageName}}</a>
+                    <a ng-click="setPageName(pageName)" href="#">{{pageName}}</a>
                 </li>
             </ul>
         </div>
 
 
         <!-- Editing a page. -->
-        <div ng-show="pageOrEntry=='page'">
+        <div ng-show="pageOrEntry=='page'" ng-controller="PageCtrl">
+            <button type="button" class="btn btn-default btn-sm"
+                ng-click="startNewPage()">Start new page</button>
+            <button type="button" class="btn btn-default btn-sm"
+                ng-click="saveNewPage()">Save</button>
+
+            <button type="button" class="btn btn-default btn-sm"
+                ng-click="startNewEntry()">Start new entry</button>
+            <button type="button" class="btn btn-default btn-sm"
+                ng-click="saveNewEntry()">Save</button>
+
+            <button type="button" class="btn btn-default btn-sm"
+                ng-click="addNewTag()">Add new tag</button>
+
             <p>Page name:</p>
             <p>Is shown:</p>
             <p>Creation date:</p>
@@ -45,24 +58,51 @@
         </div>
 
         <!-- Editing an entry within a page. -->
-        <div ng-show="pageOrEntry=='entry'">
+        <div ng-show="pageOrEntry=='entry'" ng-controller="EntryCtrl">
             <p>Entry:</p>
-            <div ng-controller="EntryCtrl">
-                <p>{{entry}}</p>
-            </div>
+            <p>{{entry}}</p>
 
             <p>Entry name:</p>
             <p>Tags:</p>
-            <div ng-controller="TagsCtrl">
-                <p ng-repeat="tag in tags">{{tag}}</p>
+            <div class="btn-group" dropdown is-open="status.isopen" ng-controller="TagsCtrl">
+                <button type="button" class="btn btn-primary dropdown-toggle">
+                    {{selectedTag}}<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="tag in tags">
+                        <a ng-click="setTag(tag)" href="#">{{tag}}</a>
+                    </li>
+                </ul>
             </div>
+
+            <!--remove-->
+            <!--<div ng-controller="TagsCtrl">-->
+                <!--<p ng-repeat="tag in tags">{{tag}}</p>-->
+            <!--</div>-->
 
             <p>Is shown:</p>
             <p>Creation date:</p>
             <p>Modification date:</p>
+
             <p>Elements:</p>
-            <div ng-controller="EntryCtrl">
-                <p ng-repeat="tag in tags">{{tag}}</p>
+            <div ng-controller="ElementCtrl">
+                <div ng-repeat="element in elements">
+                    <!-- Type of the element -->
+                    <div class="btn-group" dropdown is-open="status.isopen"
+                        ng-controller="ElementTypesDropdownCtrl">
+                        <button type="button" class="btn btn-primary dropdown-toggle">
+                            {{selectedElementType}}<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-repeat="elementType in elementTypes">
+                                <a ng-click="set(elementType)" href="#">{{elementType}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Type of the element -->
+                    <div>
+                    </div>
+                </div>
             </div>
         </div>
 

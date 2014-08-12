@@ -5,11 +5,12 @@ dedeEditControllers.controller("PageOrEntryCtrl", function($scope) {
             $scope.pageOrEntry = 'page';
         });
 
+// Are scopes local only for a single controller or somehow shared across the context?
 dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
         function($scope, PageNames) {
             $scope.pageNames = PageNames.query();
             $scope.selectedPageName = $scope.pageNames[0];
-            $scope.set = function(pageName) {
+            $scope.setPageName = function(pageName) {
                 $scope.selectedPageName = pageName;
             };
             $scope.status = {
@@ -20,17 +21,34 @@ dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
                 $event.stopPropagation();
                 $scope.status.isopen = !$scope.status.isopen;
             };
-
         }]);
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
-            var newTag = ['Add new tag'];
             $scope.tags = Tags.query();
+            $scope.selectedTag = $scope.tags[0];
+            $scope.setTag = function(tag) {
+                $scope.selectedTag = tag;
+            };
+            $scope.status = {
+                isopen: false
+            };
+            $scope.toggleDropdown = function($event) {
+                $event.preventDefault(); // defaultPrevented() instead?
+                $event.stopPropagation();
+                $scope.status.isopen = !$scope.status.isopen;
+            };
         }]);
 
+// Have separate services (even controllers?) for individual and massive entry queries?
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
         function($scope, Entry) {
             $scope.entry = Entry.query("cobane");
+        }]);
+
+// Have separate services (even controllers?) for individual and massive Element queries?
+dedeEditControllers.controller("ElementCtrl", ["$scope", "Element",
+        function($scope, Element) {
+            $scope.element = Element.query("neki element");
         }]);
 
