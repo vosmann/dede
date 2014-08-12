@@ -14,25 +14,59 @@
         <p>Here you modify the content of your page.</p>
         <p>{{ 2+3 }}</p>
     </div> 
-    <p>Now editing: </p>
+
+    <div ng-controller="PageOrEntryCtrl">
+
+        <p>Now editing: </p>
+        <div class="btn-group">
+            <label class="btn btn-primary" ng-model="pageOrEntry" btn-radio="'page'">page</label>
+            <label class="btn btn-primary" ng-model="pageOrEntry" btn-radio="'entry'">entry</label>
+        </div>
+        <p ng-show="pageOrEntry=='entry'">on</p>
+
+        <div class="btn-group" dropdown is-open="status.isopen" ng-controller="PageNamesDropdownCtrl">
+            <button type="button" class="btn btn-primary dropdown-toggle">
+                {{selectedPageName}}<span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="pageName in pageNames">
+                    <a ng-click="set(pageName)" href="#">{{pageName}}</a>
+                </li>
+            </ul>
+        </div>
 
 
-    <p>Page names:</p>
-    <div ng-controller="PageNamesDropdownCtrl">
-        <p ng-repeat="pageName in pageNames">{{pageName}}</p>
+        <!-- Editing a page. -->
+        <div ng-show="pageOrEntry=='page'">
+            <p>Page name:</p>
+            <p>Is shown:</p>
+            <p>Creation date:</p>
+            <p>Modification date:</p>
+        </div>
+
+        <!-- Editing an entry within a page. -->
+        <div ng-show="pageOrEntry=='entry'">
+            <p>Entry:</p>
+            <div ng-controller="EntryCtrl">
+                <p>{{entry}}</p>
+            </div>
+
+            <p>Entry name:</p>
+            <p>Tags:</p>
+            <div ng-controller="TagsCtrl">
+                <p ng-repeat="tag in tags">{{tag}}</p>
+            </div>
+
+            <p>Is shown:</p>
+            <p>Creation date:</p>
+            <p>Modification date:</p>
+            <p>Elements:</p>
+            <div ng-controller="EntryCtrl">
+                <p ng-repeat="tag in tags">{{tag}}</p>
+            </div>
+        </div>
+
     </div>
-
-    <p>Tags:</p>
-    <div ng-controller="TagsCtrl">
-        <p ng-repeat="tag in tags">{{tag}}</p>
-    </div>
-
-    <p>Entry:</p>
-    <div ng-controller="EntryCtrl">
-        <p>{{entry}}</p>
-    </div>
-
-    <!--<div ng-view></div>-->
 
     <script src="/static/js/lib/angular-1.2.21/angular.js"></script>
     <script src="/static/js/lib/angular-1.2.21/angular-route.js"></script>
