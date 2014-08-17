@@ -77,3 +77,15 @@ dedeEditServices.factory('Tags', ['$resource',
         }
     }]);
 
+dedeEditServices.factory('ElementTypes', ['$resource',
+    function($resource){
+        return { 
+            query :function() {
+                return ['title',
+                        'text',
+                        'image'];
+            }
+        }
+    }]);
+
+

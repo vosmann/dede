@@ -29,10 +29,10 @@
         </div> 
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <p>Now editing: </p>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="btn-group">
                     <label class="btn btn-primary"
                         ng-model="pageOrEntry"
@@ -45,7 +45,7 @@
             <div class="col-md-1">
                 <p ng-show="pageOrEntry=='entry'">on</p>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="btn-group" dropdown is-open="status.isopen"
                     ng-controller="PageNamesDropdownCtrl">
                     <button type="button" class="btn btn-primary dropdown-toggle">
@@ -78,34 +78,34 @@
                 ng-click="addNewTag()">Add new tag</button>
             -->
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Page name:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{page.name}}</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Is shown:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{page.isShown}}</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Creation date:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{page.creationDate}}</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Modification date:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{page.modificationDate}}</p>
                 </div>
             </div>
@@ -115,26 +115,26 @@
         <div ng-show="pageOrEntry=='entry'"
             ng-controller="EntryCtrl">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Entry:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{entry.name}}</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Entry name:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{entry.name}} (edit name textbox)</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Tags:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="btn-group" dropdown is-open="status.isopen"
                             ng-controller="TagsCtrl">
                         <button type="button" class="btn btn-primary dropdown-toggle">
@@ -149,26 +149,26 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Is shown:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{entry.isShown}} (button group)</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Creation date:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{entry.creationDate}}</p>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>Modification date:</p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <p>{{entry.modificationDate}}</p>
                 </div>
             </div>
@@ -177,32 +177,32 @@
                     <p>Elements:</p>
                 </div>
             </div>
-            <div ng-controller="ElementCtrl">
-                <div ng-repeat="element in entry.elements">
-                    <div class="row">
-                        <div class="col-md-4"></div>
-                        <div class="col-md-2">
-                            <div class="btn-group" dropdown is-open="status.isopen"
-                                ng-controller="ElementTypesDropdownCtrl">
-                                <button type="button" class="btn btn-primary dropdown-toggle">
-                                    {{selectedElementType}}<span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li ng-repeat="elementType in elementTypes">
-                                        <a ng-click="set(elementType)" href="#">{{elementType}}</a>
-                                    </li>
-                                </ul>
-                            </div>
+            <!-- Make this show up. -->
+            <div ng-repeat="element in entry.elements">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2">
+                        <div class="btn-group" dropdown is-open="status.isopen"
+                            ng-controller="ElementTypesDropdownCtrl">
+                            <button type="button" class="btn btn-primary dropdown-toggle">
+                                {{selectedElementType}}<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-repeat="elementType in elementTypes">
+                                    <a ng-click="set(elementType)" href="#">{{elementType}}</a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="col-md-4">
-                            <p>{{element.data}}</p>
-                        </div>
-                        <div class="col-md-1" ng-show="type=='title'">
-                            <p>{{element.level}}</p>
-                        </div>
-                        <div class="col-md-1">
-                            <p>{{element.label}}</p>
-                        </div>
+                    </div>
+                    <!-- Should always auto-expand by adding new rows. -->
+                    <div class="col-md-2">
+                        <p>{{element.data}}</p>
+                    </div>
+                    <div class="col-md-1" ng-show="type=='title'">
+                        <p>{{element.level}}</p>
+                    </div>
+                    <div class="col-md-1">
+                        <p>{{element.label}}</p>
                     </div>
                 </div>
             </div>

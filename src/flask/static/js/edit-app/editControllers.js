@@ -17,13 +17,8 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page",
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
         function($scope, Entry) {
             $scope.entry = Entry.query("Vinyl shelf");
+            var a = 2;
         }]);
-
-// Have separate services (even controllers?) for individual and massive Element queries?
-/*dedeEditControllers.controller("ElementCtrl", ["$scope", "Element",*/
-        //function($scope, Element) {
-            //$scope.element = Element.query("neki element");
-        /*}]);*/
 
 dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
         function($scope, PageNames) {
@@ -59,4 +54,21 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
             };
         }]);
 
+
+dedeEditControllers.controller("ElementTypesDropdownCtrl", ["$scope", "ElementTypes",
+        function($scope, ElementTypes) {
+            $scope.elementTypes = ElementTypes.query();
+            $scope.selectedElementType = elementTypes[0]; // put $scope.entry.element[x].type here
+            $scope.setElementType = function(elementType) {
+                $scope.selectedElementType = elementType;
+            };
+            $scope.status = {
+                isopen: false
+            };
+            $scope.toggleDropdown = function($event) {
+                $event.preventDefault(); // defaultPrevented() instead?
+                $event.stopPropagation();
+                $scope.status.isopen = !$scope.status.isopen;
+            };
+        }]);
 
