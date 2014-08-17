@@ -17,42 +17,50 @@ dedeEditServices.factory('PageNames', ['$resource',
         }
     }]);
 
+dedeEditServices.factory('Page', ['$resource',
+    function($resource){
+        // Should query by page name (btw, create unique index on page).
+        return { 
+            query: function(pageName) {
+                return {
+                        "name": "News stories",
+                        "isShown": true,
+                        "isArchived": true,
+                        "creationDate": "10-08-2014",
+                        "modificationDate": "10-08-2014"
+                };
+            }
+        };
+    }]);
+
 dedeEditServices.factory('Entry', ['$resource',
     function($resource){
         // Should query by name (btw, create a unique index on field name/title of entry).
         return { 
-            query :function(entryName) {
+            query: function(entryName) {
                 return {
                         "name": "My vinyl shelf",
-                        "entryName": entryName,
                         "tags": ["interior design"],
-                        "is_shown": true,
-                        "is_archived": true,
-                        "creation_date": "02-08-2014",
-                        "modification_date": "03-08-2014",
+                        "isShown": true,
+                        "isArchived": true,
+                        "creationDate": "02-08-2014",
+                        "modificationDate": "03-08-2014",
                         "elements": [
                             {
                                 "type": "title",
-                                "is_shown": true,
-                                "data": {
-                                    "text": "Redness vinyl shelf'",
-                                    "level": 1
-                                }
+                                "isShown": true,
+                                "data": "Redness vinyl shelf'",
+                                "level": 1
                             },
                             {
                                 "type": "text",
-                                "is_shown": true,
-                                "data": {
-                                    "text": "Very long description of the project.",
-                                    "level": 1
-                                }
+                                "isShown": true,
+                                "data": "Very long description of the project."
                             },
                             {
                                 "type": "image",
-                                "is_shown": true,
-                                "data": {
-                                    "image_id": "angle_right_dramatic_light.jpg"
-                                }
+                                "isShown": true,
+                                "data": "angle_right_dramatic_light.jpg"
                             }]
                 };
             }

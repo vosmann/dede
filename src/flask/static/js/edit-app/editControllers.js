@@ -6,6 +6,25 @@ dedeEditControllers.controller("PageOrEntryCtrl", function($scope) {
         });
 
 // Are scopes local only for a single controller or somehow shared across the context?
+
+dedeEditControllers.controller("PageCtrl", ["$scope", "Page",
+        function($scope, Page) {
+            $scope.page = Page.query("News stories");
+        }]);
+
+
+// Have separate services (even controllers?) for individual and massive entry queries?
+dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
+        function($scope, Entry) {
+            $scope.entry = Entry.query("Vinyl shelf");
+        }]);
+
+// Have separate services (even controllers?) for individual and massive Element queries?
+/*dedeEditControllers.controller("ElementCtrl", ["$scope", "Element",*/
+        //function($scope, Element) {
+            //$scope.element = Element.query("neki element");
+        /*}]);*/
+
 dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
         function($scope, PageNames) {
             $scope.pageNames = PageNames.query();
@@ -40,15 +59,4 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
             };
         }]);
 
-// Have separate services (even controllers?) for individual and massive entry queries?
-dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
-        function($scope, Entry) {
-            $scope.entry = Entry.query("cobane");
-        }]);
-
-// Have separate services (even controllers?) for individual and massive Element queries?
-dedeEditControllers.controller("ElementCtrl", ["$scope", "Element",
-        function($scope, Element) {
-            $scope.element = Element.query("neki element");
-        }]);
 
