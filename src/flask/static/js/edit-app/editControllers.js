@@ -5,27 +5,14 @@ dedeEditControllers.controller("PageOrEntryCtrl", function($scope) {
             $scope.pageOrEntry = 'page';
         });
 
-// Are scopes local only for a single controller or somehow shared across the context?
-
-dedeEditControllers.controller("PageCtrl", ["$scope", "Page",
-        function($scope, Page) {
-            $scope.page = Page.query("News stories");
-        }]);
-
-
-// Have separate services (even controllers?) for individual and massive entry queries?
-dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
-        function($scope, Entry) {
-            $scope.entry = Entry.query("Vinyl shelf");
-            var a = 2;
-        }]);
-
 dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
-        function($scope, PageNames) {
+        "SelectedPageName", 
+        function($scope, PageNames, SelectedPageName) {
             $scope.pageNames = PageNames.query();
-            $scope.selectedPageName = $scope.pageNames[0];
+            $scope.selectedPageName = SelectedPageName.get();
             $scope.setPageName = function(pageName) {
                 $scope.selectedPageName = pageName;
+                SelectedPageName.set(pageName);
             };
             $scope.status = {
                 isopen: false
@@ -36,6 +23,27 @@ dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
                 $scope.status.isopen = !$scope.status.isopen;
             };
         }]);
+
+dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName",
+        function($scope, Page, SelectedPageName) {
+            $scope.$watch(function() {
+                    return SelectedPageName.get();
+                }, function() {
+                    var selectedPageName = SelectedPageName.get();
+                    $scope.page = Page.query(selectedPageName);
+                });
+            var selectedPageName = SelectedPageName.get();
+            $scope.page = Page.query(selectedPageName);
+        }]);
+
+
+// Have separate services (even controllers?) for individual and massive entry queries?
+dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
+        function($scope, Entry) {
+            $scope.entry = Entry.query("Vinyl shelf");
+        }]);
+
+
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
