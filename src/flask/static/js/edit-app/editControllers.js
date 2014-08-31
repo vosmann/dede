@@ -36,8 +36,33 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
             $scope.page = Page.query(selectedPageName);
         }]);
 
+// Somehow make one unified controller? He'd take the two services. And make
+// two instances of this controller:
+// one for the page drop-down and one for the entry drop-down.
+dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames",
+        "SelectedEntryName", 
+        function($scope, EntryNames, SelectedEntryName) {
+            $scope.entryNames = EntryNames.query();
+            $scope.selectedEntryName = SelectedEntryName.get();
+            $scope.setEntryName = function(entryName) {
+                $scope.selectedEntryName = entryName;
+                SelectedEntryName.set(entryName);
+            };
+            $scope.status = {
+                isopen: false
+            };
+            $scope.toggleDropdown = function($event) {
+                $event.preventDefault(); // defaultPrevented() instead?
+                $event.stopPropagation();
+                $scope.status.isopen = !$scope.status.isopen;
+            };
+        }]);
 
 // Have separate services (even controllers?) for individual and massive entry queries?
+//
+// Somehow make one unified controller? He'd take the two services. And make
+// two instances of this controller:
+// one for the page drop-down and one for the entry drop-down.
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName", 
         function($scope, Entry, SelectedEntryName) {
             $scope.$watch(function() {
@@ -49,8 +74,6 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
             var selectedEntryName = SelectedEntryName.get();
             $scope.entry = Entry.query(selectedEntryName);
         }]);
-
-
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
