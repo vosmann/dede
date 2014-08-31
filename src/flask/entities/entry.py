@@ -2,7 +2,7 @@ class Entry:
     """Represents an entry within a Dede page. On a projects page, an entry will be a single project. On a news
     stories page an entry will be a single news story. An "about us" page will most likely contain just one entry."""
     def __init__(self, _id, name):
-        self._id = _id
+        self._id = _id # Must have ID to enable later renamings of pages.
         self.name = name
         self.tags = []
         self.is_shown = True
