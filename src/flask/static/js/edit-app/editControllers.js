@@ -38,9 +38,16 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
 
 
 // Have separate services (even controllers?) for individual and massive entry queries?
-dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
-        function($scope, Entry) {
-            $scope.entry = Entry.query("Vinyl shelf");
+dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName", 
+        function($scope, Entry, SelectedEntryName) {
+            $scope.$watch(function() {
+                    return SelectedEntryName.get();
+                }, function() {
+                    var selectedEntryName = SelectedEntryName.get();
+                    $scope.entry = Entry.query(selectedEntryName);
+                });
+            var selectedEntryName = SelectedEntryName.get();
+            $scope.entry = Entry.query(selectedEntryName);
         }]);
 
 

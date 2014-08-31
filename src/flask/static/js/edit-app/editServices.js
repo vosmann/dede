@@ -62,13 +62,43 @@ dedeEditServices.factory('Page', ['$resource',
         };
     }]);
 
+dedeEditServices.service('SelectedEntryName', ["EntryNames",
+    function(EntryNames) {
+        var allNames = EntryNames.query();
+        var selectedEntryName = allNames[0];
+        return { 
+            get: function() {
+                return selectedEntryName;
+            },
+            set: function(newlySelectedEntry) {
+                selectedEntryName = newlySelectedEntry;
+            }
+        };
+    }]);
+
+dedeEditServices.factory('EntryNames', ['$resource',
+    function($resource) {
+        return { 
+            query :function() {
+                return [
+                        'Vinyl shelf',
+                        'Red shelf'
+                ];
+            }
+        }
+    }]);
+
+
+
 dedeEditServices.factory('Entry', ['$resource',
     function($resource) {
         // Should query by name (btw, create a unique index on field name/title of entry).
         return { 
             query: function(entryName) {
-                return {
-                        "name": "My vinyl shelf",
+                var fakeEntry;
+                if (entryName === "Vinyl shelf") {
+                    fakeEntry = {
+                        "name": "Vinyl shelf",
                         "tags": ["interior design"],
                         "isShown": true,
                         "isArchived": true,
@@ -78,20 +108,53 @@ dedeEditServices.factory('Entry', ['$resource',
                             {
                                 "type": "title",
                                 "isShown": true,
-                                "data": "Redness vinyl shelf'",
+                                "data": "Vinyl shelf'",
                                 "level": 1
                             },
                             {
                                 "type": "text",
                                 "isShown": true,
-                                "data": "Very long description of the project."
+                                "data": "This is the long-awaited vinyl shelf."
                             },
                             {
                                 "type": "image",
                                 "isShown": true,
                                 "data": "angle_right_dramatic_light.jpg"
                             }]
-                };
+                    };
+                } else if (entryName === "Red shelf") {
+                    fakeEntry = {
+                        "name": "Red shelf",
+                        "tags": ["interior design", "art"],
+                        "isShown": true,
+                        "isArchived": true,
+                        "creationDate": "30-08-2014",
+                        "modificationDate": "30-08-2014",
+                        "elements": [
+                            {
+                                "type": "title",
+                                "isShown": true,
+                                "data": "Red red red'",
+                                "level": 1
+                            },
+                            {
+                                "type": "text",
+                                "isShown": true,
+                                "data": "A playful red shelf-toy."
+                            },
+                            {
+                                "type": "image",
+                                "isShown": true,
+                                "data": "red_shelf.jpg"
+                            }]
+                    };
+                } else {
+                    fakeEntry = {
+                        "name": "Entry " + entryName + " does not exist." 
+                    }
+                }
+
+                return fakeEntry;
             }
         }
     }]);
@@ -102,6 +165,7 @@ dedeEditServices.factory('Tags', ['$resource',
             query :function() {
                 return ['graphic design',
                         'architecture',
+                        'art',
                         'interior design'
                 ];
             }
