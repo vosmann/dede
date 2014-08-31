@@ -76,6 +76,10 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
             var selectedEntryName = SelectedEntryName.get();
             $scope.entry = Entry.query(selectedEntryName);
             $scope.allElementTypes = ElementTypes.query();
+
+            $scope.store = function() {
+                Entry.store($scope.entry);
+            };
         }]);
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",

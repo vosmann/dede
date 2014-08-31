@@ -129,6 +129,14 @@
         <!-- Editing an entry within a page. -->
         <div ng-show="pageOrEntry=='entry'"
             ng-controller="EntryCtrl">
+
+            <div class="row">
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-success btn-lg"
+                        ng-click="store()">Store</button>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-2">
                     <p>Entry:</p>

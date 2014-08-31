@@ -158,7 +158,7 @@ dedeEditServices.factory('Entry', ['$resource',
                 return fakeEntry;
             },
             store: function(entryToStore) {
-                alert(entryToStore);
+                alert(JSON.stringify(entryToStore));
             }
         }
     }]);
