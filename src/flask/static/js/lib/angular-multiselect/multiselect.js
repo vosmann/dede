@@ -121,7 +121,7 @@ angular.module('ui.multiselect', [])
           element.append($compile(popUpEl)(scope));
 
           function getHeaderText() {
-            if (is_empty(modelCtrl.$modelValue)) return scope.header = attrs.msHeader || 'Select';
+              if (is_empty(modelCtrl.$modelValue)) return scope.header = attrs.msHeader || 'Select';
             
               if (isMultiple) {
                   if (attrs.msSelected) {
@@ -133,8 +133,12 @@ angular.module('ui.multiselect', [])
                                   scope.header = scope.items[i].label;
                               }
                           }
-                      } else {
-                          scope.header = modelCtrl.$modelValue.length + ' ' + 'selected';
+                      } else if (modelCtrl.$modelValue.length > 1) {
+                          var currSelected = modelCtrl.$modelValue[0];
+                          for (var i = 1; i < modelCtrl.$modelValue.length; ++i) {
+                              currSelected = currSelected + ", " + modelCtrl.$modelValue[i];
+                          }
+                          scope.header = currSelected ;
                       }
                   }
               

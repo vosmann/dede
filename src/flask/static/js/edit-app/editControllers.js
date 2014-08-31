@@ -1,5 +1,6 @@
 
-var dedeEditControllers = angular.module("dedeEditControllers", ['ui.bootstrap']);
+var dedeEditControllers = angular.module("dedeEditControllers",
+        ['ui.bootstrap', 'ui.multiselect']);
 
 dedeEditControllers.controller("PageOrEntryCtrl", function($scope) {
             $scope.pageOrEntry = 'page';
@@ -78,20 +79,8 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
             $scope.tags = Tags.query();
-            $scope.selectedTag = $scope.tags[0];
-            $scope.setTag = function(tag) {
-                $scope.selectedTag = tag;
-            };
-            $scope.status = {
-                isopen: false
-            };
-            $scope.toggleDropdown = function($event) {
-                $event.preventDefault(); // defaultPrevented() instead?
-                $event.stopPropagation();
-                $scope.status.isopen = !$scope.status.isopen;
-            };
+            $scope.selectedTags = [];  // TODO: fill up from parent controller.
         }]);
-
 
 dedeEditControllers.controller("ElementTypesDropdownCtrl", ["$scope", "ElementTypes",
         function($scope, ElementTypes) {

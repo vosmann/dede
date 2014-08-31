@@ -13,6 +13,7 @@
 <body>
 
     <!-- I want to also be able to edit tags in a third "tab". -->
+    <!-- And maybe even images in a fourth. -->
     <!-- So, PageOrEntryCtrl should be more general. -->
     <div class="container"
         ng-controller="PageOrEntryCtrl">
@@ -139,18 +140,13 @@
                 <div class="col-md-2">
                     <p>Tags:</p>
                 </div>
-                <!-- Should be a multi-select drop-down. -->
                 <div class="col-md-2">
-                    <div class="btn-group" dropdown is-open="status.isopen"
-                            ng-controller="TagsCtrl">
-                            <button type="button" class="btn btn-primary dropdown-toggle">
-                            {{selectedTag}}<span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-repeat="tag in tags">
-                                <a ng-click="setTag(tag)" href="#">{{tag}}</a>
-                            </li>
-                        </ul>
+                    <div ng-controller="TagsCtrl">
+                        <multiselect class="input" multiple="true"
+                            ng-model="selectedTags"
+                            options="tag for tag in tags"
+                            change="selected()"
+                            template-url="/static/partials/multiselect.tmpl.html">
                     </div>
                 </div>
             </div>
@@ -215,6 +211,7 @@
         </div>
 
     </div> 
+
 
     <script src="/static/js/lib/angular-1.2.21/angular.js"></script>
     <script src="/static/js/lib/angular-1.2.21/angular-route.js"></script>
