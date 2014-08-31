@@ -107,16 +107,19 @@ dedeEditServices.factory('Entry', ['$resource',
                                 "type": "title",
                                 "isShown": true,
                                 "data": "Vinyl shelf",
+                                "label": "special label 1",
                                 "level": 1
                             },
                             {
                                 "type": "text",
                                 "isShown": true,
+                                "label": "ordinary label 1",
                                 "data": "This is the long-awaited vinyl shelf."
                             },
                             {
                                 "type": "image",
                                 "isShown": true,
+                                "label": "ordinary label 2",
                                 "data": "angle_right_dramatic_light.jpg"
                             }]
                     };
