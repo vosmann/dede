@@ -106,7 +106,7 @@ dedeEditServices.factory('Entry', ['$resource',
                             {
                                 "type": "title",
                                 "isShown": true,
-                                "data": "Vinyl shelf'",
+                                "data": "Vinyl shelf",
                                 "level": 1
                             },
                             {
@@ -132,7 +132,7 @@ dedeEditServices.factory('Entry', ['$resource',
                             {
                                 "type": "title",
                                 "isShown": true,
-                                "data": "Red red red'",
+                                "data": "Red red red",
                                 "level": 1
                             },
                             {
@@ -153,6 +153,9 @@ dedeEditServices.factory('Entry', ['$resource',
                 }
 
                 return fakeEntry;
+            },
+            store: function(entryToStore) {
+                alert(entryToStore);
             }
         }
     }]);
@@ -170,6 +173,20 @@ dedeEditServices.factory('Tags', ['$resource',
         }
     }]);
 
+dedeEditServices.service('SelectedElementType', ["ElementTypes",
+    function(ElementTypes) {
+        var allTypes = ElementTypes.query();
+        var selectedElementType = allTypes[0];
+        return { 
+            get: function() {
+                return selectedElementType;
+            },
+            set: function(newlySelectedElementType) {
+                selectedElementType = newlySelectedElementType;
+            }
+        };
+    }]);
+
 dedeEditServices.factory('ElementTypes', ['$resource',
     function($resource) {
         return { 
@@ -180,5 +197,4 @@ dedeEditServices.factory('ElementTypes', ['$resource',
             }
         }
     }]);
-
 

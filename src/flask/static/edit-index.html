@@ -56,6 +56,14 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-8">
+                <br/>
+                <hr/>
+                <br/>
+            </div>
+        </div>
+
         <!-- Editing a page. -->
         <div ng-show="pageOrEntry=='page'"
             ng-controller="PageCtrl">
@@ -158,7 +166,7 @@
                             ng-model="selectedTags"
                             options="tag for tag in tags"
                             change="selected()"
-                            template-url="/static/partials/multiselect.tmpl.html">
+                            template-url="/static/partials/multiselect.tmpl.html"> 
                     </div>
                 </div>
             </div>
@@ -207,18 +215,25 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-2">
-                        <div class="btn-group" dropdown is-open="status.isopen"
-                            ng-controller="ElementTypesDropdownCtrl">
-                            <button type="button" class="btn btn-primary dropdown-toggle">
-                                {{selectedElementType}}<span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li ng-repeat="elementType in elementTypes">
-                                    <a ng-click="set(elementType)" href="#">{{elementType}}</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <multiselect class="input"
+                            ng-model="element.type"
+                            options="elementType for elementType in allElementTypes"
+                            change="selected()"
+                            template-url="/static/partials/singleselect.tmpl.html"> 
                     </div>
+                    <!--<div class="col-md-2">-->
+                        <!--<div class="btn-group" dropdown is-open="status.isopen"-->
+                            <!--ng-controller="ElementTypesDropdownCtrl">-->
+                            <!--<button type="button" class="btn btn-primary dropdown-toggle">-->
+                                <!--{{selectedElementType}}<span class="caret"></span>-->
+                            <!--</button>-->
+                            <!--<ul class="dropdown-menu" role="menu">-->
+                                <!--<li ng-repeat="elementType in elementTypes">-->
+                                    <!--<a ng-click="set(elementType)" href="#">{{elementType}}</a>-->
+                                <!--</li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <!-- Should always auto-expand by adding new rows. -->
                     <div class="col-md-2">
                         <p>{{element.data}}</p>

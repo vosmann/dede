@@ -64,8 +64,9 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
 // Somehow make one unified controller? He'd take the two services. And make
 // two instances of this controller:
 // one for the page drop-down and one for the entry drop-down.
-dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName", 
-        function($scope, Entry, SelectedEntryName) {
+dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
+        "ElementTypes",
+        function($scope, Entry, SelectedEntryName, ElementTypes) {
             $scope.$watch(function() {
                     return SelectedEntryName.get();
                 }, function() {
@@ -74,6 +75,7 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 });
             var selectedEntryName = SelectedEntryName.get();
             $scope.entry = Entry.query(selectedEntryName);
+            $scope.allElementTypes = ElementTypes.query();
         }]);
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
@@ -87,20 +89,22 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
                 });
         }]);
 
-dedeEditControllers.controller("ElementTypesDropdownCtrl", ["$scope", "ElementTypes",
-        function($scope, ElementTypes) {
-            $scope.elementTypes = ElementTypes.query();
-            $scope.selectedElementType = elementTypes[0]; // put $scope.entry.element[x].type here
-            $scope.setElementType = function(elementType) {
-                $scope.selectedElementType = elementType;
-            };
-            $scope.status = {
-                isopen: false
-            };
-            $scope.toggleDropdown = function($event) {
-                $event.preventDefault(); // defaultPrevented() instead?
-                $event.stopPropagation();
-                $scope.status.isopen = !$scope.status.isopen;
-            };
-        }]);
+/*dedeEditControllers.controller("ElementTypesDropdownCtrl", ["$scope", "ElementTypes",*/
+        //"SelectedElementType", 
+        //function($scope, ElementTypes, SelectedElementType) {
+            //$scope.elementTypes = ElementTypes.query();
+            //$scope.selectedElementType = SelectedElementType.get();
+            //$scope.setElementType = function(elementType) {
+                //$scope.selectedElementType = elementType;
+                //SelectedElementType.set(elementType);
+            //};
+            //$scope.status = {
+                //isopen: false
+            //};
+            //$scope.toggleDropdown = function($event) {
+                //$event.preventDefault(); // TODO: defaultPrevented() instead?
+                //$event.stopPropagation();
+                //$scope.status.isopen = !$scope.status.isopen;
+            //};
+        /*}]);*/
 
