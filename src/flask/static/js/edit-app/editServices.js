@@ -126,7 +126,7 @@ dedeEditServices.factory('Entry', ['$resource',
                     fakeEntry = {
                         "name": "Red shelf",
                         "tags": ["interior design", "art"],
-                        "isShown": true,
+                        "isShown": false,
                         "isArchived": true,
                         "creationDate": "30-08-2014",
                         "modificationDate": "30-08-2014",

@@ -78,7 +78,8 @@
                     <p>Page name:</p>
                 </div>
                 <div class="col-md-2">
-                    <p>{{page.name}} (should be editable)</p>
+                    <input ng-model="page.name"></input>
+                    <p>{{page.name}}</p>
                 </div>
             </div>
             <div class="row">
@@ -86,7 +87,9 @@
                     <p>Is shown:</p>
                 </div>
                 <div class="col-md-2">
-                    <p>{{page.isShown}}</p>
+                    <span ng-model="page.isShown">{{page.isShown}}</span>
+                    <button type="button" class="btn btn-warning btn-sm"
+                        ng-click="page.isShown = !page.isShown">Flip</button>
                 </div>
             </div>
             <div class="row">
@@ -133,7 +136,8 @@
                     <p>Entry name:</p>
                 </div>
                 <div class="col-md-2">
-                    <p>{{entry.name}} (should be editable)</p>
+                    <input ng-model="entry.name"></input>
+                    <p>{{entry.name}}</p>
                 </div>
             </div>
             <div class="row">
@@ -155,7 +159,9 @@
                     <p>Is shown:</p>
                 </div>
                 <div class="col-md-2">
-                    <p>{{entry.isShown}} (button group)</p>
+                    <span ng-model="entry.isShown">{{entry.isShown}}</span>
+                    <button type="button" class="btn btn-warning btn-sm"
+                        ng-click="entry.isShown = !entry.isShown">Flip</button>
                 </div>
             </div>
             <div class="row">
