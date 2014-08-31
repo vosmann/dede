@@ -79,7 +79,12 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
             $scope.tags = Tags.query();
-            $scope.selectedTags = [];  // TODO: fill up from parent controller.
+            $scope.selectedTags = $scope.$parent.entry.tags;
+            $scope.$watch(function() {
+                    return $scope.$parent.entry;
+                }, function() {
+                    $scope.selectedTags = $scope.$parent.entry.tags;
+                });
         }]);
 
 dedeEditControllers.controller("ElementTypesDropdownCtrl", ["$scope", "ElementTypes",

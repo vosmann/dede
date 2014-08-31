@@ -8,5 +8,5 @@ class Page:
         self.is_shown = True
         self.creation_date = creation_date
         self.modification_date = creation_date
-        self.entries = [] # List of names (names will be identifiers of entries)
+        self.entry_ids = [] # List of names (names will be identifiers of entries)
 

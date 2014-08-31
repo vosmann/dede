@@ -37,7 +37,6 @@ dedeEditServices.factory('Page', ['$resource',
                     fakePage = {
                         "name": "Stories",
                         "isShown": true,
-                        "isArchived": false,
                         "creationDate": "10-08-2014",
                         "modificationDate": "10-08-2014",
                         "entry_ids" : [0, 1]
@@ -46,7 +45,6 @@ dedeEditServices.factory('Page', ['$resource',
                     fakePage = {
                         "name": "Projects",
                         "isShown": true,
-                        "isArchived": false,
                         "creationDate": "11-08-2014",
                         "modificationDate": "11-08-2014",
                         "entry_ids" : [2, 3]
@@ -101,7 +99,7 @@ dedeEditServices.factory('Entry', ['$resource',
                         "name": "Vinyl shelf",
                         "tags": ["interior design"],
                         "isShown": true,
-                        "isArchived": true,
+                        "isArchived": false,
                         "creationDate": "02-08-2014",
                         "modificationDate": "03-08-2014",
                         "elements": [
@@ -125,7 +123,7 @@ dedeEditServices.factory('Entry', ['$resource',
                 } else if (entryName === "Red shelf") {
                     fakeEntry = {
                         "name": "Red shelf",
-                        "tags": ["interior design", "art"],
+                        "tags": ["art", "interior design"],
                         "isShown": false,
                         "isArchived": true,
                         "creationDate": "30-08-2014",

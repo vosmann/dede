@@ -108,6 +108,14 @@
                     <p>{{page.modificationDate}}</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4">
+                    here there should be a list of all the entries in the page. 
+                    it should allow reordering. 
+                    the hidden (isShown == false) entries should be greyed out. 
+                    the archived entries should be greyed out, but in a lighter tone. 
+                </div>
+            </div>
         </div>
 
         <!-- Editing an entry within a page. -->
@@ -166,6 +174,16 @@
             </div>
             <div class="row">
                 <div class="col-md-2">
+                    <p>Is archived:</p>
+                </div>
+                <div class="col-md-2">
+                    <span ng-model="entry.isArchived">{{entry.isArchived}}</span>
+                    <button type="button" class="btn btn-warning btn-sm"
+                        ng-click="entry.isArchived = !entry.isArchived">Flip</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
                     <p>Creation date:</p>
                 </div>
                 <div class="col-md-2">
@@ -185,7 +203,6 @@
                     <p>Elements:</p>
                 </div>
             </div>
-            <!-- Make this show up. -->
             <div ng-repeat="element in entry.elements">
                 <div class="row">
                     <div class="col-md-2"></div>
