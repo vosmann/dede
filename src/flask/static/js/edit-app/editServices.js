@@ -1,6 +1,6 @@
 var dedeEditServices = angular.module('dedeEditServices', ['ngResource']);
 
-
+// TODO: Enable Angular's cache on everything using $http.
 dedeEditServices.service('SelectedPageName', ["PageNames",
     function(PageNames) {
         var allNames = PageNames.query();
@@ -27,8 +27,13 @@ dedeEditServices.factory('PageNames', ['$resource',
         }
     }]);
 
-dedeEditServices.factory('Page', ['$resource',
-    function($resource) {
+
+
+
+
+
+dedeEditServices.factory('Page', ['$http',
+    function($http) {
         // Should query by page name (btw, create unique index on page).
         return { 
             query: function(pageName) {
@@ -56,6 +61,10 @@ dedeEditServices.factory('Page', ['$resource',
                 }
 
                 return fakePage;
+            },
+            store: function(page) {
+                alert("Sending to server: " + JSON.stringify(page));
+                $http.post("http://localhost:5000/edit/store/page", page);
             }
         };
     }]);
@@ -86,10 +95,8 @@ dedeEditServices.factory('EntryNames', ['$resource',
         }
     }]);
 
-
-
-dedeEditServices.factory('Entry', ['$resource',
-    function($resource) {
+dedeEditServices.factory('Entry', ['$http',
+    function($http) {
         // Should query by name (btw, create a unique index on field name/title of entry).
         return { 
             query: function(entryName) {
@@ -157,8 +164,9 @@ dedeEditServices.factory('Entry', ['$resource',
 
                 return fakeEntry;
             },
-            store: function(entryToStore) {
-                alert(JSON.stringify(entryToStore));
+            store: function(entry) {
+                alert("Sending to server: " + JSON.stringify(entry));
+                $http.post("http://localhost:5000/edit/store/entry", entry);
             }
         }
     }]);

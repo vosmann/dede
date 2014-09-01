@@ -89,6 +89,10 @@
                     <input ng-model="page.name"></input>
                     <p>{{page.name}}</p>
                 </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-success btn-lg"
+                        ng-click="store()">Store</button>
+                </div>
             </div>
             <div class="row">
                 <div class="col-md-2">
@@ -132,13 +136,6 @@
 
             <div class="row">
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-success btn-lg"
-                        ng-click="store()">Store</button>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2">
                     <p>Entry:</p>
                 </div>
                 <div class="col-md-2">
@@ -162,6 +159,10 @@
                 <div class="col-md-2">
                     <input ng-model="entry.name"></input>
                     <p>{{entry.name}}</p>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-success btn-lg"
+                        ng-click="store()">Store</button>
                 </div>
             </div>
             <div class="row">
@@ -252,6 +253,7 @@
                 </div>
             </div>
         </div>
+
 
     </div> 
 

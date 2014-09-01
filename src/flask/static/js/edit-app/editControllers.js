@@ -35,6 +35,10 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
                 });
             var selectedPageName = SelectedPageName.get();
             $scope.page = Page.query(selectedPageName);
+
+            $scope.store = function() {
+                Page.store($scope.page);
+            };
         }]);
 
 // Somehow make one unified controller? He'd take the two services. And make
@@ -92,23 +96,4 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
                     $scope.selectedTags = $scope.$parent.entry.tags;
                 });
         }]);
-
-/*dedeEditControllers.controller("ElementTypesDropdownCtrl", ["$scope", "ElementTypes",*/
-        //"SelectedElementType", 
-        //function($scope, ElementTypes, SelectedElementType) {
-            //$scope.elementTypes = ElementTypes.query();
-            //$scope.selectedElementType = SelectedElementType.get();
-            //$scope.setElementType = function(elementType) {
-                //$scope.selectedElementType = elementType;
-                //SelectedElementType.set(elementType);
-            //};
-            //$scope.status = {
-                //isopen: false
-            //};
-            //$scope.toggleDropdown = function($event) {
-                //$event.preventDefault(); // TODO: defaultPrevented() instead?
-                //$event.stopPropagation();
-                //$scope.status.isopen = !$scope.status.isopen;
-            //};
-        /*}]);*/
 

@@ -1,4 +1,4 @@
-from flask import Flask, send_file
+from flask import Flask, send_file, request
 from pymongo import MongoClient
 
 import json
@@ -43,8 +43,22 @@ def edit():
     return send_file('static/edit-index.html')
 
 
-
 # REST methods
+@app.route('/edit/store/page', methods = ['POST'])
+def storePage():
+    print "about to store a page!"
+    print request.get_json()
+    return 'ok'
+
+@app.route('/edit/store/entry', methods = ['POST'])
+def storeEntry():
+    print "about to store an entry!"
+    print request.get_json()
+    return 'ok'
+
+
+
+# Old 
 @app.route("/get-pages") 
 def get_projects():
     print "call to /get-pages"
