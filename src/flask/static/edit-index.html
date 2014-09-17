@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/css/angular-multiselect/angular-multiselect.css">
 </head>
 
-<!-- When everything is functional, cut this up into more html files. -->
+<!-- TODO: When everything is functional, cut this up into more html files. -->
 <body>
 
     <!-- I want to also be able to edit tags in a third "tab". -->
@@ -67,31 +67,31 @@
         <!-- Editing a page. -->
         <div ng-show="pageOrEntry=='page'"
             ng-controller="PageCtrl">
-            <!--
-            <button type="button" class="btn btn-default btn-sm"
-                ng-click="startNewPage()">Start new page</button>
-            <button type="button" class="btn btn-default btn-sm"
-                ng-click="saveNewPage()">Save</button>
 
-            <button type="button" class="btn btn-default btn-sm"
-                ng-click="startNewEntry()">Start new entry</button>
-            <button type="button" class="btn btn-default btn-sm"
-                ng-click="saveNewEntry()">Save</button>
-
-            <button type="button" class="btn btn-default btn-sm"
-                ng-click="addNewTag()">Add new tag</button>
-            -->
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-sm btn-success"
+                        ng-click="store()">Save</button>
+                    <button type="button" class="btn btn-sm btn-danger"
+                        ng-click="remove()">Delete</button>
+                    <button type="button" class="btn btn-sm btn-default"
+                        ng-click="clear()">Clear</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <p>ID:</p>
+                </div>
+                <div class="col-md-2">
+                    <input ng-model="page._id"></input>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-2">
                     <p>Page name:</p>
                 </div>
                 <div class="col-md-2">
                     <input ng-model="page.name"></input>
-                    <p>{{page.name}}</p>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-success btn-lg"
-                        ng-click="store()">Store</button>
                 </div>
             </div>
             <div class="row">
@@ -121,11 +121,11 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-4">
-                    here there should be a list of all the entries in the page. 
-                    it should allow reordering. 
-                    the hidden (isShown == false) entries should be greyed out. 
-                    the archived entries should be greyed out, but in a lighter tone. 
+                <div class="col-md-2">
+                    <p>Entry IDs:</p>
+                </div>
+                <div class="col-md-2">
+                    <input ng-model="page.entryIds"></input>
                 </div>
             </div>
         </div>
@@ -134,6 +134,16 @@
         <div ng-show="pageOrEntry=='entry'"
             ng-controller="EntryCtrl">
 
+            <div class="row">
+                <div class="col-md-4">
+                    <button type="button" class="btn btn-sm btn-success"
+                        ng-click="store()">Save</button>
+                    <button type="button" class="btn btn-sm btn-danger"
+                        ng-click="remove()">Delete</button>
+                    <button type="button" class="btn btn-sm btn-default"
+                        ng-click="clear()">Clear</button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-2">
                     <p>Entry:</p>
@@ -154,15 +164,18 @@
             </div>
             <div class="row">
                 <div class="col-md-2">
+                    <p>ID:</p>
+                </div>
+                <div class="col-md-2">
+                    <input ng-model="entry._id"></input>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
                     <p>Entry name:</p>
                 </div>
                 <div class="col-md-2">
                     <input ng-model="entry.name"></input>
-                    <p>{{entry.name}}</p>
-                </div>
-                <div class="col-md-2">
-                    <button type="button" class="btn btn-success btn-lg"
-                        ng-click="store()">Store</button>
                 </div>
             </div>
             <div class="row">

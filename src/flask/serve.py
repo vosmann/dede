@@ -2,6 +2,7 @@ from flask import Flask, send_file, request
 from pymongo import MongoClient
 
 import json
+import jsonpickle
 import os
 
 from utils.faker import create_fakes
@@ -46,8 +47,24 @@ def edit():
 # REST methods
 @app.route('/edit/store/page', methods = ['POST'])
 def storePage():
-    print "about to store a page!"
-    print request.get_json()
+    raw_json_dict = request.get_json()
+    # print "about to store page: "
+    # print raw_json_dict
+    page = Page(raw_json_dict)
+    # TODO: First read and if it existed, use that creation_date.
+    # TODO: Update modification_date regardless.
+    shared_mongo_client.dede.pages.insert(page.json_dict())
+    return 'ok'
+
+@app.route('/edit/delete/page', methods = ['POST'])
+def deletePage():
+    raw_json_dict = request.get_json()
+    print "about to delete page: "
+    print raw_json_dict
+    remove_dict = {'_id': raw_json_dict['_id']}
+    print "remove_dict: "
+    print remove_dict
+    shared_mongo_client.dede.pages.remove(remove_dict)
     return 'ok'
 
 @app.route('/edit/store/entry', methods = ['POST'])

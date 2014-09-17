@@ -39,6 +39,13 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
             $scope.store = function() {
                 Page.store($scope.page);
             };
+            $scope.remove = function() {
+                Page.remove($scope.page);
+                // Page.remove($scope.page._id);
+            };
+            $scope.clear = function() {
+                $scope.page = {};
+            };
         }]);
 
 // Somehow make one unified controller? He'd take the two services. And make

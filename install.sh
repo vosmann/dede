@@ -13,3 +13,4 @@ sudo pip install pymongo==2.6.3
 
 # copy dede
 
+sudo pip install -U jsonpickle

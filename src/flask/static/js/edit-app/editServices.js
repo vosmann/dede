@@ -28,10 +28,6 @@ dedeEditServices.factory('PageNames', ['$resource',
     }]);
 
 
-
-
-
-
 dedeEditServices.factory('Page', ['$http',
     function($http) {
         // Should query by page name (btw, create unique index on page).
@@ -40,19 +36,21 @@ dedeEditServices.factory('Page', ['$http',
                 var fakePage;
                 if (pageName === "Stories") {
                     fakePage = {
+                        "_id": 0,
                         "name": "Stories",
                         "isShown": true,
                         "creationDate": "10-08-2014",
                         "modificationDate": "10-08-2014",
-                        "entry_ids" : [0, 1]
+                        "entryIds" : [0, 1]
                     };
                 } else if (pageName === "Projects") {
                     fakePage = {
+                        "_id": 1,
                         "name": "Projects",
                         "isShown": true,
                         "creationDate": "11-08-2014",
                         "modificationDate": "11-08-2014",
-                        "entry_ids" : [2, 3]
+                        "entryIds" : [2, 3]
                     };
                 } else {
                     fakePage = {
@@ -62,9 +60,14 @@ dedeEditServices.factory('Page', ['$http',
 
                 return fakePage;
             },
+
             store: function(page) {
-                alert("Sending to server: " + JSON.stringify(page));
+                // Always saves even when overwriting. Improvement would be a modal that 
+                // asks whether to proceed updating the page if it already exists.
                 $http.post("http://localhost:5000/edit/store/page", page);
+            },
+            remove: function(page) {
+                $http.post("http://localhost:5000/edit/delete/page", page);
             }
         };
     }]);
@@ -103,6 +106,7 @@ dedeEditServices.factory('Entry', ['$http',
                 var fakeEntry;
                 if (entryName === "Vinyl shelf") {
                     fakeEntry = {
+                        "_id": 0,
                         "name": "Vinyl shelf",
                         "tags": ["interior design"],
                         "isShown": true,
@@ -132,6 +136,7 @@ dedeEditServices.factory('Entry', ['$http',
                     };
                 } else if (entryName === "Red shelf") {
                     fakeEntry = {
+                        "_id": 1,
                         "name": "Red shelf",
                         "tags": ["art", "interior design"],
                         "isShown": false,
