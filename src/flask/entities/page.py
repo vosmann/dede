@@ -1,3 +1,4 @@
+# Should probably have a method validating an input dict.
 class Page:
     """Represents a page on the Dede web site. This might be a page with projects, a page with news
     stories, a contacts page etc.
@@ -5,11 +6,31 @@ class Page:
 
     def __init__(self, raw_dict): 
         self._id = raw_dict[u'_id']               # Must have ID to enable later renamings of pages.
-        self.name = raw_dict[u'name']             # A name will also identify a page uniquely.
-        self.is_shown = raw_dict[u'isShown']
-        self.creation_date = raw_dict[u'creationDate']
-        self.modification_date = raw_dict[u'modificationDate']
-        self.entry_ids = raw_dict[u'entryIds'].split(",")   # List of identifiers of entries.
+
+        if u'name' in raw_dict:
+            self.name = raw_dict[u'name']             # A name will also identify a page uniquely.
+        else:
+            self.name  = "No name provided"
+
+        if u'isShown' in raw_dict:
+            self.is_shown = raw_dict[u'isShown']
+        else:
+            self.is_shown = False
+
+        if u'creationDate' in raw_dict:
+            self.creation_date = raw_dict[u'creationDate']
+        else:
+            self.creation_date = ""
+        if u'modificationDate' in raw_dict:
+            self.modification_date = raw_dict[u'modificationDate']
+        else:
+            self.modification_date  = ""
+
+        if u'entryIds' in raw_dict:
+            self.entry_ids = raw_dict[u'entryIds'].split(",")   # List of identifiers of entries.
+        else:
+            self.entry_ids = []
+
 
     def json_dict(self):
         return {
