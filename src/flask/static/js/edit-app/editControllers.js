@@ -12,7 +12,7 @@ dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
 
             $scope.updatePageNames = function() {
                 // Should a controller ever be aware that promises exist?
-                PageNames.query().then(function(result) { 
+                PageNames.get().then(function(result) { 
                     $scope.pageNames = result.data;
                 });
             };
@@ -49,13 +49,13 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
                     return SelectedPageName.get();
                 }, function() {
                     var selectedPageName = SelectedPageName.get();
-                    Page.query(selectedPageName).then(function(result) {
+                    Page.get(selectedPageName).then(function(result) {
                         $scope.page = result.data;
                     });
                 });
 
             var selectedPageName = SelectedPageName.get();
-            Page.query(selectedPageName).then(function(result) {
+            Page.get(selectedPageName).then(function(result) {
                 $scope.page = result.data;
             });
 
@@ -76,7 +76,7 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
 dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames",
         "SelectedEntryName", 
         function($scope, EntryNames, SelectedEntryName) {
-            $scope.entryNames = EntryNames.query();
+            $scope.entryNames = EntryNames.get();
             $scope.selectedEntryName = SelectedEntryName.get();
             $scope.setEntryName = function(entryName) {
                 $scope.selectedEntryName = entryName;
@@ -104,11 +104,11 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                     return SelectedEntryName.get();
                 }, function() {
                     var selectedEntryName = SelectedEntryName.get();
-                    $scope.entry = Entry.query(selectedEntryName);
+                    $scope.entry = Entry.get(selectedEntryName);
                 });
             var selectedEntryName = SelectedEntryName.get();
-            $scope.entry = Entry.query(selectedEntryName);
-            $scope.allElementTypes = ElementTypes.query();
+            $scope.entry = Entry.get(selectedEntryName);
+            $scope.allElementTypes = ElementTypes.get();
 
             $scope.store = function() {
                 Entry.store($scope.entry);
@@ -117,7 +117,7 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
-            $scope.tags = Tags.query();
+            $scope.tags = Tags.get();
             $scope.selectedTags = $scope.$parent.entry.tags;
             $scope.$watch(function() {
                     return $scope.$parent.entry;

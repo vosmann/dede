@@ -6,7 +6,7 @@ var dedeEditServices = angular.module('dedeEditServices', ['ngResource']);
 dedeEditServices.service('SelectedPageName', ["PageNames",
     function(PageNames) {
         var selectedPageName = "None"
-        PageNames.query().then(function(result) {
+        PageNames.get().then(function(result) {
             selectedPageName = result.data[0];
         });
         return { 
@@ -25,14 +25,8 @@ dedeEditServices.service('SelectedPageName', ["PageNames",
 dedeEditServices.factory('PageNames', ['$http',
     function($http) {
         return { 
-            query :function() {
+            get: function() {
                 var promise = $http.get("http://localhost:5000/edit/get/pages");
-                promise.success(function(data, status) {
-                    // alert("success getting page names (status " + status + "): " + angular.toJson(data));
-                });
-                promise.error(function(data, status) {
-                    // alert("error getting page names (status " + status + "): " + angular.toJson(data));
-                });
                 return promise;
             }
         }
@@ -41,10 +35,9 @@ dedeEditServices.factory('PageNames', ['$http',
 
 dedeEditServices.factory('Page', ['$http',
     function($http) {
-        // Should query by page name (btw, create unique index on page).
-        // Rename 'queries' into 'gets'.
+        // Should get by page name (btw, create unique index on page).
         return { 
-            query: function(pageName) {
+            get: function(pageName) {
                 var promise = $http.get("http://localhost:5000/edit/get/page/" + pageName);
                 return promise;
             },
@@ -61,7 +54,7 @@ dedeEditServices.factory('Page', ['$http',
 
 dedeEditServices.service('SelectedEntryName', ["EntryNames",
     function(EntryNames) {
-        var allNames = EntryNames.query();
+        var allNames = EntryNames.get();
         var selectedEntryName = allNames[0];
         return { 
             get: function() {
@@ -76,7 +69,7 @@ dedeEditServices.service('SelectedEntryName', ["EntryNames",
 dedeEditServices.factory('EntryNames', ['$resource',
     function($resource) {
         return { 
-            query :function() {
+            get :function() {
                 return [
                         'Vinyl shelf',
                         'Red shelf'
@@ -87,9 +80,9 @@ dedeEditServices.factory('EntryNames', ['$resource',
 
 dedeEditServices.factory('Entry', ['$http',
     function($http) {
-        // Should query by name (btw, create a unique index on field name/title of entry).
+        // Should get by name (btw, create a unique index on field name/title of entry).
         return { 
-            query: function(entryName) {
+            get: function(entryName) {
                 var fakeEntry;
                 if (entryName === "Vinyl shelf") {
                     fakeEntry = {
@@ -166,7 +159,7 @@ dedeEditServices.factory('Entry', ['$http',
 dedeEditServices.factory('Tags', ['$resource',
     function($resource) {
         return { 
-            query :function() {
+            get :function() {
                 return ['graphic design',
                         'architecture',
                         'art',
@@ -178,7 +171,7 @@ dedeEditServices.factory('Tags', ['$resource',
 
 dedeEditServices.service('SelectedElementType', ["ElementTypes",
     function(ElementTypes) {
-        var allTypes = ElementTypes.query();
+        var allTypes = ElementTypes.get();
         var selectedElementType = allTypes[0];
         return { 
             get: function() {
@@ -193,7 +186,7 @@ dedeEditServices.service('SelectedElementType', ["ElementTypes",
 dedeEditServices.factory('ElementTypes', ['$resource',
     function($resource) {
         return { 
-            query :function() {
+            get: function() {
                 return ['title',
                         'text',
                         'image'];
