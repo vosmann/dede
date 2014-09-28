@@ -5,10 +5,7 @@ var dedeEditServices = angular.module('dedeEditServices', ['ngResource']);
 
 dedeEditServices.service('SelectedPageName', ["PageNames",
     function(PageNames) {
-        var selectedPageName = "None"
-        PageNames.get().then(function(result) {
-            selectedPageName = result.data[0];
-        });
+        var selectedPageName = "None";
         return { 
             get: function() {
                 return selectedPageName;
