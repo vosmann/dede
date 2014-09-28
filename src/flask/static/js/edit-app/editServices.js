@@ -1,28 +1,39 @@
+// TODO: Enable Angular's cache on everything using $http.
+// TODO: Perhaps I should switch to $resource.
+
 var dedeEditServices = angular.module('dedeEditServices', ['ngResource']);
 
-// TODO: Enable Angular's cache on everything using $http.
 dedeEditServices.service('SelectedPageName', ["PageNames",
     function(PageNames) {
-        var allNames = PageNames.query();
-        var selectedPageName = allNames[0];
+        var selectedPageName = "None"
+        PageNames.query().then(function(result) {
+            selectedPageName = result.data[0];
+        });
         return { 
             get: function() {
                 return selectedPageName;
             },
             set: function(newlySelectedPage) {
                 selectedPageName = newlySelectedPage;
+            },
+            reset: function() {
+                selectedPageName = "None";
             }
         };
     }]);
 
-dedeEditServices.factory('PageNames', ['$resource',
-    function($resource) {
+dedeEditServices.factory('PageNames', ['$http',
+    function($http) {
         return { 
             query :function() {
-                return [
-                        'Stories',
-                        'Projects'
-                ];
+                var promise = $http.get("http://localhost:5000/edit/get/pages");
+                promise.success(function(data, status) {
+                    // alert("success getting page names (status " + status + "): " + angular.toJson(data));
+                });
+                promise.error(function(data, status) {
+                    // alert("error getting page names (status " + status + "): " + angular.toJson(data));
+                });
+                return promise;
             }
         }
     }]);
@@ -31,38 +42,14 @@ dedeEditServices.factory('PageNames', ['$resource',
 dedeEditServices.factory('Page', ['$http',
     function($http) {
         // Should query by page name (btw, create unique index on page).
+        // Rename 'queries' into 'gets'.
         return { 
             query: function(pageName) {
-                var fakePage;
-                if (pageName === "Stories") {
-                    fakePage = {
-                        "_id": 0,
-                        "name": "Stories",
-                        "isShown": true,
-                        "creationDate": "10-08-2014",
-                        "modificationDate": "10-08-2014",
-                        "entryIds" : [0, 1]
-                    };
-                } else if (pageName === "Projects") {
-                    fakePage = {
-                        "_id": 1,
-                        "name": "Projects",
-                        "isShown": true,
-                        "creationDate": "11-08-2014",
-                        "modificationDate": "11-08-2014",
-                        "entryIds" : [2, 3]
-                    };
-                } else {
-                    fakePage = {
-                        "name": "Page " + pageName + " does not exist." 
-                    }
-                }
-
-                return fakePage;
+                var promise = $http.get("http://localhost:5000/edit/get/page/" + pageName);
+                return promise;
             },
-
             store: function(page) {
-                // Always saves even when overwriting. Improvement would be a modal that 
+                // Always saves even when overwriting. An improvement would be a modal that 
                 // asks whether to proceed updating the page if it already exists.
                 $http.post("http://localhost:5000/edit/store/page", page);
             },

@@ -9,7 +9,16 @@ dedeEditControllers.controller("PageOrEntryCtrl", function($scope) {
 dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
         "SelectedPageName", 
         function($scope, PageNames, SelectedPageName) {
-            $scope.pageNames = PageNames.query();
+
+            $scope.updatePageNames = function() {
+                // Should a controller ever be aware that promises exist?
+                PageNames.query().then(function(result) { 
+                    $scope.pageNames = result.data;
+                });
+            };
+            $scope.pageNames = [];
+            $scope.updatePageNames();
+
             $scope.selectedPageName = SelectedPageName.get();
             $scope.setPageName = function(pageName) {
                 $scope.selectedPageName = pageName;
@@ -22,7 +31,16 @@ dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
                 $event.preventDefault(); // defaultPrevented() instead?
                 $event.stopPropagation();
                 $scope.status.isopen = !$scope.status.isopen;
+                $scope.updatePageNames();
             };
+
+            $scope.$watch(function() {
+                    return SelectedPageName.get();
+                }, function() {
+                    $scope.selectedPageName = SelectedPageName.get();
+                });
+
+
         }]);
 
 dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName",
@@ -31,26 +49,30 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
                     return SelectedPageName.get();
                 }, function() {
                     var selectedPageName = SelectedPageName.get();
-                    $scope.page = Page.query(selectedPageName);
+                    Page.query(selectedPageName).then(function(result) {
+                        $scope.page = result.data;
+                    });
                 });
+
             var selectedPageName = SelectedPageName.get();
-            $scope.page = Page.query(selectedPageName);
+            Page.query(selectedPageName).then(function(result) {
+                $scope.page = result.data;
+            });
 
             $scope.store = function() {
                 Page.store($scope.page);
             };
             $scope.remove = function() {
                 Page.remove($scope.page);
-                // Page.remove($scope.page._id);
             };
             $scope.clear = function() {
                 $scope.page = {};
+                SelectedPageName.reset();
             };
         }]);
 
-// Somehow make one unified controller? He'd take the two services. And make
-// two instances of this controller:
-// one for the page drop-down and one for the entry drop-down.
+// Somehow make one unified controller? He'd take the two services. And make two instances of this controller:
+// 1) for the page drop-down and 2) for the entry drop-down.
 dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames",
         "SelectedEntryName", 
         function($scope, EntryNames, SelectedEntryName) {

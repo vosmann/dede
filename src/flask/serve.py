@@ -1,6 +1,18 @@
+# It would be awesome if adding pages like "projects" or "news stories" on the edit page would generate
+# the AngularJS controllers automatically.
+
+# Maybe have a special (only when authenticated) interface that serves some page
+# or entry even if it is hidden. So that the user can preview a new page or entry
+# before he really shows it on the live site.
+
+# Have API methods that return a just the shallow JSON of a requested page and one that also returns
+# all the entries contained on the page as fields in the object, or in a separate entries' list of
+# entry objects.
+
 from flask import Flask, send_file, request
 from pymongo import MongoClient
 from time import strftime
+from pprint import pprint
 
 import json
 import jsonpickle
@@ -9,69 +21,58 @@ import os
 from utils.faker import create_fakes
 from entities.page import Page
 
-shared_mongo_client = MongoClient()
-
-
+mongo = MongoClient() # Mongo DB client shared among request contexts.
 app = Flask(__name__)
-
-# Have methods returning: - names of all pages
-#                         - names (titles) of all entries. so that not the whole objects have to be retrieved
-
-# Idea on how to load the site into the user's browser:
-#  . The Angular app can simply retrieve all pages with all their entries and elements
-#    up front. Just load everything.
-#  . Then load images only when necessary.
-#
-# Different idea:
-#  . Load everything on demand. Have many, many small requests going from the Angular app to the server.
-#
-# It would be awesome if adding pages like "projects" or "news stories" on the edit page would generate
-# the AngularJS controllers automatically.
-
-# Maybe have a special (only when authenticated) interface that serves some page or entry even if it is hidden.
-# So that the user can preview a new page or entry before he really shows it on the live site.
-
-# Have API methods that return a just the shallow JSON of a requested page and one that also returns
-# all the entries contained on the page as fields in the object, or in a separate entries' list of entry objects.
 
 
 # Delivering HTML
 @app.route("/")
 def hello():
     return send_file('static/view-index.html')
-
 @app.route("/edit")
 def edit():
     return send_file('static/edit-index.html')
 
 
-# REST methods
+# REST methods for Page
 @app.route('/edit/store/page', methods = ['POST'])
-def storePage():
+def store_page():
 
-    raw_json_dict = request.get_json()
-    print raw_json_dict
-    retrieved_page = shared_mongo_client.dede.pages.find_one({'_id': raw_json_dict['_id']})
-    print "printing retrieved page:"
-    print retrieved_page
+    raw_json = request.get_json() # dict
+    retrieved_page = mongo.dede.pages.find_one(get_id(raw_json))
 
-    incoming_page = Page(raw_json_dict)
-    incoming_page.modification_date = strftime("%Y-%m-%d %H:%M:%S")
+    incoming_page = Page(raw_json)
+    incoming_page.modification_date = now()
+
     if retrieved_page is None:
-        incoming_page.creation_date = strftime("%Y-%m-%d %H:%M:%S")
-        shared_mongo_client.dede.pages.insert(incoming_page.json_dict())
+        incoming_page.creation_date = now()
+        mongo.dede.pages.insert(incoming_page.json_dict())
     else:
-        shared_mongo_client.dede.pages.update({'_id': raw_json_dict['_id']}, incoming_page.json_dict())
-
-
+        mongo.dede.pages.update(get_id(raw_json), incoming_page.json_dict())
     return 'ok'
 
 @app.route('/edit/delete/page', methods = ['POST'])
-def deletePage():
-    raw_json_dict = request.get_json()
-    shared_mongo_client.dede.pages.remove({'_id': raw_json_dict['_id']})
+def delete_page():
+    raw_json = request.get_json() # dict
+    mongo.dede.pages.remove(get_id(raw_json))
     return 'ok'
 
+@app.route('/edit/get/pages', methods = ['GET'])
+def get_pages():
+    raw_pages = mongo.dede.pages.find()
+    names = []
+    for raw_page in raw_pages:
+        page = Page(raw_page)
+        names.append(page.name)
+    return json.dumps(names)
+
+@app.route('/edit/get/page/<page_name>', methods = ['GET'])
+def get_page(page_name):
+    raw_page = mongo.dede.pages.find_one({'name': page_name})
+    return json.dumps(raw_page)
+
+
+# REST methods for Entry
 @app.route('/edit/store/entry', methods = ['POST'])
 def storeEntry():
     print "about to store an entry!"
@@ -80,54 +81,14 @@ def storeEntry():
 
 
 
-# Old 
-@app.route("/get-pages") 
-def get_projects():
-    print "call to /get-pages"
-    with app.app_context():
-        # Or have a parameter that gives the id or name or nothing (meaning: fetch all)
-        # Don't use _id. Use name everywhere.
-        pages = []
-        for page in shared_mongo_client.dede.pages.find():
-            pages.append(page)
-        return json.dumps(pages)
+def now():
+    return strftime("%Y-%m-%d %H:%M:%S")
 
-@app.route("/get-entries")
-def get_news():
-    # Or have a parameter that gives the id or name or nothing (meaning: fetch all)
-    with app.app_context():
-        news = []
-        for news_story in shared_mongo_client.dede.news.find():
-            news.append(news_story)
-        return json.dumps(news)
+def get_id(raw_json):
+    return {'_id': raw_json['_id']}
 
-@app.route("/get-element")
-def get_tags():
-    print "call to /get-tags"
-    with app.app_context():
-        tags = []
-        for tag in shared_mongo_client.dede.tags.find():
-            tags.append(tag)
-        return json.dumps(tags)
 
-@app.route("/get-about")
-def get_about():
-    with app.app_context():
-        about = shared_mongo_client.dede.about.find_one({"_id": 0})
-        return json.dumps(about)
-
-@app.route("/get-contact")
-def get_contact():
-    with app.app_context():
-        contact = shared_mongo_client.dede.contact.find_one({"_id": 0})
-        return json.dumps(contact)
-
-# save new data
-# @app.route("/edit/save-page")
-# def save_project():
-#     return "save project"
 
 if __name__ == "__main__":
-    #create_fakes()
     app.run(debug=True)
 

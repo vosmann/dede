@@ -27,7 +27,14 @@ class Page:
             self.modification_date  = ""
 
         if u'entryIds' in raw_dict:
-            self.entry_ids = raw_dict[u'entryIds'].split(",")   # List of identifiers of entries.
+            ids = raw_dict[u'entryIds']
+            # JSON received from front-end is a string and Mongo gives a list. Hence this if.
+            if isinstance(ids, basestring):
+                self.entry_ids = ids.split(",")
+            elif isinstance(ids, list):
+                self.entry_ids = ids
+            else:
+                self.entry_ids = []
         else:
             self.entry_ids = []
 
