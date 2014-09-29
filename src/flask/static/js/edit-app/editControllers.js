@@ -31,29 +31,21 @@ dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
                 $event.preventDefault(); // defaultPrevented() instead?
                 $event.stopPropagation();
                 $scope.status.isopen = !$scope.status.isopen;
-                $scope.updatePageNames();
+                // This below doesn't seem to refresh from server on drop-down opening.
+                // $scope.updatePageNames();
             };
 
             $scope.$watch(function() {
                     return SelectedPageName.get();
                 }, function() {
+                    $scope.updatePageNames();
                     $scope.selectedPageName = SelectedPageName.get();
                 });
-
-
         }]);
 
 dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName",
         function($scope, Page, SelectedPageName) {
-            $scope.$watch(function() {
-                    return SelectedPageName.get();
-                }, function() {
-                    var selectedPageName = SelectedPageName.get();
-                    Page.get(selectedPageName).then(function(result) {
-                        $scope.page = result.data;
-                    });
-                });
-
+            
             var selectedPageName = SelectedPageName.get();
             Page.get(selectedPageName).then(function(result) {
                 $scope.page = result.data;
@@ -61,6 +53,7 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
 
             $scope.store = function() {
                 Page.store($scope.page);
+                SelectedPageName.set($scope.page.name);
             };
             $scope.remove = function() {
                 Page.remove($scope.page);
@@ -69,9 +62,19 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
                 $scope.page = {};
                 SelectedPageName.reset();
             };
+
+            $scope.$watch(function() {
+                    return SelectedPageName.get();
+                }, function() {
+                    var selectedPageName = SelectedPageName.get();
+                    Page.get(selectedPageName).then(function(result) {
+                        $scope.page = result.data;
+                    });
+                });
         }]);
 
-// Somehow make one unified controller? He'd take the two services. And make two instances of this controller:
+// Somehow make one unified controller?
+// He'd take the two services. And make two instances of this unified controller:
 // 1) for the page drop-down and 2) for the entry drop-down.
 dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames",
         "SelectedEntryName", 

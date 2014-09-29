@@ -1,5 +1,5 @@
-// TODO: Enable Angular's cache on everything using $http.
-// TODO: Perhaps I should switch to $resource.
+// Enable Angular's cache on everything using $http?
+// Perhaps I should switch to $resource.
 
 var dedeEditServices = angular.module('dedeEditServices', ['ngResource']);
 
