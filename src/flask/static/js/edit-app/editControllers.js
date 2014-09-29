@@ -45,22 +45,27 @@ dedeEditControllers.controller("PageNamesDropdownCtrl", ["$scope", "PageNames",
 
 dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName",
         function($scope, Page, SelectedPageName) {
-            
-            var selectedPageName = SelectedPageName.get();
-            Page.get(selectedPageName).then(function(result) {
-                $scope.page = result.data;
-            });
 
+            $scope.load = function() {
+                var selectedPageName = SelectedPageName.get();
+                Page.get(selectedPageName).then(function(result) {
+                    $scope.page = result.data;
+                });
+            };
             $scope.store = function() {
+                var name = $scope.page.name;
                 Page.store($scope.page);
-                SelectedPageName.set($scope.page.name);
+                $scope.clear();
+                SelectedPageName.set(name);
+                $scope.load();
             };
             $scope.remove = function() {
                 Page.remove($scope.page);
+                SelectedPageName.reset();
             };
             $scope.clear = function() {
-                $scope.page = {};
                 SelectedPageName.reset();
+                $scope.page = {};
             };
 
             $scope.$watch(function() {
@@ -71,6 +76,9 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
                         $scope.page = result.data;
                     });
                 });
+
+            $scope.load();
+
         }]);
 
 // Somehow make one unified controller?

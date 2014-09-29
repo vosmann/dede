@@ -69,7 +69,10 @@ def get_pages():
 @app.route('/edit/get/page/<page_name>', methods = ['GET'])
 def get_page(page_name):
     raw_page = mongo.dede.pages.find_one({'name': page_name})
-    return json.dumps(raw_page)
+    if raw_page is not None:
+        return json.dumps(raw_page)
+    else:
+        return json.dumps({});
 
 
 # REST methods for Entry
