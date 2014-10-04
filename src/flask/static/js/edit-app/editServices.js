@@ -23,7 +23,7 @@ dedeEditServices.factory('PageNames', ['$http',
     function($http) {
         return { 
             get: function() {
-                var promise = $http.get("http://localhost:5000/edit/get/pages");
+                var promise = $http.get("http://localhost:5000/edit/get/pageNames");
                 return promise;
             }
         }
@@ -32,7 +32,6 @@ dedeEditServices.factory('PageNames', ['$http',
 
 dedeEditServices.factory('Page', ['$http',
     function($http) {
-        // Should get by page name (btw, create unique index on page).
         return { 
             get: function(pageName) {
                 var promise = $http.get("http://localhost:5000/edit/get/page/" + pageName);

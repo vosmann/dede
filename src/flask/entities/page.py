@@ -49,4 +49,3 @@ class Page:
                 'entryIds': self.entry_ids
                 }
 
-
