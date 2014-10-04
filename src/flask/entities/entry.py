@@ -1,24 +1,10 @@
+from element import Element
+
+
 class Entry:
     """Represents an entry within a Dede page. On a projects page, an entry will be a single project. On a news
-    stories page an entry will be a single news story. An "about us" page will most likely contain just one entry."""
-    def __init__(self, _id, name):
-        self._id = _id
-        self.name = name
-        self.tags = []
-        self.is_shown = True
-        self.is_archived = False
-        self.creation_date = creation_date
-        self.modification_date = creation_date
-        self.elements = [] # names or _ids of titles, texts, images.
-        # Keep a "has_news" field or simply handle this with links within the text of the entry?
-        # self.has_news = has_news
-
-
-
-
-
-
-        #         {u'_id': 1, u'name': u'Red shelf', u'tags': [u'art', u'interior design'], u'isShown': False, u'modificationDate': u'30-08-2014', u'elements': [{u'isShown': True, u'data': u'Red red red', u'type': u'title', u'level': 1}, {u'isShown': True, u'data': u'A playful red shelf-toy. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. Vi\u0161e teksta ovdje vi\u0161e. SDF', u'type': u'text'}, {u'isShown': True, u'data': u'red_shelf.jpg', u'type': u'image'}], u'isArchived': True, u'creationDate': u'30-08-2014'}
+    stories page an entry will be a single news story. An "about us" page will most likely contain just one entry.
+    Could be done without this class, but it gives a bit more explicitness in the sense of defining domain entities."""
 
     def __init__(self, raw_dict): 
 
@@ -30,11 +16,12 @@ class Entry:
             self.name  = "No name provided"
 
         if u'tags' in raw_dict:
-            tags = raw_dict[u'entryIds']
-            # JSON received from front-end is a string and Mongo gives a list.
+            tags = raw_dict[u'tags']
             if isinstance(tags, basestring):
+                # JSON received from front-end.
                 self.tags = tags.split(",")
             elif isinstance(tags, list):
+                # List received from Mongo.
                 self.tags = tags
             else:
                 self.tags = []
@@ -60,15 +47,33 @@ class Entry:
         else:
             self.modification_date  = ""
 
+        if u'elements' in raw_dict:
+            raw_elements = raw_dict[u'elements']
+            # A list is received from both front-end and Mongo.
+            if isinstance(raw_elements, list):
+                self.elements = []
+                for raw_el in raw_elements:
+                    self.elements.append(Element(raw_el))
+            else:
+                self.elements = []
+        else:
+            self.elements = []
 
 
-        
     def json_dict(self):
+
+        elements_json = []
+        for element in self.elements:
+            elements_json.append(element.json_dict())
+
         return {
                 '_id': self._id,
                 'name': self.name,
+                'tags': self.tags,
                 'isShown': self.is_shown,
+                'isArchived': self.is_archived,
+                'creationDate': self.creation_date,
+                'modificationDate': self.modification_date,
+                'elements': elements_json
                }
-
- 
 

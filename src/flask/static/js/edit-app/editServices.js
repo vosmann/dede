@@ -146,7 +146,6 @@ dedeEditServices.factory('Entry', ['$http',
                 return fakeEntry;
             },
             store: function(entry) {
-                alert("Sending to server: " + JSON.stringify(entry));
                 $http.post("http://localhost:5000/edit/store/entry", entry);
             }
         }

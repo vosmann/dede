@@ -20,6 +20,7 @@ import os
 
 from utils.faker import create_fakes
 from entities.page import Page
+from entities.entry import Entry
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 app = Flask(__name__)
@@ -81,6 +82,8 @@ def store_entry():
 
     incoming_json = request.get_json() # dict
     incoming_entry = Entry(incoming_json)
+    print incoming_entry
+    print incoming_entry.json_dict()
     incoming_entry.modification_date = now()
 
     db_entry = mongo.dede.entries.find_one(get_id(incoming_json))
@@ -92,18 +95,18 @@ def store_entry():
         mongo.dede.entries.update(get_id(incoming_json), incoming_entry.json_dict())
 
     # Must also update the full list of tags. Extract into service.
-    existing_tags = mongo.dede.tags.find()
-    existing_tag_names = []
-    for existing_tag in existing_tags:
-        existing_tag_names.append(existing_tag.name)
+    #existing_tags = mongo.dede.tags.find()
+    #existing_tag_names = []
+    #for existing_tag in existing_tags:
+        #existing_tag_names.append(existing_tag.name)
     
-    new_tag_names = []
-    for tag in incoming_entry.tags:
-        if tag not in existing_tag_names:
-            new_tag_names.append(tag)
+    #new_tag_names = []
+    #for tag in incoming_entry.tags:
+        #if tag not in existing_tag_names:
+            #new_tag_names.append(tag)
     
-    for new_tag_name in new_tag_names:
-        mongo.dede.tags.insert(Tag(new_tag_name).json_dict())
+    #for new_tag_name in new_tag_names:
+        #mongo.dede.tags.insert(Tag(new_tag_name).json_dict())
 
     return 'ok'
 
