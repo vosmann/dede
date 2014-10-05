@@ -141,17 +141,12 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
         "ElementTypes", "SelectedPageName",
         function($scope, Entry, SelectedEntryName, ElementTypes, SelectedPageName) {
-            var emptyEntry = {
-                "name": "fake name",
-                "elements": [
-                                {
-                                    "type": "title",
-                                    "data": "lo",
-                                    "label": "no label",
-                                    "level": "1"
-                                }
-                            ]
-            }; // Constant.
+            var emptyElement = {
+                                "type": "text",
+                                "data": "Text",
+                                "label": "-",
+                               }; // Constant.
+            var emptyEntry = {}; // Constant.
 
             $scope.load = function() {
                 $scope.entry = emptyEntry;
@@ -175,6 +170,19 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
             $scope.clear = function() {
                 SelectedEntryName.reset();
                 $scope.entry = emptyEntry;
+            };
+
+            $scope.addElementAfter = function(position) {
+                if ($scope.entry == undefined) {
+                    $scope.entry = emptyEntry;
+                }
+                if ($scope.entry.elements == undefined) {
+                    $scope.entry.elements = [];
+                }
+                $scope.entry.elements.splice(position + 1, 0, emptyElement);
+            };
+            $scope.removeElementAt = function(position) {
+                $scope.entry.elements.splice(position, 1);
             };
 
             $scope.$watch(function() {

@@ -237,14 +237,17 @@
             <div class="row">
                 <div class="col-md-2"></div>
                 <div class="col-md-1">
-                    <button type="button" class="btn btn-default btn-xs">+</button> <!-- Extract to directive or something. -->
+                    <!-- Extract to directive or something. -->
+                    <button type="button" class="btn btn-default btn-xs"
+                        ng-click="addElementAfter(-1)">+</button>
                 </div>
             </div>
-            <div ng-repeat="element in entry.elements">
+            <div ng-repeat="element in entry.elements track by $index">
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-1">
-                        <button type="button" class="btn btn-default btn-xs">-</button>
+                        <button type="button" class="btn btn-default btn-xs"
+                            ng-click="removeElementAt($index)">-</button>
                     </div>
                     <div class="col-md-1">
                         <multiselect class="input"
@@ -271,7 +274,8 @@
                 <div class="row">
                     <div class="col-md-2"></div>
                     <div class="col-md-1">
-                        <button type="button" class="btn btn-default btn-xs">+</button> <!-- Extract to directive or something. -->
+                        <button type="button" class="btn btn-default btn-xs"
+                            ng-click="addElementAfter($index)">+</button> <!-- Extract to directive or something. -->
                     </div>
                 </div>
             </div>
