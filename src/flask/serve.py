@@ -132,34 +132,16 @@ def delete_entry():
 @app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
 def get_entry_names(page_name):
 
-    print "In function: get_entry_names({0})".format(page_name)
-
     db_page = mongo.dede.pages.find_one(name_query(page_name))
     entry_names = []
 
     if db_page is not None:
         page = Page(db_page)
-
-        #
-        print "Made a page object: {0}".format(json.dumps(page.json_dict()))
-        print "Entry list: {0}".format(json.dumps(page.entry_ids))
-
         for entry_id in page.entry_ids:
-            #
-            print "Trying to get entry with ID: {0}".format(entry_id)
-            print "Query: {0}".format(json.dumps(id_query(entry_id)))
-                
             db_entry = mongo.dede.entries.find_one(id_query(entry_id)) # I cri on every fidn.
-
-            #
-            print "db_entry:"
-            print db_entry
-
             if db_entry is not None:
                 entry = Entry(db_entry)
                 entry_names.append(entry.name)
-                print "Entry name {0}".format(json.dumps(entry.json_dict()))
-                print "Appended entry name {0}".format(entry.name)
     else:
         print "No page found with name {0}".format(page_name)
 
