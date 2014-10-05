@@ -18,7 +18,6 @@ dedeEditServices.service('SelectedPageName', ["PageNames",
             }
         };
     }]);
-
 dedeEditServices.factory('PageNames', ['$http',
     function($http) {
         return { 
@@ -28,8 +27,6 @@ dedeEditServices.factory('PageNames', ['$http',
             }
         }
     }]);
-
-
 dedeEditServices.factory('Page', ['$http',
     function($http) {
         return { 
@@ -38,121 +35,62 @@ dedeEditServices.factory('Page', ['$http',
                 return promise;
             },
             store: function(page) {
-                // Always saves even when overwriting. An improvement would be a modal that 
+                // Always saves, even when overwriting. An improvement would be a modal that 
                 // asks whether to proceed updating the page if it already exists.
                 $http.post("http://localhost:5000/edit/store/page", page);
             },
-            remove: function(page) {
+            delete: function(page) {
                 $http.post("http://localhost:5000/edit/delete/page", page);
             }
         };
     }]);
 
+
 dedeEditServices.service('SelectedEntryName', ["EntryNames",
     function(EntryNames) {
-        var allNames = EntryNames.get();
-        var selectedEntryName = allNames[0];
+        var selectedEntryName = "None";
         return { 
             get: function() {
                 return selectedEntryName;
             },
             set: function(newlySelectedEntry) {
                 selectedEntryName = newlySelectedEntry;
+            },
+            reset: function() {
+                selectedEntryName = "None";
             }
         };
     }]);
-
-dedeEditServices.factory('EntryNames', ['$resource',
-    function($resource) {
+dedeEditServices.factory('EntryNames', ['$http',
+    function($http) {
         return { 
-            get :function() {
-                return [
-                        'Vinyl shelf',
-                        'Red shelf'
-                ];
+            get: function(pageName) {
+                var promise = $http.get("http://localhost:5000/edit/get/entryNames/" + pageName);
+                return promise;
             }
         }
     }]);
-
 dedeEditServices.factory('Entry', ['$http',
     function($http) {
-        // Should get by name (btw, create a unique index on field name/title of entry).
         return { 
             get: function(entryName) {
-                var fakeEntry;
-                if (entryName === "Vinyl shelf") {
-                    fakeEntry = {
-                        "_id": 0,
-                        "name": "Vinyl shelf",
-                        "tags": ["interior design"],
-                        "isShown": true,
-                        "isArchived": false,
-                        "creationDate": "02-08-2014",
-                        "modificationDate": "03-08-2014",
-                        "elements": [
-                            {
-                                "type": "title",
-                                "isShown": true,
-                                "data": "Vinyl shelf",
-                                "label": "special label 1",
-                                "level": 1
-                            },
-                            {
-                                "type": "text",
-                                "isShown": true,
-                                "label": "ordinary label 1",
-                                "data": "This is the long-awaited vinyl shelf."
-                            },
-                            {
-                                "type": "image",
-                                "isShown": true,
-                                "label": "ordinary label 2",
-                                "data": "angle_right_dramatic_light.jpg"
-                            }]
-                    };
-                } else if (entryName === "Red shelf") {
-                    fakeEntry = {
-                        "_id": 1,
-                        "name": "Red shelf",
-                        "tags": ["art", "interior design"],
-                        "isShown": false,
-                        "isArchived": true,
-                        "creationDate": "30-08-2014",
-                        "modificationDate": "30-08-2014",
-                        "elements": [
-                            {
-                                "type": "title",
-                                "isShown": true,
-                                "data": "Red red red",
-                                "level": 1
-                            },
-                            {
-                                "type": "text",
-                                "isShown": true,
-                                "data": "A playful red shelf-toy."
-                            },
-                            {
-                                "type": "image",
-                                "isShown": true,
-                                "data": "red_shelf.jpg"
-                            }]
-                    };
-                } else {
-                    fakeEntry = {
-                        "name": "Entry " + entryName + " does not exist." 
-                    }
-                }
-
-                return fakeEntry;
+                var promise = $http.get("http://localhost:5000/edit/get/entry/" + entryName);
+                return promise;
             },
             store: function(entry) {
+                // Always saves, even when overwriting. An improvement would be a modal that 
+                // asks whether to proceed updating the page if it already exists.
                 $http.post("http://localhost:5000/edit/store/entry", entry);
+            },
+            delete: function(entry) {
+                $http.post("http://localhost:5000/edit/delete/entry", entry);
             }
         }
     }]);
 
-dedeEditServices.factory('Tags', ['$resource',
-    function($resource) {
+
+dedeEditServices.factory('Tags', ['$http',
+    function($http) {
         return { 
             get :function() {
                 return ['graphic design',
@@ -163,6 +101,7 @@ dedeEditServices.factory('Tags', ['$resource',
             }
         }
     }]);
+
 
 dedeEditServices.service('SelectedElementType', ["ElementTypes",
     function(ElementTypes) {
@@ -177,9 +116,8 @@ dedeEditServices.service('SelectedElementType', ["ElementTypes",
             }
         };
     }]);
-
-dedeEditServices.factory('ElementTypes', ['$resource',
-    function($resource) {
+dedeEditServices.factory('ElementTypes', ['$http',
+    function($http) {
         return { 
             get: function() {
                 return ['title',

@@ -8,7 +8,10 @@ class Entry:
 
     def __init__(self, raw_dict): 
 
-        self._id = raw_dict[u'_id']
+        if u'_id' in raw_dict:
+            self._id = raw_dict[u'_id']
+        else:
+            self._id  = "No ID provided"
 
         if u'name' in raw_dict:
             self.name = raw_dict[u'name']
@@ -76,4 +79,8 @@ class Entry:
                 'modificationDate': self.modification_date,
                 'elements': elements_json
                }
+
+
+def extract_page_name(raw_dict):
+    return raw_dict[u'pageName'] # Retrieving smuggled-in page name.
 
