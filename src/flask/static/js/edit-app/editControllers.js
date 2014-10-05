@@ -136,31 +136,25 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
                     $scope.updateEntryNames();
                     $scope.selectedEntryName = SelectedEntryName.get();
                 });
-
-
-
-            //$scope.entryNames = EntryNames.get();
-            //$scope.selectedEntryName = SelectedEntryName.get();
-            //$scope.setEntryName = function(entryName) {
-                //$scope.selectedEntryName = entryName;
-                //SelectedEntryName.set(entryName);
-            //};
-            //$scope.status = {
-                //isopen: false
-            //};
-            //$scope.toggleDropdown = function($event) {
-                //$event.preventDefault(); // defaultPrevented() instead?
-                //$event.stopPropagation();
-                //$scope.status.isopen = !$scope.status.isopen;
-            /*};*/
-
         }]);
 
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
         "ElementTypes", "SelectedPageName",
         function($scope, Entry, SelectedEntryName, ElementTypes, SelectedPageName) {
+            var emptyEntry = {
+                "name": "fake name",
+                "elements": [
+                                {
+                                    "type": "title",
+                                    "data": "lo",
+                                    "label": "no label",
+                                    "level": "1"
+                                }
+                            ]
+            }; // Constant.
+
             $scope.load = function() {
-                $scope.entry = {};
+                $scope.entry = emptyEntry;
                 var selectedEntryName = SelectedEntryName.get();
                 Entry.get(selectedEntryName).then(function(result) {
                     $scope.entry = result.data;
@@ -180,7 +174,7 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
             };
             $scope.clear = function() {
                 SelectedEntryName.reset();
-                $scope.entry = {};
+                $scope.entry = emptyEntry;
             };
 
             $scope.$watch(function() {

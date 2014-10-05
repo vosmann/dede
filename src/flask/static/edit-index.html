@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="/static/css/angular-multiselect/angular-multiselect.css">
 </head>
 
-<!-- TODO: When everything is functional, cut this up into more html files. -->
+<!-- TODO: When everything is functional, cut this up into smaller html files. -->
 <body>
 
     <!-- I want to also be able to edit tags in a third "tab". -->
@@ -234,10 +234,18 @@
                     <p>Elements:</p>
                 </div>
             </div>
-            <!-- TODO: Add "delete element" button. -->
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-default btn-xs">+</button> <!-- Extract to directive or something. -->
+                </div>
+            </div>
             <div ng-repeat="element in entry.elements">
                 <div class="row">
-                    <div class="col-md-2"></div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-default btn-xs">-</button>
+                    </div>
                     <div class="col-md-1">
                         <multiselect class="input"
                             ng-model="element.type"
@@ -246,23 +254,24 @@
                             template-url="/static/partials/singleselect.tmpl.html"> 
                     </div>
                     <div class="col-md-2">
-                        <!-- TODO: May put in abbr element to explain fields in tooltip. -->
                         <span>Label:</span>
                         <input ng-model="element.label"></input>
-                        <p>{{element.label}}</p>
                     </div>
                     <div class="col-md-4">
                         <span>Data:</span>
-                        <!-- TODO: Input should expand into new rows as content grows. -->
                         <textarea style="resize:none" cols="40"
                             msd-elastic
                             ng-model="element.data"></textarea>
-                        <p>{{element.data}}</p>
                     </div>
                     <div class="col-sm-1" ng-show="element.type=='title'">
                         <span>Level:</span>
                         <input ng-model="element.level"></input>
-                        <p>{{element.level}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-1">
+                        <button type="button" class="btn btn-default btn-xs">+</button> <!-- Extract to directive or something. -->
                     </div>
                 </div>
             </div>
