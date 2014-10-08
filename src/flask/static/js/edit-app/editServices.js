@@ -125,4 +125,13 @@ dedeEditServices.factory('ElementTypes', ['$http',
             }
         }
     }]);
+dedeEditServices.factory('ImageNames', ['$http',
+    function($http) {
+        return { 
+            get: function() {
+                var promise = $http.get("http://localhost:5000/edit/get/imageNames");
+                return promise;
+            }
+        }
+    }]);
 

@@ -15,274 +15,293 @@
     <!-- I want to also be able to edit tags in a third "tab". -->
     <!-- And maybe even images in a fourth. -->
     <!-- So, PageOrEntryCtrl should be more general. -->
-    <div class="container"
-        ng-controller="PageOrEntryCtrl">
 
-        <div class="row">
-            <div class="col-md-4">
-                <h1>Dede edit</h1>
-            </div> 
-        </div> 
+    <h1>Dede edit</h1>
+    <tabset>
+        <tab heading="Main">
 
-        <div class="row">
-            <div class="col-md-2">
-                <p>Now editing: </p>
-            </div>
-            <div class="col-md-2">
-                <div class="btn-group">
-                    <label class="btn btn-primary"
-                        ng-model="pageOrEntry"
-                        btn-radio="'page'">page</label>
-                    <label class="btn btn-primary"
-                        ng-model="pageOrEntry"
-                        btn-radio="'entry'">entry</label>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <p ng-show="pageOrEntry=='entry'">on</p>
-            </div>
-            <div class="col-md-2">
-                <div class="btn-group" dropdown is-open="status.isopen"
-                    ng-controller="PageNamesDropdownCtrl">
-                    <button type="button" class="btn btn-primary dropdown-toggle">
-                        {{selectedPageName}}<span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu">
-                        <li ng-repeat="pageName in pageNames">
-                            <a ng-click="setPageName(pageName)" href="#">{{pageName}}</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
+            <div class="container" ng-controller="PageOrEntryCtrl">
 
-        <div class="row">
-            <div class="col-md-8">
-                <br/>
-                <hr/>
-                <br/>
-            </div>
-        </div>
-
-        <!-- Editing a page. -->
-        <div ng-show="pageOrEntry=='page'"
-            ng-controller="PageCtrl">
-
-            <div class="row">
-                <div class="col-md-4">
-                    <button type="button" class="btn btn-sm btn-success"
-                        ng-click="store()">Store</button>
-                    <button type="button" class="btn btn-sm btn-danger"
-                        ng-click="delete()">Delete</button>
-                    <button type="button" class="btn btn-sm btn-default"
-                        ng-click="clear()">Clear</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>ID:</p>
-                </div>
-                <div class="col-md-2">
-                    <input ng-model="page._id"></input>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Page name:</p>
-                </div>
-                <div class="col-md-2">
-                    <input ng-model="page.name"></input>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Is shown:</p>
-                </div>
-                <div class="col-md-2">
-                    <span ng-model="page.isShown">{{page.isShown}}</span>
-                    <button type="button" class="btn btn-warning btn-sm"
-                        ng-click="page.isShown = !page.isShown">Flip</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Creation date:</p>
-                </div>
-                <div class="col-md-2">
-                    <p>{{page.creationDate}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Modification date:</p>
-                </div>
-                <div class="col-md-2">
-                    <p>{{page.modificationDate}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Entry IDs:</p>
-                </div>
-                <div class="col-md-2">
-                    <input ng-model="page.entryIds"></input>
-                </div>
-            </div>
-        </div>
-
-        <!-- Editing an entry within a page. -->
-        <div ng-show="pageOrEntry=='entry'"
-            ng-controller="EntryCtrl">
-
-            <div class="row">
-                <div class="col-md-4">
-                    <button type="button" class="btn btn-sm btn-success"
-                        ng-click="store()">Store</button>
-                    <button type="button" class="btn btn-sm btn-danger"
-                        ng-click="delete()">Delete</button>
-                    <button type="button" class="btn btn-sm btn-default"
-                        ng-click="clear()">Clear</button>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Entry:</p>
-                </div>
-                <div class="col-md-2">
-                    <div class="btn-group" dropdown is-open="status.isopen"
-                        ng-controller="EntryNamesDropdownCtrl">
-                        <button type="button" class="btn btn-primary dropdown-toggle">
-                            {{selectedEntryName}}<span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li ng-repeat="entryName in entryNames">
-                                <a ng-click="setEntryName(entryName)" href="#">{{entryName}}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>ID:</p>
-                </div>
-                <div class="col-md-2">
-                    <input ng-model="entry._id"></input>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Entry name:</p>
-                </div>
-                <div class="col-md-2">
-                    <input ng-model="entry.name"></input>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Tags:</p>
-                </div>
-                <div class="col-md-2">
-                    <div ng-controller="TagsCtrl">
-                        <multiselect class="input" multiple="true"
-                            ng-model="selectedTags"
-                            options="tag for tag in tags"
-                            change="selected()"
-                            template-url="/static/partials/multiselect.tmpl.html"> 
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Is shown:</p>
-                </div>
-                <div class="col-md-2">
-                    <span ng-model="entry.isShown">{{entry.isShown}}</span>
-                    <button type="button" class="btn btn-warning btn-sm"
-                        ng-click="entry.isShown = !entry.isShown">Flip</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Is archived:</p>
-                </div>
-                <div class="col-md-2">
-                    <span ng-model="entry.isArchived">{{entry.isArchived}}</span>
-                    <button type="button" class="btn btn-warning btn-sm"
-                        ng-click="entry.isArchived = !entry.isArchived">Flip</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Creation date:</p>
-                </div>
-                <div class="col-md-2">
-                    <p>{{entry.creationDate}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2">
-                    <p>Modification date:</p>
-                </div>
-                <div class="col-md-2">
-                    <p>{{entry.modificationDate}}</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <p>Elements:</p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-2"></div>
-                <div class="col-md-1">
-                    <!-- Extract to directive or something. -->
-                    <button type="button" class="btn btn-default btn-xs"
-                        ng-click="addElementAfter(-1)">+</button>
-                </div>
-            </div>
-            <div ng-repeat="element in entry.elements track by $index">
                 <div class="row">
-                    <div class="col-md-1"></div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-default btn-xs"
-                            ng-click="removeElementAt($index)">-</button>
-                    </div>
-                    <div class="col-md-1">
-                        <multiselect class="input"
-                            ng-model="element.type"
-                            options="elementType for elementType in allElementTypes"
-                            change="selected()"
-                            template-url="/static/partials/singleselect.tmpl.html"> 
+                    <div class="col-md-2">
+                        <p>Editing:</p>
                     </div>
                     <div class="col-md-2">
-                        <span>Label:</span>
-                        <input ng-model="element.label"></input>
+                        <div class="btn-group">
+                            <label class="btn btn-primary"
+                                ng-model="pageOrEntry"
+                                btn-radio="'page'">page</label>
+                            <label class="btn btn-primary"
+                                ng-model="pageOrEntry"
+                                btn-radio="'entry'">entry</label>
+                        </div>
                     </div>
-                    <div class="col-md-4">
-                        <span>Data:</span>
-                        <textarea style="resize:none" cols="40"
-                            msd-elastic
-                            ng-model="element.data"></textarea>
-                    </div>
-                    <div class="col-sm-1" ng-show="element.type=='title'">
-                        <span>Level:</span>
-                        <input ng-model="element.level"></input>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2"></div>
                     <div class="col-md-1">
-                        <button type="button" class="btn btn-default btn-xs"
-                            ng-click="addElementAfter($index)">+</button> <!-- Extract to directive or something. -->
+                        <p ng-show="pageOrEntry=='entry'">on</p>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="btn-group" dropdown is-open="status.isopen"
+                            ng-controller="PageNamesDropdownCtrl">
+                            <button type="button" class="btn btn-primary dropdown-toggle">
+                                {{selectedPageName}}<span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-repeat="pageName in pageNames">
+                                    <a ng-click="setPageName(pageName)" href="#">{{pageName}}</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <br/>
+                        <hr/>
+                        <br/>
+                    </div>
+                </div>
+
+                <!-- Editing a page. -->
+                <div ng-show="pageOrEntry=='page'"
+                    ng-controller="PageCtrl">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm btn-success"
+                                ng-click="store()">Store</button>
+                            <button type="button" class="btn btn-sm btn-danger"
+                                ng-click="delete()">Delete</button>
+                            <button type="button" class="btn btn-sm btn-default"
+                                ng-click="clear()">Clear</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>ID:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <input ng-model="page._id"></input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Page name:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <input ng-model="page.name"></input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Is shown:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <span ng-model="page.isShown">{{page.isShown}}</span>
+                            <button type="button" class="btn btn-warning btn-sm"
+                                ng-click="page.isShown = !page.isShown">Flip</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Creation date:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>{{page.creationDate}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Modification date:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>{{page.modificationDate}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Entry IDs:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <input ng-model="page.entryIds"></input>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editing an entry within a page. -->
+                <div ng-show="pageOrEntry=='entry'"
+                    ng-controller="EntryCtrl">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-sm btn-success"
+                                ng-click="store()">Store</button>
+                            <button type="button" class="btn btn-sm btn-danger"
+                                ng-click="delete()">Delete</button>
+                            <button type="button" class="btn btn-sm btn-default"
+                                ng-click="clear()">Clear</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Entry:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="btn-group" dropdown is-open="status.isopen"
+                                ng-controller="EntryNamesDropdownCtrl">
+                                <button type="button" class="btn btn-primary dropdown-toggle">
+                                    {{selectedEntryName}}<span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li ng-repeat="entryName in entryNames">
+                                        <a ng-click="setEntryName(entryName)" href="#">{{entryName}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>ID:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <input ng-model="entry._id"></input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Entry name:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <input ng-model="entry.name"></input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Tags:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <div ng-controller="TagsCtrl">
+                                <multiselect class="input" multiple="true"
+                                    ng-model="selectedTags"
+                                    options="tag for tag in tags"
+                                    change="selected()"
+                                    template-url="/static/partials/multiselect.tmpl.html"> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Is shown:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <span ng-model="entry.isShown">{{entry.isShown}}</span>
+                            <button type="button" class="btn btn-warning btn-sm"
+                                ng-click="entry.isShown = !entry.isShown">Flip</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Is archived:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <span ng-model="entry.isArchived">{{entry.isArchived}}</span>
+                            <button type="button" class="btn btn-warning btn-sm"
+                                ng-click="entry.isArchived = !entry.isArchived">Flip</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Creation date:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>{{entry.creationDate}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <p>Modification date:</p>
+                        </div>
+                        <div class="col-md-2">
+                            <p>{{entry.modificationDate}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p>Elements:</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-1">
+                            <!-- Extract to directive or something. -->
+                            <button type="button" class="btn btn-default btn-xs"
+                                ng-click="addElementAfter(-1)">+</button>
+                        </div>
+                    </div>
+                    <div ng-repeat="element in entry.elements track by $index">
+                        <div class="row">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-default btn-xs"
+                                    ng-click="removeElementAt($index)">-</button>
+                            </div>
+                            <div class="col-md-1">
+                                <multiselect class="input"
+                                    ng-model="element.type"
+                                    options="elementType for elementType in allElementTypes"
+                                    change="selected()"
+                                    template-url="/static/partials/singleselect.tmpl.html"> 
+                            </div>
+                            <div class="col-md-2">
+                                <span>Label:</span>
+                                <input ng-model="element.label"></input>
+                            </div>
+                            <div class="col-md-4">
+                                <span>Data:</span>
+                                <textarea style="resize:none" cols="40"
+                                    ng-show="element.type!='image'"
+                                    msd-elastic
+                                    ng-model="element.data"></textarea>
+                                <multiselect class="input"
+                                    ng-show="element.type=='image'"
+                                    ng-model="element.data"
+                                    options="imageName for imageName in allImageNames"
+                                    change="selected()"
+                                    template-url="/static/partials/singleselect.tmpl.html"> 
+                            </div>
+                            <div class="col-sm-1" ng-show="element.type=='title'">
+                                <span>Level:</span>
+                                <input ng-model="element.level"></input>
+                            </div>
+                            <div class="col-sm-1" ng-show="element.type=='image'">
+                                <span>Caption:</span>
+                                <input ng-model="element.caption"></input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-default btn-xs"
+                                    ng-click="addElementAfter($index)">+</button> <!-- Extract to directive or something. -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div> 
+
+        </tab>
+        <tab heading="Images">
+            <p>Here we will upload and name images.</p>
+        </tab>
+        <tab heading="Tags">
+            <p>Tag management.</p>
+        </tab>
+    </tabset>
 
 
-    </div> 
 
 
     <script src="/static/js/lib/angular-1.2.21/angular.js"></script>

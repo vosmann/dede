@@ -139,14 +139,14 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
         }]);
 
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
-        "ElementTypes", "SelectedPageName",
-        function($scope, Entry, SelectedEntryName, ElementTypes, SelectedPageName) {
+        "SelectedPageName", "ElementTypes", "ImageNames",
+        function($scope, Entry, SelectedEntryName, SelectedPageName, ElementTypes, ImageNames) {
             // Pseudo-constant.
             function createEmptyElement() {
                 return {
-                        "type": "text",
-                        "data": "Text",
-                        "label": "-",
+                        "type": "image",
+                        "data": "None",
+                        "label": "",
                 }; 
             }
             var emptyEntry = {}; // Pseudo-constant.
@@ -190,6 +190,10 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
             $scope.removeElementAt = function(position) {
                 $scope.entry.elements.splice(position, 1);
             };
+
+            ImageNames.get().then(function(result) {
+                $scope.allImageNames = result.data;
+            });
 
             $scope.$watch(function() {
                     return SelectedEntryName.get();
