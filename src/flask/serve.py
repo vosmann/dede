@@ -155,6 +155,26 @@ def get_entry(entry_name):
     else:
         return json.dumps({});
 
+@app.route('/edit/get/elementTypes', methods = ['GET'])
+def get_element_types():
+    types = ["title", "text", "image"]
+    return json.dumps(types)
+
+
+def now():
+    return strftime("%Y-%m-%d %H:%M:%S")
+
+def id_query_from_obj(json):
+    return {'_id': json['_id']}
+
+def id_query(id):
+    return {'_id': id}
+
+def name_query(name):
+    return {'name': name}
+
+
+
 
 def now():
     return strftime("%Y-%m-%d %H:%M:%S")

@@ -141,12 +141,15 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
         "ElementTypes", "SelectedPageName",
         function($scope, Entry, SelectedEntryName, ElementTypes, SelectedPageName) {
-            var emptyElement = {
-                                "type": "text",
-                                "data": "Text",
-                                "label": "-",
-                               }; // Constant.
-            var emptyEntry = {}; // Constant.
+            // Pseudo-constant.
+            function createEmptyElement() {
+                return {
+                        "type": "text",
+                        "data": "Text",
+                        "label": "-",
+                }; 
+            }
+            var emptyEntry = {}; // Pseudo-constant.
 
             $scope.load = function() {
                 $scope.entry = emptyEntry;
@@ -172,6 +175,9 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 $scope.entry = emptyEntry;
             };
 
+            ElementTypes.get().then(function(result) {
+                $scope.allElementTypes = result.data;
+            });
             $scope.addElementAfter = function(position) {
                 if ($scope.entry == undefined) {
                     $scope.entry = emptyEntry;
@@ -179,7 +185,7 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 if ($scope.entry.elements == undefined) {
                     $scope.entry.elements = [];
                 }
-                $scope.entry.elements.splice(position + 1, 0, emptyElement);
+                $scope.entry.elements.splice(position + 1, 0, createEmptyElement());
             };
             $scope.removeElementAt = function(position) {
                 $scope.entry.elements.splice(position, 1);
@@ -192,6 +198,11 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                     Entry.get(selectedEntryName).then(function(result) {
                         $scope.entry = result.data;
                     });
+                });
+            $scope.$watch(function() {
+                    return SelectedPageName.get();
+                }, function() {
+                    $scope.clear();
                 });
 
             $scope.load();

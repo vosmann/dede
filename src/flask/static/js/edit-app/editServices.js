@@ -120,9 +120,8 @@ dedeEditServices.factory('ElementTypes', ['$http',
     function($http) {
         return { 
             get: function() {
-                return ['title',
-                        'text',
-                        'image'];
+                var promise = $http.get("http://localhost:5000/edit/get/elementTypes");
+                return promise;
             }
         }
     }]);
