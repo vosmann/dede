@@ -125,13 +125,26 @@ dedeEditServices.factory('ElementTypes', ['$http',
             }
         }
     }]);
-dedeEditServices.factory('ImageNames', ['$http',
+
+
+dedeEditServices.factory('ImageMetadata', ['$http',
     function($http) {
         return { 
             get: function() {
-                var promise = $http.get("http://localhost:5000/edit/get/imageNames");
+                var promise = $http.get("http://localhost:5000/edit/get/allImagesMetadata");
                 return promise;
             }
         }
     }]);
+dedeEditServices.factory('Images', ['$http',
+    function($http) {
+        return { 
+            get: function() {
+                // TODO
+                var promise = $http.get("http://localhost:5000/edit/get/allImagesMetadata");
+                return promise;
+            }
+        }
+    }]);
+
 

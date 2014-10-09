@@ -71,7 +71,6 @@ dedeEditControllers.controller("PageCtrl", ["$scope", "Page", "SelectedPageName"
                 $scope.clear();
                 SelectedPageName.set(name);
                 $scope.load();
-
             };
             $scope.delete = function() {
                 Page.delete($scope.page);
@@ -139,8 +138,8 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
         }]);
 
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
-        "SelectedPageName", "ElementTypes", "ImageNames",
-        function($scope, Entry, SelectedEntryName, SelectedPageName, ElementTypes, ImageNames) {
+        "SelectedPageName", "ElementTypes", "ImageMetadata",
+        function($scope, Entry, SelectedEntryName, SelectedPageName, ElementTypes, ImageMetadata) {
             // Pseudo-constant.
             function createEmptyElement() {
                 return {
@@ -191,8 +190,8 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 $scope.entry.elements.splice(position, 1);
             };
 
-            ImageNames.get().then(function(result) {
-                $scope.allImageNames = result.data;
+            ImageMetadata.get().then(function(result) {
+                $scope.allImagesMetadata = result.data;
             });
 
             $scope.$watch(function() {
@@ -224,4 +223,35 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
                     $scope.selectedTags = $scope.$parent.entry.tags;
                 });
         }]);
+
+
+dedeEditControllers.controller("ImageCtrl", ["$scope", "ImageMetadata", "Images", 
+        function($scope, ImageMetadata, Images) {
+
+            $scope.updateAllImagesMetadata = function() {
+                ImageMetadata.get().then(function(result) { 
+                    $scope.allImagesMetadata = result.data;
+                    $scope.setSelectedImageMetadata($scope.allImagesMetadata[0]);
+                });
+            };
+            $scope.setSelectedImageMetadata = function(imageMetadata) {
+                $scope.selectedImageMetadata = imageMetadata._id;
+            };
+            $scope.status = {
+                isopen: false
+            };
+            $scope.toggleDropdown = function($event) {
+                // $event.preventDefault(); // defaultPrevented() instead?
+                $event.defaultPrevented();
+                $event.stopPropagation();
+                $scope.status.isopen = !$scope.status.isopen;
+            };
+
+            $scope.allImagesMetadata = [];
+            $scope.selectedImageMetadata = {};
+            $scope.updateAllImagesMetadata();
+        }]);
+
+
+
 
