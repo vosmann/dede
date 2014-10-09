@@ -160,11 +160,6 @@ def get_element_types():
     types = ["title", "text", "image"] # These are hard coded in markup. So, that's just great.
     return json.dumps(types)
 
-#@app.route('/edit/get/imageNames', methods = ['GET'])
-#def get_image_names():
-    #names = ["img1.jpg", "img2.jpg", "dramatic_angle_1.jpg"]
-    #return json.dumps(names)
-
 @app.route('/edit/get/allImagesMetadata', methods = ['GET'])
 def get_all_images_metadata():
     all_images_metadata = [

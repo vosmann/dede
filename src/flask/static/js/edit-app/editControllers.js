@@ -217,11 +217,11 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
             $scope.tags = Tags.get();
             // $scope.selectedTags = $scope.$parent.entry.tags;
-            $scope.$watch(function() {
-                    return $scope.$parent.entry.tags; // TODO
-                }, function() {
-                    $scope.selectedTags = $scope.$parent.entry.tags;
-                });
+/*            $scope.$watch(function() {*/
+                    //return $scope.$parent.entry.tags; // TODO
+                //}, function() {
+                    //$scope.selectedTags = $scope.$parent.entry.tags;
+                /*});*/
         }]);
 
 
@@ -236,15 +236,6 @@ dedeEditControllers.controller("ImageCtrl", ["$scope", "ImageMetadata", "Images"
             };
             $scope.setSelectedImageMetadata = function(imageMetadata) {
                 $scope.selectedImageMetadata = imageMetadata._id;
-            };
-            $scope.status = {
-                isopen: false
-            };
-            $scope.toggleDropdown = function($event) {
-                // $event.preventDefault(); // defaultPrevented() instead?
-                $event.defaultPrevented();
-                $event.stopPropagation();
-                $scope.status.isopen = !$scope.status.isopen;
             };
 
             $scope.allImagesMetadata = [];

@@ -248,6 +248,7 @@
                                     ng-click="removeElementAt($index)">-</button>
                             </div>
                             <div class="col-md-1">
+                                <!-- TODO think of switching this to angular-ui dropdown too. -->
                                 <multiselect class="input"
                                     ng-model="element.type"
                                     options="elementType for elementType in allElementTypes"
@@ -264,12 +265,26 @@
                                     ng-show="element.type!='image'"
                                     msd-elastic
                                     ng-model="element.data"></textarea>
-                                <multiselect class="input"
+
+                                <div class="btn-group" dropdown is-open="status.isopen"
                                     ng-show="element.type=='image'"
-                                    ng-model="element.data"
-                                    options="imageMetadata._id for imageMetadata in allImagesMetadata"
-                                    change="selected()"
-                                    template-url="/static/partials/singleselect.tmpl.html"> 
+                                    ng-controller="ImageCtrl">
+                                    <button type="button" class="btn btn-primary dropdown-toggle">
+                                        {{selectedImageMetadata}}<span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li ng-repeat="imageMetadata in allImagesMetadata">
+                                            <a ng-click="setSelectedImageMetadata(imageMetadata)" href="#">{{imageMetadata._id}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <!--<multiselect class="input"-->
+                                    <!--ng-show="element.type=='image'"-->
+                                    <!--ng-model="element.data"-->
+                                    <!--options="imageMetadata._id for imageMetadata in allImagesMetadata"-->
+                                    <!--change="selected()"-->
+                                    <!--template-url="/static/partials/singleselect.tmpl.html"> -->
                             </div>
                             <div class="col-sm-1" ng-show="element.type=='title'">
                                 <span>Level:</span>
