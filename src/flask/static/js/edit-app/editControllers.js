@@ -4,7 +4,7 @@
 // 1) for the page drop-down and 2) for the entry drop-down.
 
 var dedeEditControllers = angular.module("dedeEditControllers",
-        ['ui.bootstrap', 'ui.multiselect']);
+        ["ui.bootstrap", "ui.multiselect", "angularFileUpload"]);
 
 
 dedeEditControllers.controller("PageOrEntryCtrl", ["$scope", "SelectedPageName",
@@ -138,8 +138,8 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
         }]);
 
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
-        "SelectedPageName", "ElementTypes", "ImageMetadata",
-        function($scope, Entry, SelectedEntryName, SelectedPageName, ElementTypes, ImageMetadata) {
+        "SelectedPageName", "ElementTypes", "Images",
+        function($scope, Entry, SelectedEntryName, SelectedPageName, ElementTypes, Images) {
             // Pseudo-constant.
             function createEmptyElement() {
                 return {
@@ -190,7 +190,7 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 $scope.entry.elements.splice(position, 1);
             };
 
-            ImageMetadata.get().then(function(result) {
+            Images.getAllMeta().then(function(result) {
                 $scope.allImagesMetadata = result.data;
             });
 
@@ -225,11 +225,11 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         }]);
 
 
-dedeEditControllers.controller("ImageCtrl", ["$scope", "ImageMetadata", "Images", 
-        function($scope, ImageMetadata, Images) {
+dedeEditControllers.controller("ImageCtrl", ["$scope", "Images", 
+        function($scope, Images) {
 
             $scope.updateAllImagesMetadata = function() {
-                ImageMetadata.get().then(function(result) { 
+                Images.getAllMeta().then(function(result) { 
                     $scope.allImagesMetadata = result.data;
                     $scope.setSelectedImageMetadata($scope.allImagesMetadata[0]);
                 });
@@ -243,6 +243,38 @@ dedeEditControllers.controller("ImageCtrl", ["$scope", "ImageMetadata", "Images"
             $scope.updateAllImagesMetadata();
         }]);
 
+
+dedeEditControllers.controller("ImageUploadCtrl", ["$scope", "$upload",
+        function($scope, $upload) {
+            // alternative way of uploading, send the file binary with the file's content-type.
+            // Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
+            // It could also be used to monitor the progress of a normal http post/put request with large data
+            // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code.
+
+            // The controller shouldn't talk to the server. Refactor at some point.
+            $scope.onFileSelect = function($files) {
+                for (var fileNr = 0; fileNr < $files.length; ++fileNr) {
+                    var file = $files[fileNr];
+                    $scope.upload = $upload.upload({
+                        url: 'edit/store/image',
+                        method: 'POST',
+                        //headers: {'header-key': 'header-value'},
+                        //withCredentials: true,
+                        data: {myObj: $scope.myModelObj},
+                        file: file, // or list of files ($files) for html5 only
+                    }).progress(function(progressEvent) {
+                        var percentageDoneFloat = 100.0 * progressEvent.loaded / progressEvent.total; // Show on page
+                        $scope.percentageDone = parseInt(percentageDoneFloat);
+                        console.log('percent: ' + $scope.percentageDone);
+                    }).success(function(data, status, headers, config) {
+                        $scope.percentageDone = 0;
+                        console.log(data);
+                    });
+                    // .error(...)
+                    //.then(success, error, progress); 
+                }
+            };
+        }]);
 
 
 

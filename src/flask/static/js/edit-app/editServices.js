@@ -127,22 +127,29 @@ dedeEditServices.factory('ElementTypes', ['$http',
     }]);
 
 
-dedeEditServices.factory('ImageMetadata', ['$http',
-    function($http) {
-        return { 
-            get: function() {
-                var promise = $http.get("http://localhost:5000/edit/get/allImagesMetadata");
-                return promise;
-            }
-        }
-    }]);
 dedeEditServices.factory('Images', ['$http',
     function($http) {
         return { 
-            get: function() {
-                // TODO
-                var promise = $http.get("http://localhost:5000/edit/get/allImagesMetadata");
+            getMeta: function(id) {
+                var promise = $http.get("http://localhost:5000/edit/get/image/metadata/" + id);
                 return promise;
+            },
+            getAllMeta: function() {
+                var promise = $http.get("http://localhost:5000/edit/get/image/metadata/all");
+                return promise;
+            },
+            getImage: function(id) { // TODO
+                var promise = $http.get("http://localhost:5000/edit/get/image/" + id);
+                return promise;
+            },
+            // storeMeta: function(imageMetadata) {
+            //     $http.post("http://localhost:5000/edit/store/image/metadata", imageMetadata);
+            // },
+            storeImage: function(binaryWithId) { // TODO
+                $http.post("http://localhost:5000/edit/store/image", binaryWithId);
+            },
+            delete: function(id) {
+                $http.post("http://localhost:5000/edit/delete/image/" + id);
             }
         }
     }]);

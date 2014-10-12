@@ -1,0 +1,18 @@
+.image-drop-area {
+    background: #F8F8F8;
+    border: 2px dashed #DDD;
+    width: 400px;
+    height: 60px;
+    text-align: center;
+    margin: 30px;
+}
+
+.image-drop-area-dropped {
+    background: #F8F8F8;
+    border: 2px dashed #000000;
+    width: 400px;
+    height: 60px;
+    text-align: center;
+    margin: 30px;
+}
+

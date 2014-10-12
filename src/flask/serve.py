@@ -13,7 +13,9 @@
 # The idea behind using the objects is to give some structure to the domain entities and to not do
 # too much dirty work with dicts everywhere.
 
+# from flask import Flask, request, redirect, url_for
 from flask import Flask, send_file, request
+from werkzeug import secure_filename
 from pymongo import MongoClient
 from time import strftime
 from pprint import pprint
@@ -21,12 +23,18 @@ from pprint import pprint
 import json
 import jsonpickle
 import os
+import gridfs
 
 from utils.faker import create_fakes
 from entities.page import Page
 from entities.entry import Entry, extract_page_name
 
+
+ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
+
+
 mongo = MongoClient() # Mongo DB client shared among request contexts.
+image_gridfs = gridfs.GridFS(mongo.images)
 app = Flask(__name__)
 
 
@@ -160,22 +168,65 @@ def get_element_types():
     types = ["title", "text", "image"] # These are hard coded in markup. So, that's just great.
     return json.dumps(types)
 
-@app.route('/edit/get/allImagesMetadata', methods = ['GET'])
-def get_all_images_metadata():
+
+# Images
+# Note: Could switch to "Flask-Uploads" at some point.
+# Note: flask can also use directories on the filesystem for file storage.
+@app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
+def get_image_metadata(): # TODO
+    image_metadata = {
+            '_id': 'img1.jpg',
+            'width': '500',
+            'height': '500',
+            'size': '56'
+    }
+    return image_metadata
+
+@app.route('/edit/get/image/metadata/all', methods = ['GET'])
+def get_all_images_metadata(): # TODO
     all_images_metadata = [
         {
             '_id': 'img1.jpg',
             'width': '500',
-            'height': '500'
+            'height': '500',
+            'size': '56'
         },
         {
             '_id': 'zezanje1.jpg',
             'width': '400',
-            'height': '40'
+            'height': '40',
+            'size': '100'
         }
     ]
     return json.dumps(all_images_metadata)
 
+@app.route('/edit/get/image/<id>', methods = ['GET'])
+def get_image(id): # TODO
+    print "getting image by id {0}".format(id)
+    return send_file(image_gridfs.get(id), mimetype='image/jpeg')
+
+@app.route('/edit/store/image', methods = ['POST'])
+def store_image():
+    print "In method: /edit/store/image !"
+    if request.method == 'POST':
+        file = request.files['file']
+        if file and is_file_extension_allowed(file.filename):
+            filename = secure_filename(file.filename)
+            print "About to store!"
+            image_gridfs.put(file, _id=filename)
+            mongo.dede.image_metadata.insert(generate_image_metadata(file))
+            return "ok"
+    abort(400) # bad request
+
+@app.route('/edit/delete/image/<id>', methods = ['POST'])
+def delete_image():
+    # TODO delete by id
+    return "ok"
+
+
+
+def is_file_extension_allowed(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 def now():
     return strftime("%Y-%m-%d %H:%M:%S")
@@ -188,6 +239,14 @@ def id_query(id):
 
 def name_query(name):
     return {'name': name}
+
+def generate_image_metadata(image):
+    return {
+        '_id': image.filename,
+        'width': '11',
+        'height': '110',
+        'size': '1100'
+    }
 
 
 
