@@ -246,35 +246,25 @@ dedeEditControllers.controller("ImageCtrl", ["$scope", "Images",
 
 dedeEditControllers.controller("ImageUploadCtrl", ["$scope", "$upload",
         function($scope, $upload) {
-            // alternative way of uploading, send the file binary with the file's content-type.
-            // Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
-            // It could also be used to monitor the progress of a normal http post/put request with large data
-            // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code.
-
-            // The controller shouldn't talk to the server. Refactor at some point.
+            // The controller shouldn't talk to the server. Refactor into a service at some point.
             $scope.onFileSelect = function($files) {
                 for (var fileNr = 0; fileNr < $files.length; ++fileNr) {
                     var file = $files[fileNr];
                     $scope.upload = $upload.upload({
                         url: 'edit/store/image',
                         method: 'POST',
-                        //headers: {'header-key': 'header-value'},
-                        //withCredentials: true,
+                        // TODO Debug this and see what is sent here (probably nothing).
                         data: {myObj: $scope.myModelObj},
                         file: file, // or list of files ($files) for html5 only
                     }).progress(function(progressEvent) {
-                        var percentageDoneFloat = 100.0 * progressEvent.loaded / progressEvent.total; // Show on page
+                        var percentageDoneFloat = 100.0 * progressEvent.loaded / progressEvent.total;
                         $scope.percentageDone = parseInt(percentageDoneFloat);
                         console.log('percent: ' + $scope.percentageDone);
                     }).success(function(data, status, headers, config) {
                         $scope.percentageDone = 0;
                         console.log(data);
                     });
-                    // .error(...)
-                    //.then(success, error, progress); 
                 }
             };
         }]);
-
-
 

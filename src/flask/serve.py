@@ -19,11 +19,13 @@ from werkzeug import secure_filename
 from pymongo import MongoClient
 from time import strftime
 from pprint import pprint
+from PIL import Image
 
 import json
 import jsonpickle
 import os
 import gridfs
+import urllib, cStringIO
 
 from utils.faker import create_fakes
 from entities.page import Page
@@ -34,7 +36,7 @@ ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
-image_gridfs = gridfs.GridFS(mongo.images)
+image_gridfs = gridfs.GridFS(mongo.dede_images)
 app = Flask(__name__)
 
 
@@ -212,9 +214,15 @@ def store_image():
         file = request.files['file']
         if file and is_file_extension_allowed(file.filename):
             filename = secure_filename(file.filename)
-            print "About to store!"
-            image_gridfs.put(file, _id=filename)
-            mongo.dede.image_metadata.insert(generate_image_metadata(file))
+            print "About to store file {0}".format(file.filename)
+            print file
+            c_string_io = cStringIO.StringIO(file.read()) # copy
+            print c_string_io
+
+            pos = c_string_io.tell()
+            image_gridfs.put(c_string_io, _id=filename)
+            c_string_io.seek(pos)  # back to original position
+            mongo.dede.image_metadata.insert(extract_image_metadata(filename, c_string_io))
             return "ok"
     abort(400) # bad request
 
@@ -240,15 +248,42 @@ def id_query(id):
 def name_query(name):
     return {'name': name}
 
-def generate_image_metadata(image):
+def extract_image_metadata(name, file_obj):
+
+
+    pos = file_obj.tell()
+    image = Image.open(file_obj)
+    file_obj.seek(pos)  # back to original position
+
+
+    (width, height) = image.size
+    size = get_filesize(file_obj)
+    print "extracted width: {0}, height: {1}, size: {2}".format(width, height, size)
     return {
-        '_id': image.filename,
-        'width': '11',
-        'height': '110',
-        'size': '1100'
+        '_id': name,
+        'width': width,
+        'height': height,
+        'size': size
     }
 
+def get_filesize(file_obj): # Not crazily efficient.
+    size = 0
+    #if file_obj.content_length:
+        #print "got size from content_length"
+        #size = file_obj.content_length
+    #else:
+    try:
+        pos = file_obj.tell()
+        file_obj.seek(0, 2)  #seek to end
+        size = file_obj.tell()
+        file_obj.seek(pos)  # back to original position
+        print "got size from seek&tell"
+    except (AttributeError, IOError):
+        pass
+    if size == 0:
+        print "size could not be determined. returning zero."
 
+    return size
 
 
 def now():

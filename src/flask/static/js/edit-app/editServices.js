@@ -142,12 +142,9 @@ dedeEditServices.factory('Images', ['$http',
                 var promise = $http.get("http://localhost:5000/edit/get/image/" + id);
                 return promise;
             },
-            // storeMeta: function(imageMetadata) {
-            //     $http.post("http://localhost:5000/edit/store/image/metadata", imageMetadata);
+            // storeImage: function(binaryWithId) {
+            //     $http.post("http://localhost:5000/edit/store/image", binaryWithId);
             // },
-            storeImage: function(binaryWithId) { // TODO
-                $http.post("http://localhost:5000/edit/store/image", binaryWithId);
-            },
             delete: function(id) {
                 $http.post("http://localhost:5000/edit/delete/image/" + id);
             }
