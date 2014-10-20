@@ -119,18 +119,7 @@ def store_entry():
     else:
         print "looked for page with name {0} and got None. Will not update page entries".format(page_name)
 
-    # Must also update the full list of tags. Extract into service.
-    #existing_tags = mongo.dede.tags.find()
-    #existing_tag_names = []
-    #for existing_tag in existing_tags:
-        #existing_tag_names.append(existing_tag.name)
-    #new_tag_names = []
-    #for tag in incoming_entry.tags:
-        #if tag not in existing_tag_names:
-            #new_tag_names.append(tag)
-    #for new_tag_name in new_tag_names:
-        #mongo.dede.tags.insert(Tag(new_tag_name).json_dict())
-
+    
     return 'ok'
 
 @app.route('/edit/delete/entry', methods = ['POST'])
@@ -169,6 +158,27 @@ def get_entry(entry_name):
 def get_element_types():
     types = ["title", "text", "image"] # These are hard coded in markup. So, that's just great.
     return json.dumps(types)
+
+
+# Tags
+# TODO Actually, should keep _id *and* display name so that the latter can be changed.
+@app.route('/edit/store/tag', methods = ['POST'])
+def store_tag():
+    incoming_json = request.get_json() # dict
+    print "tag:"
+    print incoming_json 
+    mongo.dede.tags.insert(incoming_json)
+    return "ok"
+
+@app.route('/edit/get/tags', methods = ['GET'])
+def get_tags():
+    tags = []
+    db_tags = mongo.dede.tags.find()
+    for db_tag in db_tags:
+        tags.append(db_tag)
+    print "all tags"
+    print tags
+    return json.dumps(tags)
 
 
 # Images

@@ -358,7 +358,7 @@
                     <div class="col-md-2"><span>Use:</span></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2"><input ng-model="newTag.name"></input></div>
+                    <div class="col-md-2"><input ng-model="newTag._id"></input></div>
                     <div class="col-md-2">
                         <span ng-model="newTag.use">{{newTag.use}}</span>
                         <button type="button" class="btn btn-warning btn-sm"
@@ -366,7 +366,7 @@
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn btn-sm btn-success"
-                            ng-click="store(tag)">Store</button>
+                            ng-click="store(newTag)">Store</button>
                     </div>
                 </div>
             </div>
@@ -380,7 +380,7 @@
                 </div>
                 <div ng-controller="TagsCtrl">
                     <div class="row" ng-repeat="tag in tags">
-                        <div class="col-md-2">{{tag.name}}</div>
+                        <div class="col-md-2">{{tag._id}}</div>
                         <div class="col-md-2">
                             <span ng-model="tag.use">{{tag.use}}</span>
                             <button type="button" class="btn btn-warning btn-sm"

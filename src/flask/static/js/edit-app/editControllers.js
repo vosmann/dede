@@ -217,12 +217,16 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
 
             $scope.load = function() {
-                $scope.tags = Tags.get();
+                $scope.newTag = {"use":"false"};
+                Tags.get().then(function(result) {
+                    $scope.tags = result.data;
+                });
             }
             $scope.store = function(tag) {
                 Tags.store(tag);
                 $scope.load();
             }
+
 
             // $scope.$watch(function() {
             //         return $scope.$parent.entry.tags; // TODO

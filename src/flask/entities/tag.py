@@ -1,3 +1,4 @@
+# Delete, huh?
 class Tag:
     """A tag that can be given to an entry."""
     def __init__(self, _id, name):
