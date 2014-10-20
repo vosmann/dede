@@ -212,19 +212,29 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
         }]);
 
 
-// TODO: Finish the tag thing at some point.
+// Used in *both* entry editing and tag add/review.
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
-            $scope.tags = Tags.get();
+
+            $scope.load = function() {
+                $scope.tags = Tags.get();
+            }
+            $scope.store = function(tag) {
+                Tags.store(tag);
+                $scope.load();
+            }
+
+            // $scope.$watch(function() {
+            //         return $scope.$parent.entry.tags; // TODO
+            //     }, function() {
+            //         $scope.selectedTags = $scope.$parent.entry.tags;
+            //     });
             // $scope.selectedTags = $scope.$parent.entry.tags;
-/*            $scope.$watch(function() {*/
-                    //return $scope.$parent.entry.tags; // TODO
-                //}, function() {
-                    //$scope.selectedTags = $scope.$parent.entry.tags;
-                /*});*/
+
+            $scope.load();
         }]);
 
-
+// Used in *both* entry editing and image upload/review.
 dedeEditControllers.controller("ImageCtrl", ["$scope", "Images", 
         function($scope, Images) {
 
@@ -237,10 +247,15 @@ dedeEditControllers.controller("ImageCtrl", ["$scope", "Images",
             $scope.setSelectedImageMetadata = function(imageMetadata) {
                 $scope.selectedImageMetadata = imageMetadata._id;
             };
+            $scope.deleteImage = function(id) {
+                Images.delete(id);
+                $scope.updateAllImagesMetadata();
+            }
 
             $scope.allImagesMetadata = [];
-            $scope.selectedImageMetadata = {};
+            $scope.selectedImageMetadata = {}; // Only used in entry editing?
             $scope.updateAllImagesMetadata();
+
         }]);
 
 

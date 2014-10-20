@@ -175,35 +175,26 @@ def get_element_types():
 # Note: Could switch to "Flask-Uploads" at some point.
 # Note: flask can also use directories on the filesystem for file storage.
 @app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
-def get_image_metadata(): # TODO
-    image_metadata = {
-            '_id': 'img1.jpg',
-            'width': '500',
-            'height': '500',
-            'size': '56'
-    }
-    return image_metadata
+def get_image_metadata():
+    print "id:{0}, query: {1}".format(id, id_query(id))
+    db_metadata = mongo.dede.image_metadata.find_one(id_query(id))
+    print "db_metadata:"
+    print db_metadata
+    return json.dumps(db_metadata)
 
 @app.route('/edit/get/image/metadata/all', methods = ['GET'])
-def get_all_images_metadata(): # TODO
-    all_images_metadata = [
-        {
-            '_id': 'img1.jpg',
-            'width': '500',
-            'height': '500',
-            'size': '56'
-        },
-        {
-            '_id': 'zezanje1.jpg',
-            'width': '400',
-            'height': '40',
-            'size': '100'
-        }
-    ]
-    return json.dumps(all_images_metadata)
+def get_all_images_metadata():
+    all_metadata = []
+    all_db_metadata = mongo.dede.image_metadata.find()
+    for db_metadata in all_db_metadata:
+        all_metadata.append(db_metadata)
+
+    print "all metadata"
+    print all_metadata
+    return json.dumps(all_metadata)
 
 @app.route('/edit/get/image/<id>', methods = ['GET'])
-def get_image(id): # TODO
+def get_image(id):
     print "getting image by id {0}".format(id)
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
@@ -222,13 +213,15 @@ def store_image():
             pos = c_string_io.tell()
             image_gridfs.put(c_string_io, _id=filename)
             c_string_io.seek(pos)  # back to original position
-            mongo.dede.image_metadata.insert(extract_image_metadata(filename, c_string_io))
+            image_metadata = extract_image_metadata(filename, c_string_io)
+            mongo.dede.image_metadata.insert(image_metadata)
             return "ok"
     abort(400) # bad request
 
 @app.route('/edit/delete/image/<id>', methods = ['POST'])
-def delete_image():
-    # TODO delete by id
+def delete_image(id):
+    mongo.dede.image_metadata.remove(id_query(id))
+    image_gridfs.delete(id)
     return "ok"
 
 
@@ -249,12 +242,9 @@ def name_query(name):
     return {'name': name}
 
 def extract_image_metadata(name, file_obj):
-
-
     pos = file_obj.tell()
     image = Image.open(file_obj)
     file_obj.seek(pos)  # back to original position
-
 
     (width, height) = image.size
     size = get_filesize(file_obj)
@@ -268,10 +258,6 @@ def extract_image_metadata(name, file_obj):
 
 def get_filesize(file_obj): # Not crazily efficient.
     size = 0
-    #if file_obj.content_length:
-        #print "got size from content_length"
-        #size = file_obj.content_length
-    #else:
     try:
         pos = file_obj.tell()
         file_obj.seek(0, 2)  #seek to end

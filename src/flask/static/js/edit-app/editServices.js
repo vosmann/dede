@@ -92,12 +92,12 @@ dedeEditServices.factory('Entry', ['$http',
 dedeEditServices.factory('Tags', ['$http',
     function($http) {
         return { 
-            get :function() {
-                return ['graphic design',
-                        'architecture',
-                        'art',
-                        'interior design'
-                ];
+            get: function(entryName) {
+                var promise = $http.get("/edit/get/tags");
+                return promise;
+            },
+            store: function(tag) {
+                $http.post("/edit/store/tag", tag);
             }
         }
     }]);
@@ -138,13 +138,10 @@ dedeEditServices.factory('Images', ['$http',
                 var promise = $http.get("http://localhost:5000/edit/get/image/metadata/all");
                 return promise;
             },
-            getImage: function(id) { // TODO
+            getImage: function(id) {
                 var promise = $http.get("http://localhost:5000/edit/get/image/" + id);
                 return promise;
             },
-            // storeImage: function(binaryWithId) {
-            //     $http.post("http://localhost:5000/edit/store/image", binaryWithId);
-            // },
             delete: function(id) {
                 $http.post("http://localhost:5000/edit/delete/image/" + id);
             }
