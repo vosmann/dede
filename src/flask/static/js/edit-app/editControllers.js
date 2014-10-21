@@ -2,6 +2,9 @@
 // He'd take the two services, for page names and entry names.
 // And two instances of this unified controller would be created:
 // 1) for the page drop-down and 2) for the entry drop-down.
+//
+// Use emit to have controllers communicate instead of a watch on a service:
+// http://stackoverflow.com/questions/11252780/whats-the-correct-way-to-communicate-between-controllers-in-angularjs
 
 var dedeEditControllers = angular.module("dedeEditControllers",
         ["ui.bootstrap", "ui.multiselect", "angularFileUpload"]);
@@ -240,8 +243,8 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         }]);
 
 // Used in *both* entry editing and image upload/review.
-dedeEditControllers.controller("ImageCtrl", ["$scope", "Images", 
-        function($scope, Images) {
+dedeEditControllers.controller("ImageCtrl", ["$scope", "$rootScope", "Images", 
+        function($scope, $rootScope, Images) {
 
             $scope.updateAllImagesMetadata = function() {
                 Images.getAllMeta().then(function(result) { 
@@ -261,11 +264,16 @@ dedeEditControllers.controller("ImageCtrl", ["$scope", "Images",
             $scope.selectedImageMetadata = {}; // Only used in entry editing?
             $scope.updateAllImagesMetadata();
 
+            $rootScope.$on('imageUpload', function(event, data) {
+                console.log('imageUpload' + ":" + data);
+                $scope.updateAllImagesMetadata();
+            });
+
         }]);
 
 
-dedeEditControllers.controller("ImageUploadCtrl", ["$scope", "$upload",
-        function($scope, $upload) {
+dedeEditControllers.controller("ImageUploadCtrl", ["$scope", "$rootScope", "$upload",
+        function($scope, $rootScope, $upload) {
             // The controller shouldn't talk to the server. Refactor into a service at some point.
             $scope.onFileSelect = function($files) {
                 for (var fileNr = 0; fileNr < $files.length; ++fileNr) {
@@ -283,6 +291,7 @@ dedeEditControllers.controller("ImageUploadCtrl", ["$scope", "$upload",
                     }).success(function(data, status, headers, config) {
                         $scope.percentageDone = 0;
                         console.log(data);
+                        $rootScope.$emit('imageUpload', [1, 2, 3]); // event, data
                     });
                 }
             };
