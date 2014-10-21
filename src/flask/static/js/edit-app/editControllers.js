@@ -215,10 +215,24 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
         }]);
 
 
-// Used in *both* entry editing and tag add/review.
+dedeEditControllers.controller("TagsMultiselectCtrl", ["$scope", "Tags",
+        function($scope, Tags) {
+
+            Tags.get().then(function(result) {
+                $scope.tags = result.data;
+            });
+            $scope.selectedTags = $scope.$parent.entry.tags;
+            $scope.$watch(function() {
+                return $scope.$parent.entry.tags;
+            }, function() {
+                $scope.selectedTags = $scope.$parent.entry.tags;
+            });
+        }]);
+
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
 
+            // This tags. wrapper object is most likely unneccessary.
             $scope.load = function() {
                 $scope.tags.newTag = {"use":"false"};
                 Tags.get().then(function(result) {
@@ -229,14 +243,6 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
                 Tags.store(tag);
                 $scope.load();
             }
-
-
-            // $scope.$watch(function() {
-            //         return $scope.$parent.entry.tags; // TODO
-            //     }, function() {
-            //         $scope.selectedTags = $scope.$parent.entry.tags;
-            //     });
-            // $scope.selectedTags = $scope.$parent.entry.tags;
 
             $scope.tags = {};
             $scope.load();
