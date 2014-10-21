@@ -217,9 +217,9 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
 
             $scope.load = function() {
-                $scope.newTag = {"use":"false"};
+                $scope.tags.newTag = {"use":"false"};
                 Tags.get().then(function(result) {
-                    $scope.tags = result.data;
+                    $scope.tags.allTags = result.data;
                 });
             }
             $scope.store = function(tag) {
@@ -235,6 +235,7 @@ dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
             //     });
             // $scope.selectedTags = $scope.$parent.entry.tags;
 
+            $scope.tags = {};
             $scope.load();
         }]);
 

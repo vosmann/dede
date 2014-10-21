@@ -351,35 +351,33 @@
         </tab>
 
         <tab heading="Tags">
-            <h3>Add tag</h3>
             <div ng-controller="TagsCtrl">
+                <h3>Add tag</h3>
                 <div class="row">
                     <div class="col-md-2"><span>Tag name:</span></div>
                     <div class="col-md-2"><span>Use:</span></div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2"><input ng-model="newTag._id"></input></div>
+                    <div class="col-md-2"><input ng-model="tags.newTag._id"></input></div>
                     <div class="col-md-2">
-                        <span ng-model="newTag.use">{{newTag.use}}</span>
+                        <span ng-model="tags.newTag.use">{{tags.newTag.use}}</span>
                         <button type="button" class="btn btn-warning btn-sm"
-                            ng-click="newTag.use = !newTag.use">Flip</button>
+                            ng-click="tags.newTag.use = !tags.newTag.use">Flip</button>
                     </div>
                     <div class="col-md-1">
                         <button type="button" class="btn btn-sm btn-success"
-                            ng-click="store(newTag)">Store</button>
+                            ng-click="store(tags.newTag)">Store</button>
                     </div>
                 </div>
-            </div>
-            <hr/>
+                <hr/>
 
-            <h3>Review</h3>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-2">Name</div>
-                    <div class="col-md-1">Use</div>
-                </div>
-                <div ng-controller="TagsCtrl">
-                    <div class="row" ng-repeat="tag in tags">
+                <h3>Review</h3>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">Name</div>
+                        <div class="col-md-1">Use</div>
+                    </div>
+                    <div class="row" ng-repeat="tag in tags.allTags">
                         <div class="col-md-2">{{tag._id}}</div>
                         <div class="col-md-2">
                             <span ng-model="tag.use">{{tag.use}}</span>

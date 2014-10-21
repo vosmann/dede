@@ -167,7 +167,15 @@ def store_tag():
     incoming_json = request.get_json() # dict
     print "tag:"
     print incoming_json 
-    mongo.dede.tags.insert(incoming_json)
+
+
+    db_tag = mongo.dede.tags.find_one(id_query_from_obj(incoming_json))
+    if db_tag is None:
+        print "didn't exist, inserting."
+        mongo.dede.tags.insert(incoming_json)
+    else:
+        print "existed already, updating."
+        mongo.dede.tags.update(id_query_from_obj(incoming_json), incoming_json)
     return "ok"
 
 @app.route('/edit/get/tags', methods = ['GET'])
