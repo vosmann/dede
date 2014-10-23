@@ -211,22 +211,27 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                     $scope.clear();
                 });
 
+            $scope.$on('entryTagSelected', function(event, selectedTags) {
+                $scope.entry.tags = selectedTags;
+                console.log('New tag added to entry: ' + JSON.stringify($scope.entry.tags));
+            });
+
             $scope.load();
         }]);
 
-
+// Meant to be used as a child of EntryCtrl.
 dedeEditControllers.controller("TagsMultiselectCtrl", ["$scope", "Tags",
         function($scope, Tags) {
 
             Tags.get().then(function(result) {
                 $scope.tags = result.data;
             });
-            $scope.selectedTags = $scope.$parent.entry.tags;
-            $scope.$watch(function() {
-                return $scope.$parent.entry.tags;
-            }, function() {
-                $scope.selectedTags = $scope.$parent.entry.tags;
-            });
+
+            $scope.selected = function() {
+                $scope.$emit('entryTagSelected', $scope.selectedTags); // event, data
+            }
+
+            $scope.selectedTags = [];
         }]);
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
