@@ -158,6 +158,8 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 var selectedEntryName = SelectedEntryName.get();
                 Entry.get(selectedEntryName).then(function(result) {
                     $scope.entry = result.data;
+                    alert(JSON.stringify($scope.entry));
+                    $scope.$broadcast('entryTagsLoaded', $scope.entry.tags); // event, data
                 });
             };
             $scope.store = function() {
@@ -230,6 +232,11 @@ dedeEditControllers.controller("TagsMultiselectCtrl", ["$scope", "Tags",
             $scope.selected = function() {
                 $scope.$emit('entryTagSelected', $scope.selectedTags); // event, data
             }
+            $scope.$on('entryTagsLoaded', function(event, loadedTags) {
+                alert(JSON.stringify(loadedTags));
+                $scope.selectedTags = loadedTags;
+                console.log('Tags loaded from backend: ' + JSON.stringify($scope.selectedTags));
+            });
 
             $scope.selectedTags = [];
         }]);
