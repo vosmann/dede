@@ -3,6 +3,8 @@
 // And two instances of this unified controller would be created:
 // 1) for the page drop-down and 2) for the entry drop-down.
 //
+// TODO Very important:
+// Grozno. Vrti se u digestu i pitava stalno get selected page/entry tristo puta nakon svake selekcije na drop-downu!
 // Use emit to have controllers communicate instead of a watch on a service:
 // http://stackoverflow.com/questions/11252780/whats-the-correct-way-to-communicate-between-controllers-in-angularjs
 
@@ -202,10 +204,7 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
             $scope.$watch(function() {
                     return SelectedEntryName.get();
                 }, function() {
-                    var selectedEntryName = SelectedEntryName.get();
-                    Entry.get(selectedEntryName).then(function(result) {
-                        $scope.entry = result.data;
-                    });
+                    $scope.load();
                 });
             $scope.$watch(function() {
                     return SelectedPageName.get();
