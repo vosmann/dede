@@ -183,13 +183,11 @@
                         <div class="col-md-2">
                             <p>Tags:</p>
                         </div>
-                        <div class="col-md-2">
-                            <div ng-controller="TagsMultiselectCtrl">
-                                <multiselect class="input" multiple="true"
-                                    ng-model="selectedTags"
-                                    options="tag for tag in tags"
-                                    change="selected()"
-                                    template-url="/static/partials/multiselect.tmpl.html"> 
+                        <div class="col-md-4" ng-controller="EntryTagsCtrl">
+                            <div class="btn-group" ng-repeat="tag in tags"> <!-- "tag in tags track by $index" -->
+                                <label class="btn btn-default"
+                                    ng-model="tag.isSelected"
+                                    btn-checkbox="tag._id">{{tag._id}}</label>
                             </div>
                         </div>
                     </div>
