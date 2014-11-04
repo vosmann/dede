@@ -160,8 +160,6 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 var selectedEntryName = SelectedEntryName.get();
                 Entry.get(selectedEntryName).then(function(result) {
                     $scope.entry = result.data;
-                    // alert(JSON.stringify($scope.entry));
-                    // $scope.$broadcast('entryTagsLoaded', $scope.entry.tags); // event, data
                 });
 
                 Tags.get().then(function(result) {
@@ -221,55 +219,9 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                     $scope.clear();
                 });
 
-            //$scope.$on('entryTagsChanged', function(event, selected) {
-            //    $scope.entry.tags = selected;
-            //    console.log('New list of selected tags: ' + JSON.stringify($scope.entry.tags));
-            //});
-
             $scope.load();
         }]);
 
-// Meant to be used as a child of EntryCtrl.
-dedeEditControllers.controller("EntryTagsCtrl", ["$scope", "Tags",
-        function($scope, Tags) {
-
-            Tags.get().then(function(result) {
-                $scope.tags = $scope.createAllUnselectedTags(result.data);
-            });
-            $scope.createAllUnselectedTags = function(rawTags) {
-                var allTagsUnselected = [];
-
-                var nrTags = rawTags.length;
-                for (var i = 0; i < nrTags; ++i) {
-                    var unselectedTag = {};
-                    unselectedTag._id = rawTags[i]._id;
-                    unselectedTag.isSelected = false;
-                    allTagsUnselected.append(unselectedTag);
-                }
-                return allUnselectedTags;
-            };
-
-            $scope.getSelected = function() {
-                var selected = [];
-                var nrTags = $scope.tags.length;
-                for (var i = 0; i < nrTags; ++i) {
-                    if ($scope.tags[i].isSelected) {
-                        selected.append($scope.tags[i]._id);
-                    }
-                }
-                return selected;
-            };
-
-
-            // $scope.$on('entryTagsLoaded', function(event, loadedTags) {
-            //     alert('Tags loaded from backend: ' + JSON.stringify(loadedTags));
-            //     $scope.selectedTags = loadedTags;
-            // });
-
-            //$scope.entryTagsChanged = function() {
-            //    $scope.$emit('entryTagsChanged', $scope.getSelected()); // event, data
-            //}
-        }]);
 
 dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
