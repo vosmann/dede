@@ -153,10 +153,11 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                         "label": "",
                 }; 
             }
-            var emptyEntry = {}; // Pseudo-constant.
+            var emptyEntry = {tags: []}; // Pseudo-constant.
 
             $scope.load = function() {
                 $scope.entry = emptyEntry;
+                $scope.availableTags = [];
                 var selectedEntryName = SelectedEntryName.get();
                 Entry.get(selectedEntryName).then(function(result) {
                     $scope.entry = result.data;
