@@ -143,8 +143,8 @@ dedeEditControllers.controller("EntryNamesDropdownCtrl", ["$scope", "EntryNames"
         }]);
 
 dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryName",
-        "SelectedPageName", "ElementTypes", "Images",
-        function($scope, Entry, SelectedEntryName, SelectedPageName, ElementTypes, Images) {
+        "SelectedPageName", "ElementTypes", "Images", "Tags",
+        function($scope, Entry, SelectedEntryName, SelectedPageName, ElementTypes, Images, Tags) {
             // Pseudo-constant.
             function createEmptyElement() {
                 return {
@@ -160,8 +160,17 @@ dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry", "SelectedEntryNa
                 var selectedEntryName = SelectedEntryName.get();
                 Entry.get(selectedEntryName).then(function(result) {
                     $scope.entry = result.data;
-                    alert(JSON.stringify($scope.entry));
-                    $scope.$broadcast('entryTagsLoaded', $scope.entry.tags); // event, data
+                    // alert(JSON.stringify($scope.entry));
+                    // $scope.$broadcast('entryTagsLoaded', $scope.entry.tags); // event, data
+                });
+
+                Tags.get().then(function(result) {
+                    $scope.availableTags = [];
+                    var rawTags = result.data;
+                    var nrTags = rawTags.length;
+                    for (var i = 0; i < nrTags; ++i) {
+                        $scope.availableTags.push(rawTags[i]._id);
+                    }
                 });
             };
             $scope.store = function() {
@@ -252,10 +261,10 @@ dedeEditControllers.controller("EntryTagsCtrl", ["$scope", "Tags",
             };
 
 
-            $scope.$on('entryTagsLoaded', function(event, loadedTags) {
-                alert('Tags loaded from backend: ' + JSON.stringify(loadedTags));
-                $scope.selectedTags = loadedTags;
-            });
+            // $scope.$on('entryTagsLoaded', function(event, loadedTags) {
+            //     alert('Tags loaded from backend: ' + JSON.stringify(loadedTags));
+            //     $scope.selectedTags = loadedTags;
+            // });
 
             //$scope.entryTagsChanged = function() {
             //    $scope.$emit('entryTagsChanged', $scope.getSelected()); // event, data

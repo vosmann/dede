@@ -7,6 +7,8 @@
 
     <link rel="stylesheet" href="/static/css/bootstrap-3.2.0-dist/bootstrap.css">
     <link rel="stylesheet" href="/static/css/angular-multiselect/angular-multiselect.css">
+    <link rel="stylesheet" href="/static/css/ui-select/select.css">
+    <link rel="stylesheet" href="/static/css/select2/select2.css">
     <link rel="stylesheet" href="/static/css/image-drop-area.css">
 </head>
 
@@ -183,12 +185,15 @@
                         <div class="col-md-2">
                             <p>Tags:</p>
                         </div>
-                        <div class="col-md-4" ng-controller="EntryTagsCtrl">
-                            <div class="btn-group" ng-repeat="tag in tags"> <!-- "tag in tags track by $index" -->
-                                <label class="btn btn-default"
-                                    ng-model="tag.isSelected"
-                                    btn-checkbox="tag._id">{{tag._id}}</label>
-                            </div>
+                        <!-- <div class="col-md-4" ng-controller="EntryTagsCtrl"> -->
+                        <div class="col-md-4">
+                            <ui-select multiple ng-model="entry.tags"
+                                theme="select2" ng-disabled="disabled" style="width: 300px;">
+                                <ui-select-match placeholder="Select tags...">{{$item}}</ui-select-match>
+                                <ui-select-choices repeat="tag in availableTags | filter:$select.search">
+                                    {{tag}}
+                                </ui-select-choices>
+                            </ui-select>
                         </div>
                     </div>
                     <div class="row">
@@ -401,6 +406,7 @@
 
     <script src="/static/js/lib/ui-bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
     <script src="/static/js/lib/angular-multiselect/multiselect.js"></script>
+    <script src="/static/js/lib/ui-select/select.js"></script>
     <script src="/static/js/lib/angular-elastic/elastic.js"></script>
 
     <script src="/static/js/edit-app/editServices.js"></script>
