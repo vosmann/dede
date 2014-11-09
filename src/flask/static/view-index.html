@@ -5,14 +5,30 @@
     <meta charset="utf-8">
     <title>Dede</title>
 
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-3.2.0-dist/bootstrap.css">
 </head>
 
 <body>
-    <div class="jumbotron">
-        <h1>Dede</h1>
-        <p>Now to put some angularjs in this baby.</p>
+
+    <!-- Header -->
+    <div>
+        <div class="jumbotron">
+            <h1>Dede</h1>
+            <p>Now to put some angularjs in this baby.</p>
+        </div> 
     </div> 
+
+    <!-- Content -->
+    <div>
+        <!-- Navigation -->
+        <div>
+        </div> 
+        <!-- Data -->
+        <div>
+        </div> 
+    </div> 
+
+
 
     <!-- Replace with bootstrap navbar. -->
     <a href="#/projects">projects</a>
@@ -22,17 +38,20 @@
 
     <div ng-view></div>
 
-    <!-- JS -->
-    <!-- Provide all JS yourself, not directly from the third party like it is now. -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-resource.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.js"></script>
-    <!-- <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script> -->
-    <script src="/resources/js/services.js"></script>
-    <script src="/resources/js/controllers.js"></script>
-    <script src="/resources/js/filters.js"></script>
-    <script src="/resources/js/app.js"></script>
+
+    <script src="/static/js/lib/angular-1.2.21/angular.js"></script>
+    <script src="/static/js/lib/angular-1.2.21/angular-route.js"></script>
+    <script src="/static/js/lib/angular-1.2.21/angular-resource.js"></script>
+
+    <script src="/static/js/lib/ui-bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
+    <!--<script src="/static/js/lib/angular-multiselect/multiselect.js"></script>-->
+    <!--<script src="/static/js/lib/ui-select/select.js"></script>-->
+    <!--<script src="/static/js/lib/angular-elastic/elastic.js"></script>-->
+
+    <script src="/static/js/view-app/viewServices.js"></script>
+    <script src="/static/js/view-app/viewControllers.js"></script>
+    <script src="/static/js/view-app/viewFilters.js"></script>
+    <script src="/static/js/view-app/viewApp.js"></script>
 </body>
 
 </html>
