@@ -1,37 +1,60 @@
-var dedeServices = angular.module('dedeServices', ['ngResource']);
+var dedeViewServices = angular.module('dedeViewServices', ['ngResource']);
 
-dedeServices.factory('Projects', ['$resource',
-    function($resource){
-        return $resource('/get-projects', {}, {
-            get: {method:'GET', isArray:true}
-        });
+dedeViewServices.factory('Pages', ['$http',
+    function($http) {
+        return { 
+            get: function() {
+                var promise = $http.get("http://localhost:4000/get/pages/");
+                return promise;
+            }
+        };
     }]);
 
-dedeServices.factory('News', ['$resource',
-    function($resource){
-        return $resource('/get-news', {}, {
-            get: {method:'GET', isArray:true}
-        });
+dedeViewServices.factory('Entry', ['$http',
+    function($http) {
+        return { 
+            get: function(entryId) {
+                var promise = $http.get("http://localhost:4000/get/entry/" + entryId);
+                return promise;
+            }
+        }
     }]);
 
-dedeServices.factory('Tags', ['$resource',
-    function($resource){
-        return $resource('/get-tags', {}, {
-            get: {method:'GET', isArray:true}
-        });
+dedeEditServices.factory('Tags', ['$http',
+    function($http) {
+        return { 
+            get: function() {
+                var promise = $http.get("http://localhost:4000/get/tags");
+                return promise;
+            }
+        }
     }]);
 
-dedeServices.factory('About', ['$resource',
-    function($resource){
-        return $resource('/get-about', {}, {
-            get: {method:'GET', isArray:false}
-        });
+dedeEditServices.factory('ElementTypes', ['$http',
+    function($http) {
+        return { 
+            get: function() {
+                var promise = $http.get("http://localhost:4000/get/elementTypes");
+                return promise;
+            }
+        }
     }]);
 
-dedeServices.factory('Contact', ['$resource',
-    function($resource){
-        return $resource('/get-contact', {}, {
-            get: {method:'GET', isArray:false}
-        });
+dedeEditServices.factory('Images', ['$http',
+    function($http) {
+        return { 
+            getMeta: function(id) {
+                var promise = $http.get("http://localhost:4000/get/image/metadata/" + id);
+                return promise;
+            }
+            // getAllMeta: function() {
+            //     var promise = $http.get("http://localhost:4000/edit/get/image/metadata/all");
+            //     return promise;
+            // }
+            // getImage: function(id) {
+            //     var promise = $http.get("http://localhost:4000/get/image/" + id);
+            //     return promise;
+            // }
+        }
     }]);
 

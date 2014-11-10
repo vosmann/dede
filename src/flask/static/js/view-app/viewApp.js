@@ -2,31 +2,25 @@ var dedeViewApp = angular.module('dedeViewApp', [
     'ngRoute',
     'dedeViewControllers',
     'dedeViewServices',
-    'dedeViewFilters'
+    'dedeViewFilters',
+    'dedeViewDirectives'
 ]);
 
-
-//dedeApp.config(['$routeProvider',
-    //function($routeProvider) {
-        //$routeProvider.
-            //when('/projects', {
-                //templateUrl: 'resources/templates/projects.html',
-                //controller: 'ProjectsCtrl'
-            //}).
-            //when('/news', {
-                //templateUrl: 'resources/templates/news.html',
-                //controller: 'NewsCtrl'
-            //}).
-            //when('/about', {
-                //templateUrl: 'resources/templates/about.html',
-                //controller: 'AboutCtrl'
-            //}).
-            //when('/contact', {
-                //templateUrl: 'resources/templates/contact.html',
-                //controller: 'ContactCtrl'
-            //}).
-            //otherwise({
-                //redirectTo: '/projects'
-            //});
-    //}]);
+// 'p' as in 'page'
+dedeViewApp.config(['$routeProvider',
+    function($routeProvider) {
+        $routeProvider.
+            when('/p/:pageName', {
+                templateUrl: 'partials/entry-list.html',
+                controller: 'PageCtrl'
+            }).
+            when('/p/:pageName/:entryId', {
+                templateUrl: 'partials/entry.html',
+                controller: 'EntryCtrl'
+            }).
+            otherwise({
+                // TODO get list of pages and put the first one into var 'firstPageName'.
+                redirectTo: '/p/:' + firstPageName
+            });
+    }]);
 

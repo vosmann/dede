@@ -10,6 +10,7 @@
 
 <body>
 
+    <!-- TODO napravi direktivu za header i za footer i onda samo uključi te direktive. Možda. -->
     <!-- Header -->
     <div>
         <div class="jumbotron">
@@ -22,21 +23,13 @@
     <div>
         <!-- Navigation -->
         <div>
+            <div ng-view></div>
         </div> 
         <!-- Data -->
         <div>
+            <div ng-view></div>
         </div> 
     </div> 
-
-
-
-    <!-- Replace with bootstrap navbar. -->
-    <a href="#/projects">projects</a>
-    <a href="#/news">news</a>
-    <a href="#/about">about</a>
-    <a href="#/contact">contact</a>
-
-    <div ng-view></div>
 
 
     <script src="/static/js/lib/angular-1.2.21/angular.js"></script>
@@ -44,9 +37,6 @@
     <script src="/static/js/lib/angular-1.2.21/angular-resource.js"></script>
 
     <script src="/static/js/lib/ui-bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
-    <!--<script src="/static/js/lib/angular-multiselect/multiselect.js"></script>-->
-    <!--<script src="/static/js/lib/ui-select/select.js"></script>-->
-    <!--<script src="/static/js/lib/angular-elastic/elastic.js"></script>-->
 
     <script src="/static/js/view-app/viewServices.js"></script>
     <script src="/static/js/view-app/viewControllers.js"></script>

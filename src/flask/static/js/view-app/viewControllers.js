@@ -1,11 +1,75 @@
-var dedeControllers = angular.module("dedeControllers", []);
+var dedeViewControllers = angular.module("dedeViewControllers", []);
 
-dedeControllers.controller("ProjectsCtrl", ["$scope", "Projects", function($scope, Projects) {
+dedeViewControllers.controller("PageCtrl", ["$scope", "Pages",
+        function($scope, Pages) {
+            $scope.getPages = function() {
+                PageNames.get().then(function(result) { 
+                    $scope.pages = result.data;
+                });
+            };
+            $scope.pages = {};
+            $scope.getPages();
+        }]);
+
+dedeEditControllers.controller("EntryCtrl", ["$scope", "Entry",
+        "ElementTypes", "Images", "Tags",
+        function($scope, Entry, ElementTypes, Images, Tags) {
+
+            $scope.getEntry = function(entryId) {
+                Entry.get(entryId).then(function(result) {
+                    $scope.entry = result.data;
+                });
+            };
+
+            $scope.getAllElementTypes = function() {
+                ElementTypes.get().then(function(result) {
+                    $scope.allElementTypes = result.data;
+                });
+            };
+            $scope.getAllElementTypes();
+        }]);
+
+
+dedeEditControllers.controller("TagsCtrl", ["$scope", "Tags",
+        function($scope, Tags) {
+            $scope.getTags = function() {
+                Tags.get().then(function(result) {
+                    $scope.tags = result.data;
+                });
+            };
+            $scope.tags = [];
+            $scope.getTags();
+        }]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////////////
+
+dedeViewControllers.controller("OldProjectsCtrl", ["$scope", "Projects", function($scope, Projects) {
     $scope.projects = Projects.get();
     $scope.$on("tagFilterChange", function(e, tagFilters) {
-        console.log("ProjectsCtrl received event: " + e.name);
+        console.log("OldProjectsCtrl received event: " + e.name);
         $scope.tagFilters = tagFilters;
-        logTagFilters("ProjectsCtrl");
+        logTagFilters("OldProjectsCtrl");
     });
     function logTagFilters(prefix) {
         for (var i = 0; i < $scope.tagFilters.length; ++i) {
@@ -16,7 +80,7 @@ dedeControllers.controller("ProjectsCtrl", ["$scope", "Projects", function($scop
     }
 }]);
 
-dedeControllers.controller("NewsCtrl", ["$scope", "News", function($scope, News) {
+dedeViewControllers.controller("OldNewsCtrl", ["$scope", "News", function($scope, News) {
     $scope.news = News.get();
     $scope.$on("tagFilterChange", function(e, tagFilters) {
         console.log("NewsCtrl received event: " + e.name);
@@ -32,7 +96,7 @@ dedeControllers.controller("NewsCtrl", ["$scope", "News", function($scope, News)
     }
 }]);
 
-dedeControllers.controller("TagsCtrl", ["$scope", "Tags", "$rootScope", function($scope, Tags, $rootScope) {
+dedeViewControllers.controller("OldTagsCtrl", ["$scope", "Tags", "$rootScope", function($scope, Tags, $rootScope) {
 
     // Ugly to put all of this here?
     // Should maybe re-work this into a directive.
@@ -72,13 +136,5 @@ dedeControllers.controller("TagsCtrl", ["$scope", "Tags", "$rootScope", function
             console.log($scope.tagFilters[i].ind + " : " + $scope.tagFilters[i].display_text + " : " + $scope.tagFilters[i].is_active);
         }
     }
-}]);
-
-dedeControllers.controller("AboutCtrl", ["$scope", "About", function($scope, About) {
-    $scope.about = About.get();
-}]);
-
-dedeControllers.controller("ContactCtrl", ["$scope", "Contact", function($scope, Contact) {
-    $scope.contact = Contact.get();
 }]);
 
