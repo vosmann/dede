@@ -1,14 +1,15 @@
 var dedeViewApp = angular.module('dedeViewApp', [
     'ngRoute',
     'dedeViewControllers',
-    'dedeViewServices',
-    'dedeViewFilters',
-    'dedeViewDirectives'
+    'dedeViewServices'
 ]);
 
+// 'dedeViewFilters',
+// 'dedeViewDirectives'
+
 // 'p' as in 'page'
-dedeViewApp.config(['$routeProvider',
-    function($routeProvider) {
+dedeViewApp.config(['$routeProvider', 'Pages',
+    function($routeProvider, Pages) {
         $routeProvider.
             when('/p/:pageName', {
                 templateUrl: 'partials/entry-list.html',
@@ -20,7 +21,7 @@ dedeViewApp.config(['$routeProvider',
             }).
             otherwise({
                 // TODO get list of pages and put the first one into var 'firstPageName'.
-                redirectTo: '/p/:' + firstPageName
+                redirectTo: '/p/' + Pages.getFirst() 
             });
     }]);
 

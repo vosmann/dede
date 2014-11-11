@@ -2,10 +2,21 @@ var dedeViewServices = angular.module('dedeViewServices', ['ngResource']);
 
 dedeViewServices.factory('Pages', ['$http',
     function($http) {
+
+        var getFirst = function() {
+            var promise = $http.get("http://localhost:4000/get/pages/");
+            promise.then(function(result) {
+                return result.data[0].name;
+            });
+        };
+
         return { 
             get: function() {
                 var promise = $http.get("http://localhost:4000/get/pages/");
                 return promise;
+            },
+            getFirst: function() {
+                return { getFirst: getFirst };
             }
         };
     }]);
@@ -20,7 +31,7 @@ dedeViewServices.factory('Entry', ['$http',
         }
     }]);
 
-dedeEditServices.factory('Tags', ['$http',
+dedeViewServices.factory('Tags', ['$http',
     function($http) {
         return { 
             get: function() {
@@ -30,7 +41,7 @@ dedeEditServices.factory('Tags', ['$http',
         }
     }]);
 
-dedeEditServices.factory('ElementTypes', ['$http',
+dedeViewServices.factory('ElementTypes', ['$http',
     function($http) {
         return { 
             get: function() {
@@ -40,7 +51,7 @@ dedeEditServices.factory('ElementTypes', ['$http',
         }
     }]);
 
-dedeEditServices.factory('Images', ['$http',
+dedeViewServices.factory('Images', ['$http',
     function($http) {
         return { 
             getMeta: function(id) {

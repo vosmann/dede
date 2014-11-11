@@ -1,0 +1,1 @@
+vi static/view-index.html static/js/view-app/viewControllers.js static/js/view-app/viewServices.js serve-view.py static/js/view-app/viewApp.js static/edit-index.html static/js/edit-app/editControllers.js static/js/edit-app/editServices.js serve-edit.py static/js/edit-app/editApp.js
