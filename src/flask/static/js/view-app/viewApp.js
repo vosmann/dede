@@ -8,12 +8,16 @@ var dedeViewApp = angular.module('dedeViewApp', [
 // 'dedeViewDirectives'
 
 // 'p' as in 'page'
-dedeViewApp.config(['$routeProvider', 'Pages',
-    function($routeProvider, Pages) {
+dedeViewApp.config(['$routeProvider',
+    function($routeProvider) {
         $routeProvider.
             when('/p/:pageName', {
                 templateUrl: 'partials/entry-list.html',
-                controller: 'PageCtrl'
+                controller: 'PageCtrl',
+                resolve: {
+                    getPages: function(Pages) {
+                    }
+                }
             }).
             when('/p/:pageName/:entryId', {
                 templateUrl: 'partials/entry.html',
