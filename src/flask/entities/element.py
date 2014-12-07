@@ -35,7 +35,7 @@ class Element:
     def json_dict(self):
         dictionary = {
                         'type': self.type,
-                        'data': self.data,
+                        'data': self.data
                      }
 
         if self.label is not None:

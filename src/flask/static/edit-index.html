@@ -273,12 +273,16 @@
                                 <div class="btn-group" dropdown is-open="status.isopen"
                                     ng-show="element.type=='image'"
                                     ng-controller="ImageCtrl">
+                                    <span>Selected image:</span>
+                                    <p>{{element.data}}</p>
                                     <button type="button" class="btn btn-primary dropdown-toggle">
                                         {{selectedImageMetadata}}<span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu" role="menu">
                                         <li ng-repeat="imageMetadata in allImagesMetadata">
-                                            <a ng-click="setSelectedImageMetadata(imageMetadata)" href="#">{{imageMetadata._id}}</a>
+                                            <!-- Hacky assignment to element.data.
+                                            Well, definitely not the only one. -->
+                                            <a ng-click="setSelectedImageMetadata(imageMetadata); element.data=imageMetadata._id" href="#">{{imageMetadata._id}}</a>
                                         </li>
                                     </ul>
                                 </div>
