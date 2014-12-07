@@ -1,8 +1,9 @@
 <div class="container-fluid">
 
-    <p>{{currentPage._id}}: {{currentPage.name}}</p>
     <div class="row" ng-repeat="entry in currentPage.entries">
-        <div class="col-md-10"><p>{{entry.name}}</p></div>
+        <div class="col-md-10">
+            <a href="#/{{currentPage._id}}/{{entry._id}}">{{entry.name}}</a>
+        </div>
     </div>
 
 </div>
