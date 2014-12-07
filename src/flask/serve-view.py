@@ -31,16 +31,10 @@ app = Flask(__name__)
 def hello():
     return send_file('static/view-index.html')
 
-@app.route('/get/pageIds', methods = ['GET'])
-def get_page_ids():
-    db_pages = mongo.dede.pages.find()
-    ids = [Page(db_page)._id for db_page in db_pages if Page(db_page).is_shown] # cache
-    return json.dumps(ids)
-
-@app.route('/get/pageNames', methods = ['GET'])
+@app.route('/get/pageIdsAndNames', methods = ['GET'])
 def get_page_names():
     db_pages = mongo.dede.pages.find()
-    names = [Page(db_page).name for db_page in db_pages if Page(db_page).is_shown] # cache
+    names = {Page(db_page)._id: Page(db_page).name for db_page in db_pages if Page(db_page).is_shown} # cache
     return json.dumps(names)
 
 @app.route('/get/page/<page_id>', methods = ['GET'])
