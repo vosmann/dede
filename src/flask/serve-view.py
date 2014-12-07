@@ -3,7 +3,6 @@ from flask import Flask, send_file, request
 from pymongo import MongoClient
 
 import json
-import jsonpickle
 import os
 import gridfs
 import urllib, cStringIO

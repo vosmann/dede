@@ -22,7 +22,6 @@ from pprint import pprint
 from PIL import Image
 
 import json
-import jsonpickle
 import os
 import gridfs
 import urllib, cStringIO
@@ -41,9 +40,6 @@ app = Flask(__name__)
 
 
 # Delivering HTML
-@app.route("/")
-def hello():
-    return send_file('static/view-index.html')
 @app.route("/edit")
 def edit():
     return send_file('static/edit-index.html')
