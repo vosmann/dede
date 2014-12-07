@@ -1,36 +1,70 @@
 var dedeViewControllers = angular.module("dedeViewControllers", []);
+// Angular FAQ says rootScope may be used to keep some data useful to the whole app. Hm.
+// Perhaps replace with cacheFactory.
+// I like (hate) how I alternate between .field and [field] dereferencing.
 
-dedeViewControllers.controller("PageCtrl", ["$scope", '$routeParams', "Pages",
-        function($scope, $routeParams, Pages) {
-            $scope.getPages = function() {
-                Pages.get().then(function(result) { 
-                    $scope.pages = result.data;
+dedeViewControllers.controller("NavigationCtrl", ["$scope", "Pages",
+        function($scope, Pages) {
+            $scope.getPageIdsAndNames = function() {
+                Pages.getIdsAndNames ().then(function(result) { 
+                    $scope.pageIdsAndNames = result.data;
                 });
             };
-            $scope.pages = {};
-            $scope.getPages();
-            $scope.pageName = $routeParams.pageName;
+            $scope.pageIdsAndNames = {};
+            $scope.getPageIdsAndNames ();
         }]);
 
-
-dedeViewControllers.controller("EntryCtrl", ["$scope", "Entry",
-        "ElementTypes", "Images", "Tags",
-        function($scope, Entry, ElementTypes, Images, Tags) {
-
-            $scope.getEntry = function(entryId) {
-                Entry.get(entryId).then(function(result) {
-                    $scope.entry = result.data;
+dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",
+        function($scope, $rootScope, $routeParams, Pages) {
+            // Duplication.
+            $scope.getPage = function(pageId) {
+                Pages.getPage(pageId).then(function(result) { 
+                    var page = result.data;
+                    $rootScope.pages[page._id] = page;
+                    $scope.currentPage = page;
                 });
             };
-
-            $scope.getAllElementTypes = function() {
-                ElementTypes.get().then(function(result) {
-                    $scope.allElementTypes = result.data;
-                });
-            };
-            $scope.getAllElementTypes();
+            if ($rootScope.pages == undefined) {
+                $rootScope.pages = {};
+                $scope.getPage($routeParams.pageId);
+            } else if ($rootScope.pages[$routeParams.pageId] == undefined) {
+                $scope.getPage($routeParams.pageId);
+            } else {
+                $scope.currentPage = $rootScope.pages[$routeParams.pageId];
+            }
         }]);
 
+dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",
+        function($scope, $rootScope, $routeParams, Pages) {
+            // Duplication.
+            $scope.getPageAndSetEntry = function(pageId, entryId) {
+                Pages.getPage(pageId).then(function(result) { 
+                    var page = result.data;
+                    $rootScope.pages[page._id] = page;
+                    // Duplication
+                    var entry = page.entries[entryId];
+                    if (entry != undefined) {
+                        $scope.currentEntry = entry;
+                    } else {
+                        $scope.currentEntry = { "name" : "Entry not found" };
+                    }
+                });
+            };
+            if ($rootScope.pages == undefined) {
+                $rootScope.pages = {};
+                $scope.getPageAndSetEntry($routeParams.pageId, $routeParams.entryId);
+            } else if ($rootScope.pages[$routeParams.pageId] == undefined) {
+                $scope.getPageAndSetEntry($routeParams.pageId, $routeParams.entryId);
+            } else {
+                // Duplication
+                var entry = $rootScope.pages[$routeParams.pageId].entries[$routeParams.entryId];
+                if (entry != undefined) {
+                    $scope.currentEntry = entry;
+                } else {
+                    $scope.currentEntry = { "name" : "Entry not found" };
+                }
+            }
+        }]);
 
 dedeViewControllers.controller("TagsCtrl", ["$scope", "Tags",
         function($scope, Tags) {
@@ -42,6 +76,20 @@ dedeViewControllers.controller("TagsCtrl", ["$scope", "Tags",
             $scope.tags = [];
             $scope.getTags();
         }]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

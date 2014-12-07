@@ -3,21 +3,15 @@ var dedeViewServices = angular.module('dedeViewServices', ['ngResource']);
 dedeViewServices.factory('Pages', ['$http',
     function($http) {
         return { 
-            get: function() {
-                var promise = $http.get("http://localhost:4000/get/pages/");
+            getIdsAndNames: function() {
+                var promise = $http.get("http://localhost:4000/get/pageIdsAndNames/");
+                return promise;
+            },
+            getPage: function(pageId) {
+                var promise = $http.get("http://localhost:4000/get/page/" + pageId);
                 return promise;
             }
         };
-    }]);
-
-dedeViewServices.factory('Entry', ['$http',
-    function($http) {
-        return { 
-            get: function(entryId) {
-                var promise = $http.get("http://localhost:4000/get/entry/" + entryId);
-                return promise;
-            }
-        }
     }]);
 
 dedeViewServices.factory('Tags', ['$http',

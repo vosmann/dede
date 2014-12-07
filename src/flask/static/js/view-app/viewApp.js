@@ -8,12 +8,11 @@ dedeViewApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
             when('/:pageId', {
-                templateUrl: 'partials/page.html',
+                templateUrl: 'static/partials/view/page.html',
                 controller: 'PageCtrl',
-                }
             }).
             when('/:pageId/:entryId', {
-                templateUrl: 'partials/entry.html',
+                templateUrl: 'static/partials/view/entry.html',
                 controller: 'EntryCtrl'
             }).
             otherwise({
