@@ -3,15 +3,18 @@ var dedeViewControllers = angular.module("dedeViewControllers", []);
 // Perhaps replace with cacheFactory.
 // I like (hate) how I alternate between .field and [field] dereferencing.
 
-dedeViewControllers.controller("NavigationCtrl", ["$scope", "Pages",
-        function($scope, Pages) {
+dedeViewControllers.controller("PageMenuCtrl", ["$scope", "$location", "Pages",
+        function($scope, $location, Pages) {
             $scope.getPageIdsAndNames = function() {
                 Pages.getIdsAndNames ().then(function(result) { 
                     $scope.pageIdsAndNames = result.data;
                 });
             };
+            $scope.isActive = function(pageLocation) {
+                return pageLocation === $location.path();
+            }
             $scope.pageIdsAndNames = {};
-            $scope.getPageIdsAndNames ();
+            $scope.getPageIdsAndNames();
         }]);
 
 dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",

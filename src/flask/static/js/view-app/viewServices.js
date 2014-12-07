@@ -4,7 +4,7 @@ dedeViewServices.factory('Pages', ['$http',
     function($http) {
         return { 
             getIdsAndNames: function() {
-                var promise = $http.get("http://localhost:4000/get/pageIdsAndNames/");
+                var promise = $http.get("http://localhost:4000/get/pageIdsAndNames");
                 return promise;
             },
             getPage: function(pageId) {

@@ -32,10 +32,12 @@ def hello():
     return send_file('static/view-index.html')
 
 @app.route('/get/pageIdsAndNames', methods = ['GET'])
-def get_page_names():
+def get_page_ids_and_names():
+    print "im in"
     db_pages = mongo.dede.pages.find()
-    names = {Page(db_page)._id: Page(db_page).name for db_page in db_pages if Page(db_page).is_shown} # cache
-    return json.dumps(names)
+    ids_and_names = {Page(db_page)._id: Page(db_page).name for db_page in db_pages if Page(db_page).is_shown} # cache
+    print json.dumps(ids_and_names)
+    return json.dumps(ids_and_names)
 
 @app.route('/get/page/<page_id>', methods = ['GET'])
 def get_page(page_id):
