@@ -2,21 +2,10 @@ var dedeViewServices = angular.module('dedeViewServices', ['ngResource']);
 
 dedeViewServices.factory('Pages', ['$http',
     function($http) {
-
-        var getFirst = function() {
-            var promise = $http.get("http://localhost:4000/get/pages/");
-            promise.then(function(result) {
-                return result.data[0].name;
-            });
-        };
-
         return { 
             get: function() {
                 var promise = $http.get("http://localhost:4000/get/pages/");
                 return promise;
-            },
-            getFirst: function() {
-                return { getFirst: getFirst };
             }
         };
     }]);
@@ -58,14 +47,6 @@ dedeViewServices.factory('Images', ['$http',
                 var promise = $http.get("http://localhost:4000/get/image/metadata/" + id);
                 return promise;
             }
-            // getAllMeta: function() {
-            //     var promise = $http.get("http://localhost:4000/edit/get/image/metadata/all");
-            //     return promise;
-            // }
-            // getImage: function(id) {
-            //     var promise = $http.get("http://localhost:4000/get/image/" + id);
-            //     return promise;
-            // }
         }
     }]);
 

@@ -4,18 +4,15 @@ var dedeViewApp = angular.module('dedeViewApp', [
     'dedeViewServices'
 ]);
 
-// 'dedeViewFilters',
-// 'dedeViewDirectives'
-
 dedeViewApp.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            when('/:pageName', {
+            when('/:pageId', {
                 templateUrl: 'partials/page.html',
                 controller: 'PageCtrl',
                 }
             }).
-            when('/:pageName/:entryId', {
+            when('/:pageId/:entryId', {
                 templateUrl: 'partials/entry.html',
                 controller: 'EntryCtrl'
             }).
