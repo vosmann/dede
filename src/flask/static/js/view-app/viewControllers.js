@@ -35,6 +35,18 @@ dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParam
             } else {
                 $scope.currentPage = $rootScope.pages[$routeParams.pageId];
             }
+            // Duplication.
+            $scope.getFirstImageId = function(pageId, entryId) {
+                var elements = $rootScope.pages[pageId].entries[entryId].elements;
+                for (var elementNr = 0; elementNr < elements.length; ++elementNr) {
+                    var element = elements[elementNr];
+                    var url = "/get/image/" + element.data;
+                    if (element.type == "image") {
+                        return url;
+                    }
+                }
+                return undefined;
+            }
         }]);
 
 dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",
@@ -67,6 +79,18 @@ dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routePara
                     $scope.currentEntry = { "name" : "Entry not found" };
                 }
             }
+            // Duplication.
+            $scope.getFirstImageId = function(pageId, entryId) {
+                var elements = $rootScope.pages[pageId].entries[entryId].elements;
+                for (var elementNr = 0; elementNr < elements.length; ++elementNr) {
+                    var element = elements[elementNr];
+                    var url = "/get/image/" +  element.data;
+                    if (element.type == "image") {
+                        return url;
+                    }
+                }
+                return undefined;
+            }
         }]);
 
 dedeViewControllers.controller("TagsCtrl", ["$scope", "Tags",
@@ -79,100 +103,4 @@ dedeViewControllers.controller("TagsCtrl", ["$scope", "Tags",
             $scope.tags = [];
             $scope.getTags();
         }]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-////////////////
-
-/*dedeViewControllers.controller("OldProjectsCtrl", ["$scope", "Projects", function($scope, Projects) {*/
-    //$scope.projects = Projects.get();
-    //$scope.$on("tagFilterChange", function(e, tagFilters) {
-        //console.log("OldProjectsCtrl received event: " + e.name);
-        //$scope.tagFilters = tagFilters;
-        //logTagFilters("OldProjectsCtrl");
-    //});
-    //function logTagFilters(prefix) {
-        //for (var i = 0; i < $scope.tagFilters.length; ++i) {
-            //console.log("(" + prefix + ") " + $scope.tagFilters[i].ind
-                //+ " : " + $scope.tagFilters[i].display_text
-                //+ " : " + $scope.tagFilters[i].is_active);
-        //}
-    //}
-//}]);
-
-//dedeViewControllers.controller("OldNewsCtrl", ["$scope", "News", function($scope, News) {
-    //$scope.news = News.get();
-    //$scope.$on("tagFilterChange", function(e, tagFilters) {
-        //console.log("NewsCtrl received event: " + e.name);
-        //$scope.tagFilters = tagFilters;
-        //logTagFilters("NewsCtrl");
-    //});
-    //function logTagFilters(prefix) {
-        //for (var i = 0; i < $scope.tagFilters.length; ++i) {
-            //console.log("(" + prefix + ") " + $scope.tagFilters[i].ind
-                //+ " : " + $scope.tagFilters[i].display_text
-                //+ " : " + $scope.tagFilters[i].is_active);
-        //}
-    //}
-//}]);
-
-//dedeViewControllers.controller("OldTagsCtrl", ["$scope", "Tags", "$rootScope", function($scope, Tags, $rootScope) {
-
-    //// Ugly to put all of this here?
-    //// Should maybe re-work this into a directive.
-
-    //// $scope.tagFilters = [{ ind: -1, display_text: "All", is_active: true }];
-    //$scope.tagFilters = []; // Rename to just "tags".
-    //var tagsPromise = Tags.get();
-    //tagsPromise.$promise.then(function(tags) {
-        //for (var i = 0; i < tags.length; ++i) {
-            //console.log(tags[i]._id + " : " + tags[i].display_text);
-            //$scope.tagFilters.push({
-                //ind: i,
-                //display_text: tags[i].display_text,
-                //is_active: false
-            //});
-        //}
-        //$rootScope.$broadcast("tagFilterChange", $scope.tagFilters);
-        //logTagFilters();
-    //}, function(reason) {
-        //alert("Could not retrieve tags. Reason: " + reason);
-    //});
-
-    //$scope.toggleTagFilter = function(tagDisplayText) {
-        //console.log("toggleTagFilter called with: " + tagDisplayText);
-        //for (var i = 0; i < $scope.tagFilters.length; ++i) {
-            //if ($scope.tagFilters[i].display_text == tagDisplayText) {
-                //$scope.tagFilters[i].is_active = !$scope.tagFilters[i].is_active;
-                //break;
-            //}
-        //}
-        //$rootScope.$broadcast("tagFilterChange", $scope.tagFilters);
-        //logTagFilters();
-    //}
-
-    //function logTagFilters() {
-        //for (var i = 0; i < $scope.tagFilters.length; ++i) {
-            //console.log($scope.tagFilters[i].ind + " : " + $scope.tagFilters[i].display_text + " : " + $scope.tagFilters[i].is_active);
-        //}
-    //}
-//}]);
 

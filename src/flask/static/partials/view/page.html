@@ -2,6 +2,9 @@
 
     <div class="row" ng-repeat="entry in currentPage.entries">
         <div class="col-md-10">
+            <a href="#/{{currentPage._id}}/{{entry._id}}">
+                <img ng-src="{{getFirstImageId(currentPage._id, entry._id)}}"></img>
+            </a>
             <a href="#/{{currentPage._id}}/{{entry._id}}">{{entry.name}}</a>
         </div>
     </div>
