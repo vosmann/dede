@@ -33,9 +33,12 @@ def hello():
 
 @app.route('/get/pageIdsAndNames', methods = ['GET'])
 def get_page_ids_and_names():
-    print "im in"
     db_pages = mongo.dede.pages.find()
-    ids_and_names = {Page(db_page)._id: Page(db_page).name for db_page in db_pages if Page(db_page).is_shown} # cache
+    pages = [ Page(db_page) for db_page in db_pages ]
+    sorted_pages = sorted(pages, key=lambda k: k.creation_date)
+    # Ah, once I too used dict comprehensions.
+    # ids_and_names = { page._id: page.name for page in sorted_pages if page.is_shown }
+    ids_and_names = [ {'id': page._id, 'name': page.name} for page in sorted_pages if page.is_shown ] # cache
     print json.dumps(ids_and_names)
     return json.dumps(ids_and_names)
 

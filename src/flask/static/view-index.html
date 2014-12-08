@@ -21,8 +21,8 @@
     <div class="page-menu" ng-controller="PageMenuCtrl"> 
         <div class="navbar navbar-default" role="navigation">
             <ul class="nav navbar-nav">
-                <li ng-repeat="(id, name) in pageIdsAndNames"
-                    ng-class="{ active: isActive('/' + id)}"><a href="#/{{id}}">{{name}}</a></li>
+                <li ng-repeat="page in pageIdsAndNames"
+                    ng-class="{ active: isActive('/' + page.id)}"><a href="#/{{page.id}}">{{page.name}}</a></li>
             </ul>
         </div>
     </div> 
