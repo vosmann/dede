@@ -15,6 +15,7 @@
 
 # from flask import Flask, request, redirect, url_for
 from flask import Flask, send_file, request
+from flask.ext.login import LoginManager, login_required
 from werkzeug import secure_filename
 from pymongo import MongoClient
 from time import strftime
@@ -29,6 +30,7 @@ import urllib, cStringIO
 from utils.faker import create_fakes
 from entities.page import Page
 from entities.entry import Entry, extract_page_name
+from entities.user import User
 
 
 ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
@@ -37,16 +39,45 @@ ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 app = Flask(__name__)
+app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b'
 
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+# Logging in
+@login_manager.user_loader
+def load_user(userid):
+    return User.get(userid)
+
+# MASSIVE TODO: redirect to /login from everywhere (if there is no session/login.
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # TODO sanitize inputs?
+        username = request.form['username']
+        password = request.form['password']
+
+        # todo: login and validate the user
+        # login_user(user)
+
+        # How does the session cookie get stored? Where does that happen?
+
+        # todo: retdirect to edit
+        # return redirect(request.args.get("next") or url_for("index"))
+
+    return send_file('static/partials/login.html')
 
 # Delivering HTML
 @app.route("/edit")
+@login_required
 def edit():
     return send_file('static/edit-index.html')
 
 
 # REST methods for Page
 @app.route('/edit/store/page', methods = ['POST'])
+@login_required
 def store_page():
 
     incoming_json = request.get_json() # dict
@@ -64,12 +95,14 @@ def store_page():
     return 'ok'
 
 @app.route('/edit/delete/page', methods = ['POST'])
+@login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/pageNames', methods = ['GET'])
+@login_required
 def get_page_names():
     db_pages = mongo.dede.pages.find()
     names = []
@@ -79,6 +112,7 @@ def get_page_names():
     return json.dumps(names)
 
 @app.route('/edit/get/page/<page_name>', methods = ['GET'])
+@login_required
 def get_page(page_name):
     db_page = mongo.dede.pages.find_one(name_query(page_name)) # Create an index on "name"?
     if db_page is not None:
@@ -89,6 +123,7 @@ def get_page(page_name):
 
 # REST methods for Entry
 @app.route('/edit/store/entry', methods = ['POST'])
+@login_required
 def store_entry():
 
     # Store entry.
@@ -119,12 +154,14 @@ def store_entry():
     return 'ok'
 
 @app.route('/edit/delete/entry', methods = ['POST'])
+@login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
+@login_required
 def get_entry_names(page_name):
 
     db_page = mongo.dede.pages.find_one(name_query(page_name))

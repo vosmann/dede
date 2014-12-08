@@ -10,5 +10,6 @@ sudo apt-get install mongodb-org
 
 #
 sudo pip install Flask
+sudo pip install flask-login
 sudo pip install pymongo
 

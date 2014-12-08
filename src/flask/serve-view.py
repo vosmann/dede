@@ -18,7 +18,7 @@ from entities.view_entry import ViewEntry
 #       * page ids
 #       * page names
 #       * all page views
-# - The cache could never expire (or expire like every 2-3 hours, but it should be invalidated when edits are made.
+# - The cache could never expire (maybe like every 2-3 hours, but it should be invalidated when edits are made.
 
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
