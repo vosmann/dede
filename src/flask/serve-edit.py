@@ -39,18 +39,13 @@ ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 app = Flask(__name__)
+# the secret key is what the (session) cookies are encrypted with.
 app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-# Logging in
-@login_manager.user_loader
-def load_user(userid):
-    return User.get(userid)
-
 # MASSIVE TODO: redirect to /login from everywhere (if there is no session/login.
-
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -67,6 +62,15 @@ def login():
         # return redirect(request.args.get("next") or url_for("index"))
 
     return send_file('static/partials/login.html')
+
+# Loads a User (from some DB) using the user_id stored in the session. The User is loaded just to check
+# if he's still active etc.
+@login_manager.user_loader
+def load_user(userid):
+    return User.get(userid)
+
+
+
 
 # Delivering HTML
 @app.route("/edit")
