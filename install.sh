@@ -12,4 +12,5 @@ sudo apt-get install mongodb-org
 sudo pip install Flask
 sudo pip install flask-login
 sudo pip install pymongo
+sudo pip install mmh3 # murmur hash 3
 

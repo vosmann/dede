@@ -14,8 +14,8 @@
 # too much dirty work with dicts everywhere.
 
 # from flask import Flask, request, redirect, url_for
-from flask import Flask, send_file, request
-from flask.ext.login import LoginManager, login_required
+from flask import Flask, send_file, request, redirect, url_for
+from flask.ext.login import LoginManager, login_user, login_required, fresh_login_required, current_user
 from werkzeug import secure_filename
 from pymongo import MongoClient
 from time import strftime
@@ -41,6 +41,8 @@ image_gridfs = gridfs.GridFS(mongo.dede_images)
 app = Flask(__name__)
 # the secret key is what the (session) cookies are encrypted with.
 app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b'
+app.config['SERVER_NAME'] = 'localhost:5000'
+app.config['REMEMBER_COOKIE_NAME'] = 'ed'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -53,13 +55,28 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        # todo: login and validate the user
-        # login_user(user)
-
-        # How does the session cookie get stored? Where does that happen?
-
-        # todo: retdirect to edit
-        # return redirect(request.args.get("next") or url_for("index"))
+        user = User()
+        print "1: created user"
+        print user.__dict__
+        ok = user.login(username, password)
+        print "2: attempted to log him in"
+        print user.__dict__
+        if ok:
+            print "3: logging him into flask-login"
+            print user.__dict__
+            login_user(user) # remember=True
+            print "3b: current_user:"
+            print current_user.__dict__
+            
+            # url = 'localhost:5000' + url_for('edit')
+            url = 'www.google.de'
+            print "4: redirecting to:"
+            print url
+            redirect(url)
+            # redirect('/edit') # return redirect(request.args.get("next") or url_for("index"))
+        else:
+            print "3: login failed"
+            # flash("Login failed.")
 
     return send_file('static/partials/login.html')
 
@@ -74,14 +91,15 @@ def load_user(userid):
 
 # Delivering HTML
 @app.route("/edit")
-@login_required
+#@fresh_login_required
+#@login_required
 def edit():
     return send_file('static/edit-index.html')
 
 
 # REST methods for Page
 @app.route('/edit/store/page', methods = ['POST'])
-@login_required
+@fresh_login_required
 def store_page():
 
     incoming_json = request.get_json() # dict
@@ -99,14 +117,14 @@ def store_page():
     return 'ok'
 
 @app.route('/edit/delete/page', methods = ['POST'])
-@login_required
+@fresh_login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/pageNames', methods = ['GET'])
-@login_required
+@fresh_login_required
 def get_page_names():
     db_pages = mongo.dede.pages.find()
     names = []
@@ -116,7 +134,7 @@ def get_page_names():
     return json.dumps(names)
 
 @app.route('/edit/get/page/<page_name>', methods = ['GET'])
-@login_required
+@fresh_login_required
 def get_page(page_name):
     db_page = mongo.dede.pages.find_one(name_query(page_name)) # Create an index on "name"?
     if db_page is not None:
@@ -127,7 +145,7 @@ def get_page(page_name):
 
 # REST methods for Entry
 @app.route('/edit/store/entry', methods = ['POST'])
-@login_required
+@fresh_login_required
 def store_entry():
 
     # Store entry.
@@ -158,14 +176,14 @@ def store_entry():
     return 'ok'
 
 @app.route('/edit/delete/entry', methods = ['POST'])
-@login_required
+@fresh_login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
-@login_required
+@fresh_login_required
 def get_entry_names(page_name):
 
     db_page = mongo.dede.pages.find_one(name_query(page_name))
