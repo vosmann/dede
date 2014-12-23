@@ -72,30 +72,26 @@ def login():
             url = 'www.google.de'
             print "4: redirecting to:"
             print url
-            redirect(url)
+            redirect(url, code = 307)
             # redirect('/edit') # return redirect(request.args.get("next") or url_for("index"))
         else:
             print "3: login failed"
-            # flash("Login failed.")
-
     return send_file('static/partials/login.html')
 
 # Loads a User (from some DB) using the user_id stored in the session. The User is loaded just to check
 # if he's still active etc.
 @login_manager.user_loader
 def load_user(userid):
-    return User.get(userid)
-
-
+    # Tu smo. Treba samo izbaviti/napraviti nekakvog Usera po id-u i to poslat nazad. #almostthere
+    return User.get_editor()
 
 
 # Delivering HTML
 @app.route("/edit")
-#@fresh_login_required
-#@login_required
+@fresh_login_required
+@login_required
 def edit():
     return send_file('static/edit-index.html')
-
 
 # REST methods for Page
 @app.route('/edit/store/page', methods = ['POST'])
