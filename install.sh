@@ -14,3 +14,11 @@ sudo pip install flask-login
 sudo pip install pymongo
 sudo pip install mmh3 # murmur hash 3
 
+
+# connect to the AWS t2.micro instance
+ssh -i ~/.ssh/vjeko-key-pair.pem ec2-user@ec2-54-76-149-171.eu-west-1.compute.amazonaws.com
+
+
+# TODO
+# 1. write a script that will ship the current code on master.
+#    1a. it could also perhaps change some settings from dev (includes debug info) to production settings.
