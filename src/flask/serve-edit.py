@@ -41,9 +41,8 @@ image_gridfs = gridfs.GridFS(mongo.dede_images)
 app = Flask(__name__)
 # the secret key is what the (session) cookies are encrypted with.
 app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b'
-app.config['SERVER_NAME'] = 'localhost:5000'
-app.config['REMEMBER_COOKIE_NAME'] = 'ed'
-
+# app.config['SERVER_NAME'] = 'localhost:5000'
+app.config['REMEMBER_COOKIE_NAME'] = 'ed' 
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -83,6 +82,7 @@ def login():
 @login_manager.user_loader
 def load_user(userid):
     # Tu smo. Treba samo izbaviti/napraviti nekakvog Usera po id-u i to poslat nazad. #almostthere
+    print "in login_manager.user_loader; about to get User object."
     return User.get_editor()
 
 

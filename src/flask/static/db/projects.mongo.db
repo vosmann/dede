@@ -1,8 +1,0 @@
-{ "_id" : 0, "cover_image_id" : 0, "name" : "project0", "has_news" : true, "cover_alt_image_id" : 0, "image_ids" : [ 0 ], "tag" : "graphic design", "date" : "2014-01-26", "is_hidden" : false, "is_archived" : false, "desc" : "this was my first project" }
-{ "_id" : 1, "cover_image_id" : 0, "name" : "project1", "has_news" : true, "cover_alt_image_id" : 0, "image_ids" : [ 0 ], "tag" : "corporate identity", "date" : "2014-01-26", "is_hidden" : false, "is_archived" : false, "desc" : "then came the second" }
-{ "_id" : 2, "cover_image_id" : 0, "name" : "project2", "has_news" : true, "cover_alt_image_id" : 0, "image_ids" : [ 0 ], "tag" : "corporate identity", "date" : "2014-02-10", "is_hidden" : true, "is_archived" : false, "desc" : "a shameful project that really should be hidden." }
-{ "_id" : 3, "cover_image_id" : 0, "name" : "project3", "has_news" : true, "cover_alt_image_id" : 0, "image_ids" : [ 0 ], "tag" : "corporate identity", "date" : "2014-02-11", "is_hidden" : false, "is_archived" : false, "desc" : "this project is aye-okay." }
-
-
-{ "_id" : 4, "cover_image_id" : 0, "name" : "project-a1", "has_news" : true, "cover_alt_image_id" : 0, "image_ids" : [ 0 ], "tag" : "graphic design", "date" : "2014-02-12", "is_hidden" : false, "is_archived" : true, "desc" : "this one is just a tad-bit old." }
-{ "_id" : 5, "cover_image_id" : 0, "name" : "project-a2", "has_news" : true, "cover_alt_image_id" : 0, "image_ids" : [ 0 ], "tag" : "graphic design", "date" : "2014-02-13", "is_hidden" : false, "is_archived" : true, "desc" : "old enough to be archived." }

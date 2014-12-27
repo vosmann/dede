@@ -1,6 +1,0 @@
-{ "_id" : 0, "story" : "bla bla bla", "cover_image_id" : 0, "title" : "first news story", "image_ids" : [  0 ], "date" : "2014-01-26", "is_hidden" : false }
-{ "_id" : 1, "story" : "lol lol lol", "cover_image_id" : 0, "title" : "news story nr 2", "image_ids" : [  0 ], "date" : "2014-01-26", "is_hidden" : false }
-{ "_id" : 2, "story" : "ova je skrivena vijest", "cover_image_id" : 0, "title" : "Bruka!", "image_ids" : [  0 ], "date" : "2014-02-14", "is_hidden" : true }
-{ "_id" : 3, "story" : "ova se zadnja vijest vidi", "cover_image_id" : 0, "title" : "Sve oke", "image_ids" : [  0 ], "date" : "2014-02-15", "is_hidden" : false }
-
-
