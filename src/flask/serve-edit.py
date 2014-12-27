@@ -46,6 +46,8 @@ app.config['REMEMBER_COOKIE_NAME'] = 'ed'
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+editor_user = None
+
 # MASSIVE TODO: redirect to /login from everywhere (if there is no session/login.
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -66,6 +68,8 @@ def login():
             login_user(user) # remember=True
             print "3b: current_user:"
             print current_user.__dict__
+
+            editor_user = current_user # oh glob
             
             # url = 'localhost:5000' + url_for('edit')
             url = 'www.google.de'
@@ -83,19 +87,20 @@ def login():
 def load_user(userid):
     # Tu smo. Treba samo izbaviti/napraviti nekakvog Usera po id-u i to poslat nazad. #almostthere
     print "in login_manager.user_loader; about to get User object."
-    return User.get_editor()
+    # return User.get_editor()
+    return editor_user 
 
 
 # Delivering HTML
 @app.route("/edit")
-@fresh_login_required
-@login_required
+# @fresh_login_required
+# @login_required
 def edit():
     return send_file('static/edit-index.html')
 
 # REST methods for Page
 @app.route('/edit/store/page', methods = ['POST'])
-@fresh_login_required
+# @fresh_login_required
 def store_page():
 
     incoming_json = request.get_json() # dict
@@ -113,14 +118,14 @@ def store_page():
     return 'ok'
 
 @app.route('/edit/delete/page', methods = ['POST'])
-@fresh_login_required
+# @fresh_login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/pageNames', methods = ['GET'])
-@fresh_login_required
+# @fresh_login_required
 def get_page_names():
     db_pages = mongo.dede.pages.find()
     names = []
@@ -130,7 +135,7 @@ def get_page_names():
     return json.dumps(names)
 
 @app.route('/edit/get/page/<page_name>', methods = ['GET'])
-@fresh_login_required
+# @fresh_login_required
 def get_page(page_name):
     db_page = mongo.dede.pages.find_one(name_query(page_name)) # Create an index on "name"?
     if db_page is not None:
@@ -141,7 +146,7 @@ def get_page(page_name):
 
 # REST methods for Entry
 @app.route('/edit/store/entry', methods = ['POST'])
-@fresh_login_required
+# @fresh_login_required
 def store_entry():
 
     # Store entry.
@@ -172,14 +177,14 @@ def store_entry():
     return 'ok'
 
 @app.route('/edit/delete/entry', methods = ['POST'])
-@fresh_login_required
+# @fresh_login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
-@fresh_login_required
+# @fresh_login_required
 def get_entry_names(page_name):
 
     db_page = mongo.dede.pages.find_one(name_query(page_name))
