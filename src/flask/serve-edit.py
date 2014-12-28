@@ -39,16 +39,20 @@ ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 app = Flask(__name__)
+
+# MASSIVE TODO: redirect to /login from everywhere (if there is no session/login.
+
 # the secret key is what the (session) cookies are encrypted with.
 app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b'
+
 # app.config['SERVER_NAME'] = 'localhost:5000'
-app.config['REMEMBER_COOKIE_NAME'] = 'ed' 
+# app.config['REMEMBER_COOKIE_NAME'] = 'ed' 
+
 login_manager = LoginManager()
 login_manager.init_app(app)
 
 editor_user = None
 
-# MASSIVE TODO: redirect to /login from everywhere (if there is no session/login.
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -93,14 +97,14 @@ def load_user(userid):
 
 # Delivering HTML
 @app.route("/edit")
-# @fresh_login_required
-# @login_required
+@login_required
 def edit():
+    print "/edit was opened. sending the one-page-app edit-index.html"
     return send_file('static/edit-index.html')
 
 # REST methods for Page
 @app.route('/edit/store/page', methods = ['POST'])
-# @fresh_login_required
+@login_required
 def store_page():
 
     incoming_json = request.get_json() # dict
@@ -118,14 +122,13 @@ def store_page():
     return 'ok'
 
 @app.route('/edit/delete/page', methods = ['POST'])
-# @fresh_login_required
+@login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/pageNames', methods = ['GET'])
-# @fresh_login_required
 def get_page_names():
     db_pages = mongo.dede.pages.find()
     names = []
@@ -135,7 +138,6 @@ def get_page_names():
     return json.dumps(names)
 
 @app.route('/edit/get/page/<page_name>', methods = ['GET'])
-# @fresh_login_required
 def get_page(page_name):
     db_page = mongo.dede.pages.find_one(name_query(page_name)) # Create an index on "name"?
     if db_page is not None:
@@ -146,7 +148,7 @@ def get_page(page_name):
 
 # REST methods for Entry
 @app.route('/edit/store/entry', methods = ['POST'])
-# @fresh_login_required
+@login_required
 def store_entry():
 
     # Store entry.
@@ -177,14 +179,13 @@ def store_entry():
     return 'ok'
 
 @app.route('/edit/delete/entry', methods = ['POST'])
-# @fresh_login_required
+@login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
 @app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
-# @fresh_login_required
 def get_entry_names(page_name):
 
     db_page = mongo.dede.pages.find_one(name_query(page_name))
@@ -219,6 +220,7 @@ def get_element_types():
 # Tags
 # TODO Actually, should keep _id *and* display name so that the latter can be changed.
 @app.route('/edit/store/tag', methods = ['POST'])
+@login_required
 def store_tag():
     incoming_json = request.get_json() # dict
     print "tag:"
@@ -273,6 +275,7 @@ def get_image(id):
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
 @app.route('/edit/store/image', methods = ['POST'])
+@login_required
 def store_image():
     print "In method: /edit/store/image !"
     if request.method == 'POST':
@@ -293,6 +296,7 @@ def store_image():
     abort(400) # bad request
 
 @app.route('/edit/delete/image/<id>', methods = ['POST'])
+@login_required
 def delete_image(id):
     mongo.dede.image_metadata.remove(id_query(id))
     image_gridfs.delete(id)
