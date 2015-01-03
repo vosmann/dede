@@ -6,27 +6,27 @@
     <title>BauBau</title>
 
     <link rel="stylesheet" href="/static/css/bootstrap-3.2.0-dist/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/baubau.css">
 </head>
 
 <body>
-
-    <!-- Header -->
-    <div class="jumbotron">
-        <h1>Bau Bau</h1>
-    </div> 
-
-    <!-- Navigating across pages -->
-    <div class="page-menu" ng-controller="PageMenuCtrl"> 
-        <div class="navbar navbar-default" role="navigation">
-            <ul class="nav navbar-nav">
-                <li ng-repeat="page in pageIdsAndNames"
-                    ng-class="{ active: isActive('/' + page.id)}"><a href="#/{{page.id}}">{{page.name}}</a></li>
-            </ul>
-        </div>
-    </div> 
-
-    <!-- Content -->
-    <div ng-view></div>
+    <div id="content-all">
+        <!-- Header -->
+        <div class="jumbotron">
+            <h1>Bau Bau</h1>
+        </div> 
+        <!-- Navigating across pages -->
+        <div class="page-menu" ng-controller="PageMenuCtrl"> 
+            <div class="navbar navbar-default" role="navigation">
+                <ul class="nav navbar-nav">
+                    <li ng-repeat="page in pageIdsAndNames"
+                        ng-class="{ active: isActive('/' + page.id)}"><a href="#/{{page.id}}">{{page.name}}</a></li>
+                </ul>
+            </div>
+        </div> 
+        <!-- Content -->
+        <div ng-view></div>
+    </div>
 
 
     <script src="/static/js/lib/angular-1.2.21/angular.js"></script>
