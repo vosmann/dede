@@ -48,22 +48,23 @@ def get_page(page_id):
     pages = [Page(db_page) for db_page in db_pages if Page(db_page).is_shown] # cache
     page_map = {page._id: page for page in pages} # stupid. cache assembled view pages instead.
     requested_page = page_map[page_id]
-    return json.dumps(assemble_view_page(requested_page).__dict__) # Accessing dicts. Could make a method to do this.
+    return json.dumps(assemble_view_page(requested_page))
 
 # A "view page" is a list of completely assembled pages ready to be shown.
 # Must move into a separate module, obviously.
 def assemble_view_page(page):
     view_entries = {}
-    # view_entries = []
+    ordered_entry_ids = []
     for entry_id in page.entry_ids:
         db_entry = mongo.dede.entries.find_one(id_query(entry_id))
         view_entry = ViewEntry(Entry(db_entry)) 
         view_entries[view_entry._id] = view_entry.json_dict()
-        # view_entries.append(view_entry.json_dict())
+        ordered_entry_ids.append(view_entry._id)
 
     view_page = ViewPage(page)
     view_page.entries = view_entries
-    return view_page
+    view_page.ordered_entry_ids = ordered_entry_ids
+    return view_page.json_dict()
 
 
 @app.route('/get/entry/<entry_id>', methods = ['GET'])

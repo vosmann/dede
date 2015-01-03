@@ -16,6 +16,10 @@ class Page:
             self.is_shown = raw_dict[u'isShown']
         else:
             self.is_shown = False
+        if u'isShowFull' in raw_dict:
+            self.is_show_full = raw_dict[u'isShowFull']
+        else:
+            self.is_show_full = False
 
         if u'creationDate' in raw_dict:
             self.creation_date = raw_dict[u'creationDate']
@@ -44,6 +48,7 @@ class Page:
                 '_id': self._id,
                 'name': self.name,
                 'isShown': self.is_shown,
+                'isShowFull': self.is_show_full,
                 'creationDate': self.creation_date,
                 'modificationDate': self.modification_date,
                 'entryIds': self.entry_ids
