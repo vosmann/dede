@@ -2,8 +2,8 @@
 
     <div class="row" ng-repeat="element in currentEntry.elements">
         <div class="col-md-10">
-            <p ng-show="element.type!='image'">{{element.data}}</p>
-            <img ng-show="element.type=='image'"
+            <p ng-if="element.type!=='image'">{{element.data}}</p>
+            <img ng-if="element.type==='image'"
                 ng-src="get/image/{{element.data}}"></img>
         </div>
     </div>
