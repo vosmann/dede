@@ -3,3 +3,29 @@
     border: 2px dashed #DDD;
     width: 940px;
 }
+
+a.hover-image {
+    background: black;
+    display: inline-block;
+}
+
+a.hover-image img {
+    display: block;
+}
+
+a.hover-image:hover img {
+    opacity: 0;
+}
+
+.hover-title {
+    position: absolute;
+    top: 5px;
+    left: 25px; /* Hacking away awayBootstrap's 15px padding. */
+    color: white;
+    visibility: hidden;
+}
+
+a.hover-image:hover .hover-title {
+    visibility: visible;
+}
+

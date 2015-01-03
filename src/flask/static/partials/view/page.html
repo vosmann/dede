@@ -2,12 +2,18 @@
 
     <div class="row" ng-repeat="entryId in currentPage.orderedEntryIds">
         <div class="col-md-10">
+
             <div ng-if="!currentPage.isShowFull">
-                <a href="#/{{currentPage._id}}/{{entryId}}">
+
+                <div class="hover-wrapper">
+                <a href="#/{{currentPage._id}}/{{entryId}}"
+                    class="hover-image">
                     <img ng-src="{{getFirstImageId(currentPage._id, entryId)}}"></img>
+                    <span class="hover-title">{{currentPage.entries[entryId].name}}</span >
                 </a>
-                <a href="#/{{currentPage._id}}/{{entryId}}">{{currentPage.entries[entryId].name}}</a>
+                </div>
             </div>
+
             <div ng-if="currentPage.isShowFull">
                 <!-- Just like the entry.html partial. Code here to avoid routing. -->
                 <div class="row" ng-repeat="element in currentPage.entries[entryId].elements">
