@@ -1,5 +1,8 @@
 .pyc
 **/*.pyc
 **/*.swp
+**/*.tar
+**/*.gz
+**/*.zip
 
 ship/
