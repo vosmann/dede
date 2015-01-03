@@ -97,14 +97,14 @@ def load_user(userid):
 
 # Delivering HTML
 @app.route("/edit")
-@login_required
+#@login_required
 def edit():
     print "/edit was opened. sending the one-page-app edit-index.html"
     return send_file('static/edit-index.html')
 
 # REST methods for Page
 @app.route('/edit/store/page', methods = ['POST'])
-@login_required
+#@login_required
 def store_page():
 
     incoming_json = request.get_json() # dict
@@ -122,7 +122,7 @@ def store_page():
     return 'ok'
 
 @app.route('/edit/delete/page', methods = ['POST'])
-@login_required
+#@login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
@@ -148,7 +148,7 @@ def get_page(page_name):
 
 # REST methods for Entry
 @app.route('/edit/store/entry', methods = ['POST'])
-@login_required
+#@login_required
 def store_entry():
 
     # Store entry.
@@ -179,7 +179,7 @@ def store_entry():
     return 'ok'
 
 @app.route('/edit/delete/entry', methods = ['POST'])
-@login_required
+#@login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
@@ -220,7 +220,7 @@ def get_element_types():
 # Tags
 # TODO Actually, should keep _id *and* display name so that the latter can be changed.
 @app.route('/edit/store/tag', methods = ['POST'])
-@login_required
+#@login_required
 def store_tag():
     incoming_json = request.get_json() # dict
     print "tag:"
@@ -275,7 +275,7 @@ def get_image(id):
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
 @app.route('/edit/store/image', methods = ['POST'])
-@login_required
+#@login_required
 def store_image():
     print "In method: /edit/store/image !"
     if request.method == 'POST':
@@ -296,7 +296,7 @@ def store_image():
     abort(400) # bad request
 
 @app.route('/edit/delete/image/<id>', methods = ['POST'])
-@login_required
+#@login_required
 def delete_image(id):
     mongo.dede.image_metadata.remove(id_query(id))
     image_gridfs.delete(id)

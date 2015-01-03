@@ -12,7 +12,9 @@ sudo apt-get install mongodb-org
 sudo pip install Flask
 sudo pip install flask-login
 sudo pip install pymongo
-sudo pip install mmh3 # murmur hash 3
+sudo pip install Pillow
+
+# sudo pip install mmh3 # murmur hash 3
 
 
 # connect to the AWS t2.micro instance
