@@ -1,11 +1,11 @@
 <div class="container-fluid">
 
-    <div class="row" ng-repeat="entry in currentPage.entries">
+    <div class="row" ng-repeat="entry_id in currentPage.ordered_entry_ids">
         <div class="col-md-10">
-            <a href="#/{{currentPage._id}}/{{entry._id}}">
-                <img ng-src="{{getFirstImageId(currentPage._id, entry._id)}}"></img>
+            <a href="#/{{currentPage._id}}/{{entry_id}}">
+                <img ng-src="{{getFirstImageId(currentPage._id, entry_id)}}"></img>
             </a>
-            <a href="#/{{currentPage._id}}/{{entry._id}}">{{entry.name}}</a>
+            <a href="#/{{currentPage._id}}/{{entry_id}}">{{currentPage.entries[entry_id].name}}</a>
         </div>
     </div>
 
