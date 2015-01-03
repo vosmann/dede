@@ -108,6 +108,16 @@
                     </div>
                     <div class="row">
                         <div class="col-md-2">
+                            <p>Show full entries (otherwise only title and 1st pic):</p>
+                        </div>
+                        <div class="col-md-2">
+                            <span ng-model="page.isShowFull">{{page.isShowFull}}</span>
+                            <button type="button" class="btn btn-warning btn-sm"
+                                ng-click="page.isShowFull = !page.isShowFull">Flip</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
                             <p>Creation date:</p>
                         </div>
                         <div class="col-md-2">
