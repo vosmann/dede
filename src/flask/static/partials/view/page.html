@@ -9,7 +9,14 @@
                 <a href="#/{{currentPage._id}}/{{entryId}}">{{currentPage.entries[entryId].name}}</a>
             </div>
             <div ng-if="currentPage.isShowFull">
-                <p>LOL</p>
+                <!-- Just like the entry.html partial. Code here to avoid routing. -->
+                <div class="row" ng-repeat="element in currentPage.entries[entryId].elements">
+                    <div class="col-md-10">
+                        <p ng-if="element.type!=='image'">{{element.data}}</p>
+                        <img ng-if="element.type==='image'"
+                            ng-src="get/image/{{element.data}}"></img>
+                    </div>
+                </div>
             </div>
 
         </div>
