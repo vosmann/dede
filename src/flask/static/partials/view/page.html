@@ -1,11 +1,17 @@
 <div class="container-fluid">
 
-    <div class="row" ng-repeat="entry_id in currentPage.ordered_entry_ids">
+    <div class="row" ng-repeat="entryId in currentPage.orderedEntryIds">
         <div class="col-md-10">
-            <a href="#/{{currentPage._id}}/{{entry_id}}">
-                <img ng-src="{{getFirstImageId(currentPage._id, entry_id)}}"></img>
-            </a>
-            <a href="#/{{currentPage._id}}/{{entry_id}}">{{currentPage.entries[entry_id].name}}</a>
+            <div ng-if="!currentPage.isShowFull">
+                <a href="#/{{currentPage._id}}/{{entryId}}">
+                    <img ng-src="{{getFirstImageId(currentPage._id, entryId)}}"></img>
+                </a>
+                <a href="#/{{currentPage._id}}/{{entryId}}">{{currentPage.entries[entryId].name}}</a>
+            </div>
+            <div ng-if="currentPage.isShowFull">
+                <p>LOL</p>
+            </div>
+
         </div>
     </div>
 
