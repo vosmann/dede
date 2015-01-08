@@ -29,10 +29,12 @@
 
 .leftie {
     float: left;
+    clear: both;
 }
 
 .rightie {
     float: right;
+    clear: both;
 }
 
 a.hover-image {
