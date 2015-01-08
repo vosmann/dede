@@ -51,7 +51,6 @@ a {
     top: 0px;
     left: 50%;
     height: 140px;
-    border: 2px dashed red;
     display: block;
     z-index: 100;
 }
