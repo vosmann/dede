@@ -1,13 +1,14 @@
-<div class="container-fluid">
+<div> <!-- need? -->
 
-    <div class="row" ng-repeat="entryId in currentPage.orderedEntryIds">
-        <div class="col-md-10">
+    <div ng-repeat="entryId in currentPage.orderedEntryIds track by $index">
+        <div >
 
             <div ng-if="!currentPage.isShowFull">
 
-                <div class="hover-wrapper">
+                <div class="hover-wrapper" >
                 <a href="#/{{currentPage._id}}/{{entryId}}"
-                    class="hover-image">
+                    class="hover-image"
+                    ng-class="getAlignment($index)">
                     <img ng-src="{{getFirstImageId(currentPage._id, entryId)}}"></img>
                     <span class="hover-title">{{currentPage.entries[entryId].name}}</span >
                 </a>
@@ -16,8 +17,8 @@
 
             <div ng-if="currentPage.isShowFull">
                 <!-- Just like the entry.html partial. Code here to avoid routing. -->
-                <div class="row" ng-repeat="element in currentPage.entries[entryId].elements">
-                    <div class="col-md-10">
+                <div ng-repeat="element in currentPage.entries[entryId].elements">
+                    <div> <!-- need? -->
                         <p ng-if="element.type!=='image'">{{element.data}}</p>
                         <img ng-if="element.type==='image'"
                             ng-src="get/image/{{element.data}}"></img>

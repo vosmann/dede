@@ -1,7 +1,38 @@
 #content-all {
+    position: relative;
     margin: 0 auto;
     border: 2px dashed #DDD;
     width: 940px;
+}
+
+#content-header {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 140px;
+    width: 100%;
+    border: 2px dashed red;
+    display: block;
+}
+
+#page-menu {
+    float: right;
+}
+#page-menu li {
+    display: inline;
+}
+
+#content-lower {
+    margin-top: 140px;
+    display: block;
+}
+
+.leftie {
+    float: left;
+}
+
+.rightie {
+    float: right;
 }
 
 a.hover-image {

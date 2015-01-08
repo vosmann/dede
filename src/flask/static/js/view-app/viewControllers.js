@@ -47,6 +47,13 @@ dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParam
                 }
                 return undefined;
             }
+            $scope.getAlignment = function(entryIndex) {
+                if (entryIndex % 2 == 0) {
+                    return "leftie";
+                } else {
+                    return "rightie";
+                }
+            }
         }]);
 
 dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",
