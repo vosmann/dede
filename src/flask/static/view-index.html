@@ -13,6 +13,7 @@
     <div id="content-all">
 
         <!-- Header -->
+        <!-- <div id="content-header-wrapper">  -->
         <div id="content-header"> 
             <!-- Logo on the left. -->
             <a  href="#">
@@ -24,9 +25,11 @@
                 <ul >
                     <li ng-repeat="page in pageIdsAndNames"
                         ng-class="{ active: isActive('/' + page.id)}"><a href="#/{{page.id}}">{{page.name}}</a></li>
+                        <!-- ng-class="{ active: isActive('/' + page.id)}"><a href="#/{{page.id}}"><p class="page-menu-item-name">{{page.name}}</p></a></li> -->
                 </ul>
             </div> 
         </div> 
+        <!-- </div> -->
 
         <!-- Content -->
         <div id="content-lower">

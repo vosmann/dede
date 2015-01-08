@@ -1,0 +1,38 @@
+/*
+body {
+    font-size: 16px;
+    line-height: 19px;
+}
+
+h1 {
+    font-size: 25px;
+    line-height: 38px;
+    margin-top: 19px;
+    margin-bottom: 19px;
+}
+
+p {
+    font-size: 1em; * 25px * 
+    line-height: 1.5200em; * 38px * 
+    margin: 0 0 1.5200em 0; 
+}
+
+@font-face {
+    font-family: 'Atlas Grotesk Web';
+    src: url('/static/fonts/AtlasGrotesk-Medium-Web.eot');
+    src: url('/static/fonts/AtlasGrotesk-Medium-Web.eot?#iefix') format('embedded-opentype'),
+    url('/static/fonts/AtlasGrotesk-Medium-Web.woff') format('woff'),
+    url('/static/fonts/AtlasGrotesk-Medium-Web.ttf') format('truetype'),
+    url('/static/fonts/AtlasGrotesk-Medium-Web.svg#AtlasGrotesk-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+.AtlasGrotesk-Medium-Web {
+    font-family: 'Atlas Grotesk Web';
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+*/

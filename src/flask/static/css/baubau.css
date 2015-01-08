@@ -1,18 +1,59 @@
+@font-face {
+    font-family: 'Atlas Grotesk Web';
+    src: url('/static/fonts/AtlasGrotesk-Medium-Web.eot');
+    src: url('/static/fonts/AtlasGrotesk-Medium-Web.eot?#iefix') format('embedded-opentype'),
+    url('/static/fonts/AtlasGrotesk-Medium-Web.woff') format('woff'),
+    url('/static/fonts/AtlasGrotesk-Medium-Web.ttf') format('truetype'),
+    url('/static/fonts/AtlasGrotesk-Medium-Web.svg#AtlasGrotesk-Medium') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+
+body {
+    font-size: 16px;
+    line-height: 19px;
+    font-family: 'Atlas Grotesk Web';
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+}
+h1 {
+    font-size: 25px;
+    line-height: 38px;
+    margin-top: 19px;
+    margin-bottom: 19px;
+    color: black;
+}
+p {
+    font-size: 1em; * 25px * 
+    line-height: 1.5200em; * 38px * 
+    margin: 0 0 1.5200em 0; 
+    color: black;
+}
+a {
+    color: black;
+}
+
 #content-all {
     position: relative;
     margin: 0 auto;
-    border: 2px dashed #DDD;
     width: 940px;
 }
 
-#content-header {
+#content-header-wrapper {
     position: absolute;
+}
+#content-header {
+    position: fixed;
+    margin-left: -470px;
+    width: 940px;
     top: 0px;
-    left: 0px;
+    left: 50%;
     height: 140px;
-    width: 100%;
     border: 2px dashed red;
     display: block;
+    z-index: 100;
 }
 
 #header-logo {
@@ -23,23 +64,23 @@
     margin-top: 60px;
     float: right;
 }
-#page-menu li {
+#page-menu li { /* todo finish underlining of text and then apply it only to the "active" section */
     width: 160px;
     text-align: right;
     display: inline-block;
+    border-bottom: 3px solid black;
 }
 
 #content-lower {
     margin-top: 140px;
     display: block;
+    clear: both;
 }
-
 .leftie {
     float: left;
     margin-left: 80px;
     clear: both;
 }
-
 .rightie {
     float: right;
     margin-right: 80px;
@@ -51,23 +92,19 @@ a.hover-image {
     background: black;
     display: inline-block;
 }
-
 a.hover-image img {
     display: block;
 }
-
 a.hover-image:hover img {
     opacity: 0;
 }
-
 .hover-title {
     position: absolute;
-    top: 5px;
-    left: 5px;
+    top: 20px;
+    left: 20px;
     color: white;
     visibility: hidden;
 }
-
 a.hover-image:hover .hover-title {
     visibility: visible;
 }
