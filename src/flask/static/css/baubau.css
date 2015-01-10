@@ -26,14 +26,28 @@ h1 {
     color: black;
 }
 p {
-    font-size: 1em; * 25px * 
-    line-height: 1.5200em; * 38px * 
+    font-size: 1em; /* 25px */
+    line-height: 1.5200em; /* 38px */
     margin: 0 0 1.5200em 0; 
     color: black;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 a {
     color: black;
 }
+.title-1 {
+    font-size: 2em;
+    margin-top: 3em;
+}
+.title-2 {
+    margin-top: 1.2em;
+    text-decoration: underline;
+}
+.big-text {
+    margin-left: 8em;
+}
+
 
 #content-all {
     position: relative;

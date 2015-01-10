@@ -59,6 +59,19 @@ dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParam
 dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",
         function($scope, $rootScope, $routeParams, Pages) {
 
+            $scope.getTextCssClass = function(element) {
+                if (element.type === "title" && element.level === "1") {
+                    return "title-1";
+                }
+                if (element.type === "title" && element.level === "2") {
+                    return "title-2";
+                }
+                if (element.type === "text" && element.label === "big-text") {
+                    return "big-text"; 
+                }
+                return "";
+            }
+
             $scope.prepareImageList = function() {
                 $scope.imageIds = [];
                 var nrElements = $scope.currentEntry.elements.length;

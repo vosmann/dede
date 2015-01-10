@@ -12,7 +12,7 @@
     </div>
 
     <div class="row" ng-repeat="element in currentEntry.elements | filter: {'type':'!image'}">
-        <p>{{element.data}}</p>
+        <p ng-class="getTextCssClass(element)">{{element.data}}</p>
     </div>
 
 </div>
