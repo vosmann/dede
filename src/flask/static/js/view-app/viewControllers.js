@@ -59,6 +59,37 @@ dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParam
 dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",
         function($scope, $rootScope, $routeParams, Pages) {
 
+            $scope.prepareImageList = function() {
+                $scope.imageIds = [];
+                var nrElements = $scope.currentEntry.elements.length;
+                for (var i = 0; i < nrElements; ++i) {
+                    if ($scope.currentEntry.elements[i].type === "image") {
+                        $scope.imageIds.push($scope.currentEntry.elements[i].data);
+                    }
+                }
+                $scope.currentImageIndex = 0; // unsafe
+                console.log("currentImageIndex: " + $scope.currentImageIndex);
+            }
+            $scope.getCurrentImageId = function() {
+                return $scope.imageIds[$scope.currentImageIndex];
+            }
+            $scope.toPreviousImage = function() {
+                $scope.currentImageIndex--;
+                if ($scope.currentImageIndex < 0) {
+                    $scope.currentImageIndex = $scope.imageIds.length-1;
+                    console.log("currentImageIndex was too small. reset to: " + $scope.imageIds.length-1);
+                }
+                console.log("currentImageIndex: " + $scope.currentImageIndex);
+            }
+            $scope.toNextImage  = function() {
+                $scope.currentImageIndex++;
+                if ($scope.currentImageIndex >= $scope.imageIds.length) {
+                    $scope.currentImageIndex = 0;
+                    console.log("currentImageIndex was too big. reset to: 0");
+                }
+                console.log("currentImageIndex: " + $scope.currentImageIndex);
+            }
+
             // Duplication.
             $scope.getPageAndSetEntry = function(pageId, entryId) {
                 Pages.getPage(pageId).then(function(result) { 
@@ -101,39 +132,6 @@ dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routePara
                 }
                 return undefined;
             }
-
-            $scope.prepareImageList = function() {
-                $scope.imageIds = [];
-                var nrElements = $scope.currentEntry.elements.length;
-                for (var i = 0; i < nrElements; ++i) {
-                    if ($scope.currentEntry.elements[i].type === "image") {
-                        $scope.imageIds.push($scope.currentEntry.elements[i].data);
-                    }
-                }
-                $scope.currentImageIndex = 0; // unsafe
-                console.log("currentImageIndex: " + $scope.currentImageIndex);
-                
-            }
-            $scope.getCurrentImageId = function() {
-                return $scope.imageIds[$scope.currentImageIndex];
-            }
-            $scope.toPreviousImage = function() {
-                $scope.currentImageIndex--;
-                if ($scope.currentImageIndex < 0) {
-                    $scope.currentImageIndex = $scope.imageIds.length-1;
-                    console.log("currentImageIndex was too small. reset to: " + $scope.imageIds.length-1);
-                }
-                console.log("currentImageIndex: " + $scope.currentImageIndex);
-            }
-            $scope.toNextImage  = function() {
-                $scope.currentImageIndex++;
-                if ($scope.currentImageIndex >= $scope.imageIds.length) {
-                    $scope.currentImageIndex = 0;
-                    console.log("currentImageIndex was too big. reset to: 0");
-                }
-                console.log("currentImageIndex: " + $scope.currentImageIndex);
-            }
-
         }]);
 
 dedeViewControllers.controller("TagsCtrl", ["$scope", "Tags",
