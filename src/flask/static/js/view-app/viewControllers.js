@@ -62,8 +62,9 @@ dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routePara
             $scope.prepareImageList = function() {
                 $scope.imageIds = [];
                 var nrElements = $scope.currentEntry.elements.length;
-                for (var i = 0; i < nrElements; ++i) {
-                    if ($scope.currentEntry.elements[i].type === "image") {
+                for (var i = 1; i < nrElements; ++i) {
+                    var element = $scope.currentEntry.elements[i];
+                    if (element.type === "image" && element.label !== "overview") {
                         $scope.imageIds.push($scope.currentEntry.elements[i].data);
                     }
                 }

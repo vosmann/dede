@@ -1,22 +1,15 @@
-<div class="container-fluid">
+<!-- <div class="container-fluid"> -->
+<div class="entry-container">
 
+    <div class="image-carousel">
 
-    <button type="button" class="btn btn-sm btn-success"
-        ng-click="toPreviousImage()">prev</button>
-    <button type="button" class="btn btn-sm btn-success"
-        ng-click="toNextImage()">next</button>
-    <div class="col-md-10">
-        <img ng-src="get/image/{{getCurrentImageId()}}"></img>
-    </div>
-    <hr />
-    <!--
+        <img class="left-arrow" ng-click="toPreviousImage()" alt="previous" src="/static/img/arrow-left.png">
+        <img class="right-arrow" ng-click="toNextImage()" alt="next" src="/static/img/arrow-right.png">
 
-    <div class="row" ng-repeat="element in currentEntry.elements | filter: {'type':'image'}">
-        <div class="col-md-10">
-            <img ng-src="get/image/{{element.data}}"></img>
+        <div class="image-holder">
+            <img ng-click="toNextImage()" ng-src="get/image/{{getCurrentImageId()}}"></img>
         </div>
     </div>
-    -->
 
     <div class="row" ng-repeat="element in currentEntry.elements | filter: {'type':'!image'}">
         <div class="col-md-10">
