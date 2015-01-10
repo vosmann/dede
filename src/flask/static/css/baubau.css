@@ -118,7 +118,7 @@ a.hover-image:hover .hover-title {
 .image-holder {
     margin-left: auto;
     margin-right: auto;
-    width: 300px;
+    width: 620px;
     display: block;
     clear: none;
 }
@@ -126,12 +126,12 @@ a.hover-image:hover .hover-title {
     float: left;
     display: inline-block;
     margin-top: 320px;
-    padding: 80px;
+    padding: 20px;
 }
 .right-arrow {
     float: right;
     display: inline-block;
     margin-top: 320px;
-    padding: 80px;
+    padding: 20px;
 }
 
