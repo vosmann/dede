@@ -16,7 +16,7 @@ dedeViewApp.config(['$routeProvider',
                 controller: 'EntryCtrl'
             }).
             otherwise({
-                redirectTo: '/projects'
+                redirectTo: '/projekte'
             });
     }]);
 
