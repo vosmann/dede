@@ -80,6 +80,7 @@ p {
     display: inline-block;
 }
 
+/* hacky */
 a {
     color: black !important;
     text-decoration: none !important;

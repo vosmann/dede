@@ -10,8 +10,14 @@ dedeViewControllers.controller("PageMenuCtrl", ["$scope", "$location", "Pages",
                     $scope.pageIdsAndNames = result.data;
                 });
             };
-            $scope.isActive = function(pageLocation) {
-                return pageLocation === $location.path();
+            $scope.getMenuItemCssClass = function(pageName) {
+                var currentRelativeUrl = $location.path();
+                var isActive = (currentRelativeUrl.lastIndexOf(pageName, 0) === 0);
+                if (isActive) {
+                    return "page-menu-item-active";
+                } else {
+                    return "";
+                }
             }
             $scope.pageIdsAndNames = {};
             $scope.getPageIdsAndNames();
