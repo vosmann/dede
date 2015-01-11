@@ -23,12 +23,16 @@ body {
     font-style: normal;
     font-stretch: normal;
 }
+p {
+    color: black;
+}
 .normal-text {
     font-size: 25px;
     line-height: 38px;
     margin-top: 19px;
     margin-bottom: 19px;
-    color: black;
+}
+.paragraph-text {
     width: 780px;
     margin-left: 80px;
     margin-right: 80px;
@@ -124,13 +128,15 @@ a.hover-image:hover img {
 }
 .hover-title {
     position: absolute;
-    top: 20px;
+    top: 2px;
     left: 20px;
     color: white;
     visibility: hidden;
+    width: 150px;
 }
 a.hover-image:hover .hover-title {
     visibility: visible;
+    width: 150px;
 }
 
 .image-holder {

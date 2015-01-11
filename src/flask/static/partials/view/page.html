@@ -10,7 +10,7 @@
                     class="hover-image"
                     ng-class="getAlignment($index)">
                     <img ng-src="{{getFirstImageId(currentPage._id, entryId)}}"></img>
-                    <span class="hover-title">{{currentPage.entries[entryId].name}}</span >
+                    <span class="hover-title normal-text">{{currentPage.entries[entryId].name}}</span >
                 </a>
                 </div>
             </div>
@@ -18,7 +18,7 @@
             <div ng-if="currentPage.isShowFull">
                 <!-- Just like the entry.html partial. Code here to avoid routing. -->
                 <div ng-repeat="element in currentPage.entries[entryId].elements">
-                    <p class="normal-text" ng-if="element.type!=='image'">{{element.data}}</p>
+                    <p class="normal-text paragraph-text" ng-if="element.type!=='image'">{{element.data}}</p>
                     <img ng-if="element.type==='image'"
                         ng-src="get/image/{{element.data}}"></img>
                 </div>
