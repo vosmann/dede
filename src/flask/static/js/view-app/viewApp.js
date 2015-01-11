@@ -1,5 +1,6 @@
 var dedeViewApp = angular.module('dedeViewApp', [
     'ngRoute',
+    'ngSanitize',
     'dedeViewControllers',
     'dedeViewServices'
 ]);

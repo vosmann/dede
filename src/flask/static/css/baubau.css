@@ -143,6 +143,13 @@ a.hover-image:hover .hover-title {
     width: 150px;
 }
 
+.underlined-link {
+    border-bottom: 3px solid black !important;
+}
+.pdf-link {
+    font-size: 16px;
+}
+
 .image-holder {
     margin-left: auto;
     margin-right: auto;
