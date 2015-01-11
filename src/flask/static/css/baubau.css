@@ -33,10 +33,7 @@ p {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
-a {
-    color: black !important;
-    text-decoration: none !important;
-}
+ 
 .title-1 {
     font-size: 2em;
     margin-top: 3em;
@@ -48,7 +45,6 @@ a {
 .big-text {
     margin-left: 8em;
 }
-
 
 #content-all {
     position: relative;
@@ -82,7 +78,16 @@ a {
     width: 160px;
     text-align: right;
     display: inline-block;
-    border-bottom: 3px solid black;
+}
+
+a {
+    color: black !important;
+    text-decoration: none !important;
+}
+a.page-menu-item-active {
+    color: black !important;
+    text-decoration: none !important;
+    border-bottom: 3px solid black !important;
 }
 
 #content-lower {
@@ -123,13 +128,6 @@ a.hover-image:hover .hover-title {
     visibility: visible;
 }
 
-
-.entry-container {
-    /* position: fixed; */
-}
-.image-carousel {
-
-}
 .image-holder {
     margin-left: auto;
     margin-right: auto;

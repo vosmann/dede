@@ -24,8 +24,7 @@
             <div id="page-menu" ng-controller="PageMenuCtrl"> 
                 <ul >
                     <li ng-repeat="page in pageIdsAndNames"
-                        ng-class="{ active: isActive('/' + page.id)}"><a href="#/{{page.id}}">{{page.name}}</a></li>
-                        <!-- ng-class="{ active: isActive('/' + page.id)}"><a href="#/{{page.id}}"><p class="page-menu-item-name">{{page.name}}</p></a></li> -->
+                        ng-class="{ active: isActive('/' + page.id)}"><a class="page-menu-item-active" href="#/{{page.id}}">{{page.name}}</a></li>
                 </ul>
             </div> 
         </div> 
