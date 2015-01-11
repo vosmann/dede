@@ -32,6 +32,9 @@ p {
     color: black;
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+    width: 780px;
+    margin-left: 80px;
+    margin-right: 80px;
 }
  
 .title-1 {

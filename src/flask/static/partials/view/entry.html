@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="row" ng-repeat="element in currentEntry.elements | filter: {'type':'!image'}">
+    <div ng-repeat="element in currentEntry.elements | filter: {'type':'!image'}">
         <p ng-class="getTextCssClass(element)">{{element.data}}</p>
     </div>
 
