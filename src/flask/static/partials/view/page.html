@@ -18,11 +18,9 @@
             <div ng-if="currentPage.isShowFull">
                 <!-- Just like the entry.html partial. Code here to avoid routing. -->
                 <div ng-repeat="element in currentPage.entries[entryId].elements">
-                    <div> <!-- need? -->
-                        <p ng-if="element.type!=='image'">{{element.data}}</p>
-                        <img ng-if="element.type==='image'"
-                            ng-src="get/image/{{element.data}}"></img>
-                    </div>
+                    <p class="normal-text" ng-if="element.type!=='image'">{{element.data}}</p>
+                    <img ng-if="element.type==='image'"
+                        ng-src="get/image/{{element.data}}"></img>
                 </div>
             </div>
 

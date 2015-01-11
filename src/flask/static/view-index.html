@@ -23,7 +23,8 @@
             <div id="page-menu" ng-controller="PageMenuCtrl"> 
                 <ul>
                     <li ng-repeat="page in pageIdsAndNames">
-                        <a ng-class="getMenuItemCssClass('/' + page.id)" 
+                        <a class="navigation-text"
+                            ng-class="getMenuItemCssClass('/' + page.id)" 
                             href="#/{{page.id}}">{{page.name}}</a></li>
                 </ul>
             </div> 
