@@ -98,6 +98,9 @@ a.page-menu-item-active {
     text-decoration: none !important;
     border-bottom: 3px solid black !important;
 }
+a.shifted {
+    margin-right: 0.9em;
+}
 
 #content-lower {
     margin-top: 140px;

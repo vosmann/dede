@@ -13,11 +13,15 @@ dedeViewControllers.controller("PageMenuCtrl", ["$scope", "$location", "Pages",
             $scope.getMenuItemCssClass = function(pageName) {
                 var currentRelativeUrl = $location.path();
                 var isActive = (currentRelativeUrl.lastIndexOf(pageName, 0) === 0);
+                var isInfo = (pageName.indexOf("info", 0) > -1); // terrible.
+                var itemClass = "";
                 if (isActive) {
-                    return "page-menu-item-active";
-                } else {
-                    return "";
+                    itemClass = itemClass + "page-menu-item-active";
                 }
+                if (isInfo) {
+                    itemClass = itemClass + " shifted";
+                }
+                return itemClass;
             }
             $scope.pageIdsAndNames = {};
             $scope.getPageIdsAndNames();
