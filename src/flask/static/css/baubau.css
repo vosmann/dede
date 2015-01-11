@@ -162,3 +162,12 @@ a.hover-image:hover .hover-title {
     padding: 20px;
 }
 
+.bottom-buffer {
+    position: relative;
+    left: 0;
+    bottom: 0;
+    height: 300px;
+    width: 100%;
+    clear: both;
+}
+
