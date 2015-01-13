@@ -24,3 +24,8 @@ ssh -i ~/.ssh/vjeko-key-pair.pem ec2-user@ec2-54-76-149-171.eu-west-1.compute.am
 # TODO
 # 1. write a script that will ship the current code on master.
 #    1a. it could also perhaps change some settings from dev (includes debug info) to production settings.
+
+
+# setting up a gunicorn (standalone wsgi) + supervisor production server
+sudo apt-get install supervisor gunicorn authbind
+
