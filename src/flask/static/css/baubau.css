@@ -34,7 +34,7 @@ p {
     margin-bottom: 19px;
     letter-spacing: 0.02em;
 }
-.paragraph-text {
+.centered-subcontent {
     width: 780px;
     margin-left: 80px;
     margin-right: 80px;
@@ -151,24 +151,37 @@ a.hover-image:hover .hover-title {
     font-size: 16px;
 }
 
+.image-slider {
+    height: 852px;
+}
+
 .image-holder {
-    margin-left: auto;
-    margin-right: auto;
     width: 620px;
-    display: block;
+    display: inline-block;
     clear: none;
 }
-.left-arrow {
-    float: left;
+
+.arrow-box {
+    width: 80px;
+    height: 852px;
     display: inline-block;
+}
+.arrow {
     margin-top: 420px;
     padding: 20px;
 }
-.right-arrow {
+
+.floater-left {
+    float: left;
+}
+.floater-right {
     float: right;
-    display: inline-block;
-    margin-top: 420px;
-    padding: 20px;
+}
+.shifter-left {
+    margin-left: -20px;
+}
+.shifter-right {
+    margin-right: -20px;
 }
 
 .bottom-buffer {

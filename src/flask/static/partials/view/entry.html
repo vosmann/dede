@@ -1,10 +1,15 @@
 <!-- <div class="container-fluid"> -->
 <div class="entry-container">
 
-    <div class="image-carousel">
+    <div class="image-slider centered-subcontent">
 
-        <img class="left-arrow" ng-click="toPreviousImage()" alt="previous" src="/static/img/arrow-left.png">
-        <img class="right-arrow" ng-click="toNextImage()" alt="next" src="/static/img/arrow-right.png">
+        <div class="arrow-box floater-left">
+            <img class="arrow floater-left shifter-left" ng-click="toPreviousImage()" alt="previous" src="/static/img/arrow-left.png">
+        </div>
+
+        <div class="arrow-box floater-right">
+            <img class="arrow floater-right shifter-right" ng-click="toNextImage()" alt="next" src="/static/img/arrow-right.png">
+        </div>
 
         <div class="image-holder">
             <img ng-click="toNextImage()" ng-src="get/image/{{getCurrentImageId()}}"></img>
@@ -12,7 +17,7 @@
     </div>
 
     <div ng-repeat="element in currentEntry.elements | filter: {'type':'!image'}">
-        <p class="normal-text paragraph-text" ng-class="getTextCssClass(element)" ng-bind-html="element.data"></p>
+        <p class="normal-text centered-subcontent" ng-class="getTextCssClass(element)" ng-bind-html="element.data"></p>
     </div>
 
 </div>
