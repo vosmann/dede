@@ -51,9 +51,9 @@ p {
     margin-top: 1.2em;
     font-size: 20px;
     text-transform: uppercase;
+    letter-spacing: 0.1em;
 }
 .big-text {
-    margin-left: 8em;
 }
 
 #content-all {
