@@ -4,6 +4,7 @@ from pymongo import MongoClient
 
 import json
 import os
+import sys
 import gridfs
 import urllib, cStringIO
 
@@ -116,5 +117,9 @@ def id_query(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=4000, host='0.0.0.0')
+
+    if len(sys.argv) == 2 and sys.argv[1] == "debug":
+        app.run(debug=True, port=80)
+    else:
+        app.run()
 
