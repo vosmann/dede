@@ -154,19 +154,6 @@ a.hover-image:hover .hover-title {
 .image-slider {
     height: 852px;
 }
-
-/*
-.slider-image-holder {
-    width: 620px;
-    height: 852px;
-    line-height: 852px;
-    display: inline-block;
-}
-.slider-image {
-    vertical-align: middle;
-    text-align: middle;
-}
-*/
 .slider-image-holder {
     width: 620px;
     height: 852px;
@@ -189,7 +176,6 @@ a.hover-image:hover .hover-title {
     margin-top: 420px;
     padding: 20px;
 }
-
 .floater-left {
     float: left;
 }
