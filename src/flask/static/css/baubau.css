@@ -155,10 +155,29 @@ a.hover-image:hover .hover-title {
     height: 852px;
 }
 
-.image-holder {
+/*
+.slider-image-holder {
     width: 620px;
+    height: 852px;
+    line-height: 852px;
     display: inline-block;
-    clear: none;
+}
+.slider-image {
+    vertical-align: middle;
+    text-align: middle;
+}
+*/
+.slider-image-holder {
+    width: 620px;
+    height: 852px;
+    display: inline-block;
+    position: relative;
+}
+.slider-image {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
 }
 
 .arrow-box {
