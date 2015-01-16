@@ -66,8 +66,8 @@ dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParam
             }
         }]);
 
-dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "Pages",
-        function($scope, $rootScope, $routeParams, Pages) {
+dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "Pages",
+        function($scope, $rootScope, $routeParams, $location, Pages) {
 
             $scope.getTextCssClass = function(element) {
                 if (element.type === "title" && element.level === "1") {
@@ -95,6 +95,7 @@ dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routePara
                 console.log("currentImageIndex: " + $scope.currentImageIndex);
             }
             $scope.getCurrentImageId = function() {
+                $location.hash("content-header");
                 return $scope.imageIds[$scope.currentImageIndex];
             }
             $scope.toPreviousImage = function() {
