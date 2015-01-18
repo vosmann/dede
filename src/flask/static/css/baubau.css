@@ -94,6 +94,7 @@ p {
 a {
     color: black !important;
     text-decoration: none !important;
+    outline: none !important;
 }
 a.page-menu-item-active {
     color: black !important;
