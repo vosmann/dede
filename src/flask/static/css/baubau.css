@@ -134,8 +134,8 @@ a.hover-image:hover img {
 }
 .hover-title {
     position: absolute;
-    top: 2px;
-    left: 38px;
+    top: 0px;
+    left: 19px;
     color: white;
     visibility: hidden;
     width: 150px;
