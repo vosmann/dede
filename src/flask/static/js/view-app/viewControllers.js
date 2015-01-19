@@ -64,6 +64,12 @@ dedeViewControllers.controller("PageCtrl", ["$scope", "$rootScope", "$routeParam
                     return "rightie";
                 }
             }
+            $scope.getTextCssClass = function(element) {
+                if (element.type === "text" && element.label === "top-padding") {
+                    return "top-padding";
+                }
+                return "";
+            }
         }]);
 
 dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routeParams", "$location", "Pages",
@@ -78,6 +84,9 @@ dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routePara
                 }
                 if (element.type === "text" && element.label === "big-text") {
                     return "big-text"; 
+                }
+                if (element.type === "text" && element.label === "top-padding") {
+                    return "top-padding";
                 }
                 return "";
             }

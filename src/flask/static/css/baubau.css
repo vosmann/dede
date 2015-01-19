@@ -55,6 +55,9 @@ p {
 }
 .big-text {
 }
+.top-padding {
+    padding-top: 80px;
+}
 
 #content-all {
     position: relative;
