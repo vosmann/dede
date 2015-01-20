@@ -156,11 +156,11 @@ a.hover-image:hover .hover-title {
 }
 
 .image-slider {
-    height: 632px;
+    height: 640px;
 }
 .slider-image-holder {
     width: 620px;
-    height: 632px;
+    height: 640px;
     display: inline-block;
     position: relative;
 }
@@ -177,11 +177,11 @@ a.hover-image:hover .hover-title {
 
 .arrow-box {
     width: 80px;
-    height: 632px;
+    height: 640px;
     display: inline-block;
 }
 .arrow {
-    margin-top: 316px;
+    margin-top: 320px;
     padding: 20px;
 }
 .floater-left {
