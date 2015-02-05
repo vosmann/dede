@@ -26,6 +26,7 @@
                     <li ng-repeat="page in pageIdsAndNames">
                         <a class="navigation-text"
                             ng-class="getMenuItemCssClass('/' + page.id)" 
+                            ng-cloak
                             href="#/{{page.id}}">{{page.name}}</a></li>
                 </ul>
             </div> 

@@ -17,6 +17,7 @@
                 <div ng-repeat="element in currentPage.entries[entryId].elements">
                     <p class="normal-text centered-subcontent" ng-if="element.type!=='image'"
                         ng-class="getTextCssClass(element)"
+                        ng-cloak
                         ng-bind-html="element.data"></p>
                     <img ng-if="element.type==='image'"
                         ng-src="get/image/{{element.data}}"></img>

@@ -17,7 +17,7 @@
     </div>
 
     <div ng-repeat="element in currentEntry.elements | filter: {'type':'!image'}">
-        <p class="normal-text centered-subcontent" ng-class="getTextCssClass(element)" ng-bind-html="element.data"></p>
+        <p ng-cloak class="normal-text centered-subcontent" ng-class="getTextCssClass(element)" ng-bind-html="element.data"></p>
     </div>
 
 </div>
