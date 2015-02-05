@@ -206,3 +206,6 @@ a.hover-image:hover .hover-title {
     clear: both;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+    display: none !important;
+}
