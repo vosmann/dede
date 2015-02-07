@@ -293,7 +293,10 @@ dedeEditControllers.controller("ImageUploadCtrl", ["$scope", "$rootScope", "$upl
                         $scope.percentageDone = 0;
                         console.log(data);
                         $rootScope.$emit('imageUpload', [1, 2, 3]); // event, data
+                    }).error(function(data, status, headers, config) {
+                        console.log("Error occured. Status: " + status);
                     });
+
                 }
             };
         }]);

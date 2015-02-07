@@ -38,7 +38,8 @@ dedeEditServices.factory('Page', ['$http',
             store: function(page) {
                 // Always saves, even when overwriting. An improvement would be a modal that 
                 // asks whether to proceed updating the page if it already exists.
-                $http.post("http://" + window.location.hostname + ":5000/edit/store/page", page);
+                var promise = $http.post("http://" + window.location.hostname + ":5000/edit/store/page", page);
+                return promise;
             },
             delete: function(page) {
                 $http.post("http://" + window.location.hostname + ":5000/edit/delete/page", page);
@@ -81,7 +82,8 @@ dedeEditServices.factory('Entry', ['$http',
             store: function(entry) {
                 // Always saves, even when overwriting. An improvement would be a modal that 
                 // asks whether to proceed updating the page if it already exists.
-                $http.post("http://" + window.location.hostname + ":5000/edit/store/entry", entry);
+                var promise = $http.post("http://" + window.location.hostname + ":5000/edit/store/entry", entry);
+                return promise;
             },
             delete: function(entry) {
                 $http.post("http://" + window.location.hostname + ":5000/edit/delete/entry", entry);
@@ -98,7 +100,8 @@ dedeEditServices.factory('Tags', ['$http',
                 return promise;
             },
             store: function(tag) {
-                $http.post("/edit/store/tag", tag);
+                var promise = $http.post("/edit/store/tag", tag);
+                return promise;
             }
         }
     }]);
