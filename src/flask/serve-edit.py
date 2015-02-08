@@ -13,7 +13,6 @@
 # The idea behind using the objects is to give some structure to the domain entities and to not do
 # too much dirty work with dicts everywhere.
 
-# from flask import Flask, request, redirect, url_for
 from flask import Flask, send_file, request, redirect, url_for
 from flask.ext.login import LoginManager, login_user, fresh_login_required, current_user
 from werkzeug import secure_filename
@@ -48,9 +47,12 @@ app.permanent_session_lifetime = timedelta(hours=2)
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
 login_manager.init_app(app)
+login_manager.login_view = "login"
 
 # MASSIVE TODOS:
 # - redirect to /login from everywhere (if there is no session/login)
+# - remove stupid prints and set up good logging
+# - modularize code
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
@@ -71,13 +73,7 @@ def login():
                 login_user(user) 
                 print "3b: current_user (AFTER logging him into flask-login with login_user()):"
                 print current_user.__dict__
-
-                # make this redirecting happen
-                url = 'www.google.de' # 'localhost:5000' + url_for('edit')
-                print "4: redirecting to:"
-                print url
-                redirect(url, code = 307)
-                # redirect('/edit') # return redirect(request.args.get("next") or url_for("index"))
+                return redirect(url_for('edit'), code = 302)
             else:
                 print "3: login failed"
     return send_file('static/partials/login.html')
