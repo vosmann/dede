@@ -50,7 +50,6 @@ login_manager.init_app(app)
 login_manager.login_view = "login"
 
 # MASSIVE TODOS:
-# - redirect to /login from everywhere (if there is no session/login)
 # - remove stupid prints and set up good logging
 # - modularize code
 
@@ -365,8 +364,6 @@ def id_query(id):
 
 def name_query(name):
     return {'name': name}
-
-
 
 
 if __name__ == "__main__":
