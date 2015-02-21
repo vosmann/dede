@@ -24,7 +24,7 @@ from entities.view_entry import ViewEntry
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
-app = Flask(__name__)
+dede_view_app = Flask(__name__)
 
 
 # Delivering HTML
@@ -119,7 +119,7 @@ def id_query(id):
 if __name__ == "__main__":
 
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
-        app.run(debug=True, port=80)
+        dede_view_app.run(debug=True, port=80)
     else:
-        app.run()
+        dede_view_app.run()
 

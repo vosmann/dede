@@ -37,16 +37,16 @@ ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 
-app = Flask(__name__)
-app.server_name = "localhost" # "dede.de"
-app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # this key is what session cookies are encrypted with
-app.session_cookie_name = "ed_session"
-app.config["SESSION_COOKIE_SECURE"] = False # Set to True after HTTPS is set up.
-app.permanent_session_lifetime = timedelta(hours=2)
+dede_edit_app = Flask(__name__)
+dede_edit_app.server_name = "localhost" # "dede.de"
+dede_edit_app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # this key is what session cookies are encrypted with
+dede_edit_app.session_cookie_name = "ed_session"
+dede_edit_app.config["SESSION_COOKIE_SECURE"] = False # Set to True after HTTPS is set up.
+dede_edit_app.permanent_session_lifetime = timedelta(hours=2)
 
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
-login_manager.init_app(app)
+login_manager.init_app(dede_edit_app)
 login_manager.login_view = "login"
 
 # MASSIVE TODOS:
@@ -367,5 +367,5 @@ def name_query(name):
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    dede_edit_app.run(debug=True, host='0.0.0.0')
 

@@ -1,0 +1,9 @@
+1. Modularize python code.
+2. Add decent logging.
+3. Set up build that minifies and obfuscates JS _and_ python code.
+4. Make a nice, basic, centered layout, based on bootstrap, that is easily extendable with less/sass.
+5. Fix the renaming thing: have a "project id" field and separate "project name" and a separate "url" field.
+   - Allow slashes in the project name. A separate url will then _not_ allow them. -> Add a regex check before anything
+     is stored.
+
+
