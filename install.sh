@@ -23,6 +23,11 @@ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
 echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
 sudo apt-get update
 sudo apt-get install mongodb-org
+sudo locale-gen de_DE.UTF-8 # or something like en_US.UTF-8
+sudo dpkg-reconfigure locales # perhaps this will be necessary too
+# mongodump
+# mongorestore dir-with-dump/
+
 # handy
 sudo apt-get install tree htop ack-grep
 # maybe
@@ -36,11 +41,17 @@ ssh -i ~/.ssh/vjeko-key-pair.pem ubuntu@54.93.102.116 # dede-test
 # TODO
 # 1. write a script that will ship the current code on master.
 #    1a. it could also perhaps change some settings from dev (includes debug info) to production settings.
+./ship-dede-test.sh 54.93.120.129
+scp -i ~/.ssh/dede-test.pem refresh.sh ubuntu@54.93.120.129:/home/ubuntu/dede/
 
 # setting up a gunicorn (standalone wsgi) + supervisor production server
 sudo apt-get install supervisor gunicorn authbind
 
 # Starting gunicorn on HTTPS
 gunicorn -w3 --certfile=server.crt --keyfile=server.key test:app
+
+# Setting up HTTPS
+sudo apt-get install openssl
+openssl genrsa 2048 > private-key.pem
 
 
