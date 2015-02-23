@@ -28,11 +28,11 @@ dede_view_app = Flask(__name__)
 
 
 # Delivering HTML
-@app.route("/")
+@dede_view_app.route("/")
 def hello():
     return send_file('static/view-index.html')
 
-@app.route('/get/pageIdsAndNames', methods = ['GET'])
+@dede_view_app.route('/get/pageIdsAndNames', methods = ['GET'])
 def get_page_ids_and_names():
     db_pages = mongo.dede.pages.find()
     pages = [ Page(db_page) for db_page in db_pages ]
@@ -43,7 +43,7 @@ def get_page_ids_and_names():
     print json.dumps(ids_and_names)
     return json.dumps(ids_and_names)
 
-@app.route('/get/page/<page_id>', methods = ['GET'])
+@dede_view_app.route('/get/page/<page_id>', methods = ['GET'])
 def get_page(page_id):
     db_pages = mongo.dede.pages.find()
     pages = [Page(db_page) for db_page in db_pages if Page(db_page).is_shown] # cache
@@ -70,7 +70,7 @@ def assemble_view_page(page):
     return view_page.json_dict()
 
 
-@app.route('/get/entry/<entry_id>', methods = ['GET'])
+@dede_view_app.route('/get/entry/<entry_id>', methods = ['GET'])
 def get_entry(entry_id):
     raw_entry = mongo.dede.entries.find_one({'name': entry_name}) # Create an index on "name"?
     if raw_entry is not None:
@@ -78,14 +78,14 @@ def get_entry(entry_id):
     else:
         return json.dumps({});
 
-@app.route('/get/elementTypes', methods = ['GET'])
+@dede_view_app.route('/get/elementTypes', methods = ['GET'])
 def get_element_types():
     types = ["title", "text", "image"] # These are hard coded in markup. So, that's just great.
     return json.dumps(types)
 
 
 # Tags
-@app.route('/get/tags', methods = ['GET'])
+@dede_view_app.route('/get/tags', methods = ['GET'])
 def get_tags():
     tags = []
     db_tags = mongo.dede.tags.find()
@@ -98,7 +98,7 @@ def get_tags():
 
 
 # Images
-@app.route('/get/image/metadata/<id>', methods = ['GET'])
+@dede_view_app.route('/get/image/metadata/<id>', methods = ['GET'])
 def get_image_metadata():
     print "id:{0}, query: {1}".format(id, id_query(id))
     db_metadata = mongo.dede.image_metadata.find_one(id_query(id))
@@ -106,7 +106,7 @@ def get_image_metadata():
     print db_metadata
     return json.dumps(db_metadata)
 
-@app.route('/get/image/<id>', methods = ['GET'])
+@dede_view_app.route('/get/image/<id>', methods = ['GET'])
 def get_image(id):
     print "getting image by id {0}".format(id)
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')

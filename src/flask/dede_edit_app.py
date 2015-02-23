@@ -53,7 +53,7 @@ login_manager.login_view = "login"
 # - remove stupid prints and set up good logging
 # - modularize code
 
-@app.route("/login", methods=['GET', 'POST'])
+@dede_edit_app.route("/login", methods=['GET', 'POST'])
 def login():
     print "login()"
     if request.method == 'POST':
@@ -100,14 +100,14 @@ def load_user(username):
 
 
 # Delivering HTML
-@app.route("/edit")
+@dede_edit_app.route("/edit")
 @fresh_login_required
 def edit():
     print "/edit was opened. sending the one-page-app edit-index.html"
     return send_file('static/edit-index.html')
 
 # REST methods for Page
-@app.route('/edit/store/page', methods = ['POST'])
+@dede_edit_app.route('/edit/store/page', methods = ['POST'])
 @fresh_login_required
 def store_page():
 
@@ -125,14 +125,14 @@ def store_page():
         mongo.dede.pages.update(id_query_from_obj(incoming_json), incoming_page.json_dict())
     return 'ok'
 
-@app.route('/edit/delete/page', methods = ['POST'])
+@dede_edit_app.route('/edit/delete/page', methods = ['POST'])
 @fresh_login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
-@app.route('/edit/get/pageNames', methods = ['GET'])
+@dede_edit_app.route('/edit/get/pageNames', methods = ['GET'])
 def get_page_names():
     db_pages = mongo.dede.pages.find()
     names = []
@@ -141,7 +141,7 @@ def get_page_names():
         names.append(page.name)
     return json.dumps(names)
 
-@app.route('/edit/get/page/<page_name>', methods = ['GET'])
+@dede_edit_app.route('/edit/get/page/<page_name>', methods = ['GET'])
 def get_page(page_name):
     db_page = mongo.dede.pages.find_one(name_query(page_name)) # Create an index on "name"?
     if db_page is not None:
@@ -151,7 +151,7 @@ def get_page(page_name):
 
 
 # REST methods for Entry
-@app.route('/edit/store/entry', methods = ['POST'])
+@dede_edit_app.route('/edit/store/entry', methods = ['POST'])
 @fresh_login_required
 def store_entry():
 
@@ -182,14 +182,14 @@ def store_entry():
     
     return 'ok'
 
-@app.route('/edit/delete/entry', methods = ['POST'])
+@dede_edit_app.route('/edit/delete/entry', methods = ['POST'])
 @fresh_login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
-@app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
+@dede_edit_app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
 def get_entry_names(page_name):
 
     db_page = mongo.dede.pages.find_one(name_query(page_name))
@@ -207,7 +207,7 @@ def get_entry_names(page_name):
 
     return json.dumps(entry_names)
 
-@app.route('/edit/get/entry/<entry_name>', methods = ['GET'])
+@dede_edit_app.route('/edit/get/entry/<entry_name>', methods = ['GET'])
 def get_entry(entry_name):
     raw_entry = mongo.dede.entries.find_one({'name': entry_name}) # Create an index on "name"?
     if raw_entry is not None:
@@ -215,7 +215,7 @@ def get_entry(entry_name):
     else:
         return json.dumps({});
 
-@app.route('/edit/get/elementTypes', methods = ['GET'])
+@dede_edit_app.route('/edit/get/elementTypes', methods = ['GET'])
 def get_element_types():
     types = ["title", "text", "image"] # These are hard coded in markup. So, that's just great.
     return json.dumps(types)
@@ -223,7 +223,7 @@ def get_element_types():
 
 # Tags
 # TODO Actually, should keep _id *and* display name so that the latter can be changed.
-@app.route('/edit/store/tag', methods = ['POST'])
+@dede_edit_app.route('/edit/store/tag', methods = ['POST'])
 @fresh_login_required
 def store_tag():
     incoming_json = request.get_json() # dict
@@ -240,7 +240,7 @@ def store_tag():
         mongo.dede.tags.update(id_query_from_obj(incoming_json), incoming_json)
     return "ok"
 
-@app.route('/edit/get/tags', methods = ['GET'])
+@dede_edit_app.route('/edit/get/tags', methods = ['GET'])
 def get_tags():
     tags = []
     db_tags = mongo.dede.tags.find()
@@ -254,7 +254,7 @@ def get_tags():
 # Images
 # Note: Could switch to "Flask-Uploads" at some point.
 # Note: flask can also use directories on the filesystem for file storage.
-@app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
+@dede_edit_app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
 def get_image_metadata():
     print "id:{0}, query: {1}".format(id, id_query(id))
     db_metadata = mongo.dede.image_metadata.find_one(id_query(id))
@@ -262,7 +262,7 @@ def get_image_metadata():
     print db_metadata
     return json.dumps(db_metadata)
 
-@app.route('/edit/get/image/metadata/all', methods = ['GET'])
+@dede_edit_app.route('/edit/get/image/metadata/all', methods = ['GET'])
 def get_all_images_metadata():
     all_metadata = []
     all_db_metadata = mongo.dede.image_metadata.find()
@@ -273,12 +273,12 @@ def get_all_images_metadata():
     print all_metadata
     return json.dumps(all_metadata)
 
-@app.route('/edit/get/image/<id>', methods = ['GET'])
+@dede_edit_app.route('/edit/get/image/<id>', methods = ['GET'])
 def get_image(id):
     print "getting image by id {0}".format(id)
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
-@app.route('/edit/store/image', methods = ['POST'])
+@dede_edit_app.route('/edit/store/image', methods = ['POST'])
 @fresh_login_required
 def store_image():
     print "In method: /edit/store/image !"
@@ -299,7 +299,7 @@ def store_image():
             return "ok"
     abort(400) # bad request
 
-@app.route('/edit/delete/image/<id>', methods = ['POST'])
+@dede_edit_app.route('/edit/delete/image/<id>', methods = ['POST'])
 @fresh_login_required
 def delete_image(id):
     mongo.dede.image_metadata.remove(id_query(id))
