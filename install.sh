@@ -47,11 +47,97 @@ scp -i ~/.ssh/dede-test.pem refresh.sh ubuntu@54.93.120.129:/home/ubuntu/dede/
 # setting up a gunicorn (standalone wsgi) + supervisor production server
 sudo apt-get install supervisor gunicorn authbind
 
+# trying to get a newer gunicorn
+sudo apt-get install python-software-properties
+sudo apt-add-repository ppa:gunicorn/ppa
+sudo apt-get update
+sudo apt-get install gunicorn
+
+# do
+sudo vi /etc/apt/sources.list
+# and add these to get new gunicorn
+deb http://ppa.launchpad.net/gunicorn/ppa/ubuntu trusty main
+deb-src http://ppa.launchpad.net/gunicorn/ppa/ubuntu trusty main
+# and then do to install
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5370FF2A
+sudo apt-get update
+sudo apt-get install gunicorn
+
+
 # Starting gunicorn on HTTPS
 gunicorn -w3 --certfile=server.crt --keyfile=server.key test:app
 
 # Setting up HTTPS
 sudo apt-get install openssl
-openssl genrsa 2048 > private-key.pem
+openssl req -x509 -sha256 -newkey rsa:2048 -nodes -keyout dede-test-https-key.pem -out dede-test-https-cert.pem -days 365
+# -nodes makes a certificate without a password phrase.
+# openssl genrsa 2048 > private-key.pem # doesn't make a certificate
+
+
+
+# failing to open https://54.93.120.129/edit in firefox:
+ubuntu@ip-172-31-31-129:~/dede/src/flask$ sudo gunicorn  -c /home/ubuntu/dede/config/gunicorn_dede_edit_app.conf dede_edit_app:dede_edit_app --certfile=/home/ubuntu/ssl/dede-test-https-cert.pem --keyfile=/home/ubuntu/ssl/dede-test-https-key.pem
+2015-03-01 18:15:35 [32386] [INFO] Starting gunicorn 17.5
+2015-03-01 18:15:35 [32386] [INFO] Listening at: https://0.0.0.0:443 (32386)
+2015-03-01 18:15:35 [32386] [INFO] Using worker: sync
+2015-03-01 18:15:35 [32391] [INFO] Booting worker with pid: 32391
+Enter PEM pass phrase:
+2015-03-01 18:16:12 [32391] [ERROR] Error handling request
+Traceback (most recent call last):
+File "/usr/lib/python2.7/dist-packages/gunicorn/workers/sync.py", line 87, in handle
+req = six.next(parser)
+File "/usr/lib/python2.7/dist-packages/gunicorn/http/parser.py", line 39, in __next__
+self.mesg = self.mesg_class(self.cfg, self.unreader, self.req_count)
+File "/usr/lib/python2.7/dist-packages/gunicorn/http/message.py", line 152, in __init__
+super(Request, self).__init__(cfg, unreader)
+File "/usr/lib/python2.7/dist-packages/gunicorn/http/message.py", line 49, in __init__
+unused = self.parse(self.unreader)
+File "/usr/lib/python2.7/dist-packages/gunicorn/http/message.py", line 164, in parse
+self.get_data(unreader, buf, stop=True)
+File "/usr/lib/python2.7/dist-packages/gunicorn/http/message.py", line 155, in get_data
+data = unreader.read()
+File "/usr/lib/python2.7/dist-packages/gunicorn/http/unreader.py", line 38, in read
+d = self.chunk()
+File "/usr/lib/python2.7/dist-packages/gunicorn/http/unreader.py", line 65, in chunk
+return self.sock.recv(self.mxchunk)
+File "/usr/lib/python2.7/ssl.py", line 341, in recv
+return self.read(buflen)
+File "/usr/lib/python2.7/ssl.py", line 260, in read
+return self._sslobj.read(len)
+SSLError: [Errno 1] _ssl.c:1429: error:14094418:SSL routines:SSL3_READ_BYTES:tlsv1 alert unknown ca
+
+
+Enter PEM pass phrase:
+2015-03-01 18:22:21 [32391] [ERROR] Error handling request
+Traceback (most recent call last):
+File "/usr/lib/python2.7/dist-packages/gunicorn/workers/sync.py", line 84, in handle
+**self.cfg.ssl_options)
+File "/usr/lib/python2.7/ssl.py", line 487, in wrap_socket
+ciphers=ciphers)
+File "/usr/lib/python2.7/ssl.py", line 241, in __init__
+ciphers)
+SSLError: [Errno 336265225] _ssl.c:355: error:140B0009:SSL routines:SSL_CTX_use_PrivateKey_file:PEM lib
+
+
+Enter PEM pass phrase:
+2015-03-01 18:22:30 [32391] [ERROR] Error handling request
+Traceback (most recent call last):
+File "/usr/lib/python2.7/dist-packages/gunicorn/workers/sync.py", line 84, in handle
+**self.cfg.ssl_options)
+File "/usr/lib/python2.7/ssl.py", line 487, in wrap_socket
+ciphers=ciphers)
+File "/usr/lib/python2.7/ssl.py", line 241, in __init__
+ciphers)
+SSLError: [Errno 336265225] _ssl.c:355: error:140B0009:SSL routines:SSL_CTX_use_PrivateKey_file:PEM lib
+Enter PEM pass phrase:
+2015-03-01 18:22:32 [32391] [ERROR] Error handling request
+Traceback (most recent call last):
+File "/usr/lib/python2.7/dist-packages/gunicorn/workers/sync.py", line 84, in handle
+**self.cfg.ssl_options)
+File "/usr/lib/python2.7/ssl.py", line 487, in wrap_socket
+ciphers=ciphers)
+File "/usr/lib/python2.7/ssl.py", line 241, in __init__
+ciphers)
+SSLError: [Errno 336265225] _ssl.c:355: error:140B0009:SSL routines:SSL_CTX_use_PrivateKey_file:PEM lib
 
 

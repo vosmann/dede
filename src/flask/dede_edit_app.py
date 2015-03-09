@@ -13,6 +13,9 @@
 # The idea behind using the objects is to give some structure to the domain entities and to not do
 # too much dirty work with dicts everywhere.
 
+# TODO rename the app from "dede_edit_app" back to "app". gunicorn takes filename:appname as params.
+# all apps can be called "app" as long as they're in different files.
+
 from flask import Flask, send_file, request, redirect, url_for
 from flask.ext.login import LoginManager, login_user, fresh_login_required, current_user
 from werkzeug import secure_filename
