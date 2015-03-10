@@ -76,11 +76,15 @@ dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routePara
         function($scope, $rootScope, $routeParams, $location, Pages) {
 
             $scope.getTextCssClass = function(element) {
+                // bad bad bad
                 if (element.type === "title" && element.level === "1") {
                     return "title-1";
                 }
                 if (element.type === "title" && element.level === "2") {
                     return "title-2";
+                }
+                if (element.type === "title" && element.level === "3") {
+                    return "title-3";
                 }
                 if (element.type === "text" && element.label === "big-text") {
                     return "big-text"; 

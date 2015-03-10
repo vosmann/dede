@@ -53,6 +53,11 @@ p {
     text-transform: uppercase;
     letter-spacing: 0.2em;
 }
+.title-3 {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+}
 .big-text {
 }
 .top-padding {
