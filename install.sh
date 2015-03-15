@@ -45,7 +45,7 @@ ssh -i ~/.ssh/vjeko-key-pair.pem ubuntu@54.93.102.116 # dede-test
 scp -i ~/.ssh/dede-test.pem refresh.sh ubuntu@54.93.120.129:/home/ubuntu/dede/
 
 # setting up a gunicorn (standalone wsgi) + supervisor production server
-sudo apt-get install supervisor gunicorn authbind
+sudo apt-get install supervisor gunicorn authbind nginx
 
 # trying to get a newer gunicorn
 sudo apt-get install python-software-properties
@@ -74,6 +74,16 @@ openssl req -x509 -sha256 -newkey rsa:2048 -nodes -keyout dede-test-https-key.pe
 # openssl genrsa 2048 > private-key.pem # doesn't make a certificate
 
 
+
+
+
+
+
+
+
+
+
+# TODO delete below
 
 # failing to open https://54.93.120.129/edit in firefox:
 ubuntu@ip-172-31-31-129:~/dede/src/flask$ sudo gunicorn  -c /home/ubuntu/dede/config/gunicorn_dede_edit_app.conf dede_edit_app:dede_edit_app --certfile=/home/ubuntu/ssl/dede-test-https-cert.pem --keyfile=/home/ubuntu/ssl/dede-test-https-key.pem
