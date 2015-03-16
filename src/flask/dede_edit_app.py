@@ -18,6 +18,7 @@
 
 from flask import Flask, send_file, request, redirect, url_for
 from flask.ext.login import LoginManager, login_user, fresh_login_required, current_user
+from werkzeug.contrib.fixers import ProxyFix
 from werkzeug import secure_filename
 from pymongo import MongoClient
 from time import strftime
@@ -41,6 +42,8 @@ mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 
 dede_edit_app = Flask(__name__)
+dede_edit_app.wsgi_app = ProxyFix(dede_edit_app.wsgi_app)
+
 dede_edit_app.server_name = "localhost" # "dede.de"
 dede_edit_app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # this key is what session cookies are encrypted with
 dede_edit_app.session_cookie_name = "ed_session"
@@ -370,5 +373,8 @@ def name_query(name):
 
 
 if __name__ == "__main__":
-    dede_edit_app.run(debug=True, host='0.0.0.0')
+    if len(sys.argv) == 2 and sys.argv[1] == "debug":
+        dede_edit_app.run(debug=True, port=5000)
+    else:
+        dede_edit_app.run()
 

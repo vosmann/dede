@@ -1,5 +1,6 @@
 # Clean up imports
 from flask import Flask, send_file, request
+from werkzeug.contrib.fixers import ProxyFix
 from pymongo import MongoClient
 
 import json
@@ -25,6 +26,7 @@ from entities.view_entry import ViewEntry
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 dede_view_app = Flask(__name__)
+dede_view_app.wsgi_app = ProxyFix(dede_view_app.wsgi_app)
 
 
 # Delivering HTML
@@ -117,7 +119,6 @@ def id_query(id):
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
         dede_view_app.run(debug=True, port=80)
     else:
