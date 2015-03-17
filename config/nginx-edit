@@ -7,7 +7,7 @@ server {
     client_max_body_size 4G;
     server_name baubau.berlin www.baubau.berlin;
 
-    keepalive_timeout 5; # 70? 10?
+    keepalive_timeout 70; # 5? 10?
     ssl_certificate /home/ubuntu/ssl/dede-test-https-cert.pem;
     ssl_certificate_key /home/ubuntu/ssl/dede-test-https-key.pem;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
@@ -21,10 +21,10 @@ server {
     }
 
     location @proxy_to_app {
+        proxy_set_header X-Forwarded-Proto https;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header Host $http_host;
         proxy_redirect off;
-        # proxy_set_header X-Forwarded-Proto https;
 
         proxy_pass http://edit_app_server;
     }

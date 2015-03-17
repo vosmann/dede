@@ -78,7 +78,10 @@ def login():
                 login_user(user) 
                 print "3b: current_user (AFTER logging him into flask-login with login_user()):"
                 print current_user.__dict__
-                return redirect(url_for('edit'), code = 302)
+                url = url_for('edit', _external=True)
+                print "got redirect url after login:"
+                print url
+                return redirect(url, code=302)
             else:
                 print "3: login failed"
     return send_file('static/partials/login.html')
