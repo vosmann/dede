@@ -36,6 +36,8 @@ from entities.entry import Entry, extract_page_name
 from entities.user import User
 from datetime import timedelta
 
+# from OpenSSL import SSL # for local https
+
 ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
@@ -378,6 +380,10 @@ def name_query(name):
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
         dede_edit_app.run(debug=True, port=5000)
+        # dede_edit_app.run(debug=True, port=5000, ssl_context=context)
+        # context = SSL.Context(SSL.SSLv23_METHOD)
+        # context.use_privatekey_file('yourserver.key')
+        # context.use_certificate_file('yourserver.crt')
     else:
         dede_edit_app.run()
 
