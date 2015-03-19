@@ -9,6 +9,7 @@
 
 A] Make sense of the JS build lanscape (Bower and RequireJS for dependencies, Grunt for build tasks...)
    and Python builders (like zc.buildout).
+   - Maybe having a shell script to do these steps is good enough.
 B] Make a nice build process that minifies+obfuscates JS and compiles (and obfuscates?) Python.
 C] Make Docker images with these build products.
 

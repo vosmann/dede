@@ -10,6 +10,11 @@
 #   - require.js or
 #   - webpack
 
+
+# ON DEVELOPMENT/DEPLOYING MACHINE:
+#git clone https://github.com/liftoff/pyminifier.git ~/p/pyminifier/
+sudo pip install pyminifier
+
 # Set up non-root users for supervisor, gunicorn, mongo, etc.
 
 # MANUAL DEPLOYMENT
