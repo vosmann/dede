@@ -1,1 +1,2 @@
-rm `find . -iname *pyc`
+rm `find .. -iname *pyc`
+rm ../target
