@@ -1,21 +1,3 @@
-# It would be awesome if adding pages like "projects" or "news stories" on the 
-# edit page would generate the AngularJS controllers automatically.
-
-# Maybe have a special (only when authenticated) interface that serves some page
-# or entry even if it is hidden. So that the user can preview a new page or entry
-# before he really shows it on the live site.
-
-# Have API methods that return a just the shallow JSON of a requested page and one that also returns
-# all the entries contained on the page as fields in the object, or in a separate entries' list of
-# entry objects.
-
-# There is perhaps some redundant conversions from json/dicts to objects and vice-versa.
-# The idea behind using the objects is to give some structure to the domain entities and to not do
-# too much dirty work with dicts everywhere.
-
-# TODO rename the app from "dede_edit_app" back to "app". gunicorn takes filename:appname as params.
-# all apps can be called "app" as long as they're in different files.
-
 from flask import Flask, send_file, request, redirect, url_for
 from flask.ext.login import LoginManager, login_user, fresh_login_required, current_user
 from werkzeug.contrib.fixers import ProxyFix
@@ -36,36 +18,37 @@ from entities.entry import Entry, extract_page_name
 from entities.user import User
 from datetime import timedelta
 
-# from OpenSSL import SSL # for local https
 
 ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 
-dede_edit_app = Flask(__name__)
-dede_edit_app.wsgi_app = ProxyFix(dede_edit_app.wsgi_app)
+app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
-dede_edit_app.server_name = "localhost" # "dede.de"
-dede_edit_app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # this key is what session cookies are encrypted with
-dede_edit_app.session_cookie_name = "ed_session"
-dede_edit_app.config["SESSION_COOKIE_SECURE"] = False # Set to True after HTTPS is set up.
-dede_edit_app.permanent_session_lifetime = timedelta(hours=2)
+app.server_name = "localhost"
+app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # this key is what session cookies are encrypted with
+app.session_cookie_name = "ed_session"
+app.config["SESSION_COOKIE_SECURE"] = False # Set to True after HTTPS is set up.
+app.permanent_session_lifetime = timedelta(hours=2)
 
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
-login_manager.init_app(dede_edit_app)
+login_manager.init_app(app)
 login_manager.login_view = "login"
 
-# MASSIVE TODOS:
-# - remove stupid prints and set up good logging
-# - modularize code
 
-@dede_edit_app.route("/login", methods=['GET', 'POST'])
+@app.route("/edit")
+@fresh_login_required
+def main():
+    print "/edit was opened. sending the one-page-app edit-index.html"
+    return send_file('static/edit-index.html')
+
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     print "login()"
     if request.method == 'POST':
-        # TODO sanitize inputs?
         username = request.form['username']
         password = request.form['password']
 
@@ -109,16 +92,8 @@ def load_user(username):
     print "in login_manager.user_loader; about to get User object."
     return get_user_by_id(username)
 
-
-# Delivering HTML
-@dede_edit_app.route("/edit")
-@fresh_login_required
-def edit():
-    print "/edit was opened. sending the one-page-app edit-index.html"
-    return send_file('static/edit-index.html')
-
-# REST methods for Page
-@dede_edit_app.route('/edit/store/page', methods = ['POST'])
+# Page
+@app.route('/edit/store/page', methods = ['POST'])
 @fresh_login_required
 def store_page():
 
@@ -136,14 +111,14 @@ def store_page():
         mongo.dede.pages.update(id_query_from_obj(incoming_json), incoming_page.json_dict())
     return 'ok'
 
-@dede_edit_app.route('/edit/delete/page', methods = ['POST'])
+@app.route('/edit/delete/page', methods = ['POST'])
 @fresh_login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
-@dede_edit_app.route('/edit/get/pageNames', methods = ['GET'])
+@app.route('/edit/get/pageNames', methods = ['GET'])
 def get_page_names():
     db_pages = mongo.dede.pages.find()
     names = []
@@ -152,7 +127,7 @@ def get_page_names():
         names.append(page.name)
     return json.dumps(names)
 
-@dede_edit_app.route('/edit/get/page/<page_name>', methods = ['GET'])
+@app.route('/edit/get/page/<page_name>', methods = ['GET'])
 def get_page(page_name):
     db_page = mongo.dede.pages.find_one(name_query(page_name)) # Create an index on "name"?
     if db_page is not None:
@@ -161,8 +136,8 @@ def get_page(page_name):
         return json.dumps({});
 
 
-# REST methods for Entry
-@dede_edit_app.route('/edit/store/entry', methods = ['POST'])
+# Entry
+@app.route('/edit/store/entry', methods = ['POST'])
 @fresh_login_required
 def store_entry():
 
@@ -193,14 +168,14 @@ def store_entry():
     
     return 'ok'
 
-@dede_edit_app.route('/edit/delete/entry', methods = ['POST'])
+@app.route('/edit/delete/entry', methods = ['POST'])
 @fresh_login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
     return 'ok'
 
-@dede_edit_app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
+@app.route('/edit/get/entryNames/<page_name>', methods = ['GET'])
 def get_entry_names(page_name):
 
     db_page = mongo.dede.pages.find_one(name_query(page_name))
@@ -209,7 +184,7 @@ def get_entry_names(page_name):
     if db_page is not None:
         page = Page(db_page)
         for entry_id in page.entry_ids:
-            db_entry = mongo.dede.entries.find_one(id_query(entry_id)) # I cri on every fidn.
+            db_entry = mongo.dede.entries.find_one(id_query(entry_id)) # Cry on every find.
             if db_entry is not None:
                 entry = Entry(db_entry)
                 entry_names.append(entry.name)
@@ -218,7 +193,7 @@ def get_entry_names(page_name):
 
     return json.dumps(entry_names)
 
-@dede_edit_app.route('/edit/get/entry/<entry_name>', methods = ['GET'])
+@app.route('/edit/get/entry/<entry_name>', methods = ['GET'])
 def get_entry(entry_name):
     raw_entry = mongo.dede.entries.find_one({'name': entry_name}) # Create an index on "name"?
     if raw_entry is not None:
@@ -226,15 +201,14 @@ def get_entry(entry_name):
     else:
         return json.dumps({});
 
-@dede_edit_app.route('/edit/get/elementTypes', methods = ['GET'])
+@app.route('/edit/get/elementTypes', methods = ['GET'])
 def get_element_types():
     types = ["title", "text", "image"] # These are hard coded in markup. So, that's just great.
     return json.dumps(types)
 
 
 # Tags
-# TODO Actually, should keep _id *and* display name so that the latter can be changed.
-@dede_edit_app.route('/edit/store/tag', methods = ['POST'])
+@app.route('/edit/store/tag', methods = ['POST'])
 @fresh_login_required
 def store_tag():
     incoming_json = request.get_json() # dict
@@ -251,7 +225,7 @@ def store_tag():
         mongo.dede.tags.update(id_query_from_obj(incoming_json), incoming_json)
     return "ok"
 
-@dede_edit_app.route('/edit/get/tags', methods = ['GET'])
+@app.route('/edit/get/tags', methods = ['GET'])
 def get_tags():
     tags = []
     db_tags = mongo.dede.tags.find()
@@ -263,9 +237,7 @@ def get_tags():
 
 
 # Images
-# Note: Could switch to "Flask-Uploads" at some point.
-# Note: flask can also use directories on the filesystem for file storage.
-@dede_edit_app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
+@app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
 def get_image_metadata():
     print "id:{0}, query: {1}".format(id, id_query(id))
     db_metadata = mongo.dede.image_metadata.find_one(id_query(id))
@@ -273,7 +245,7 @@ def get_image_metadata():
     print db_metadata
     return json.dumps(db_metadata)
 
-@dede_edit_app.route('/edit/get/image/metadata/all', methods = ['GET'])
+@app.route('/edit/get/image/metadata/all', methods = ['GET'])
 def get_all_images_metadata():
     all_metadata = []
     all_db_metadata = mongo.dede.image_metadata.find()
@@ -284,12 +256,12 @@ def get_all_images_metadata():
     print all_metadata
     return json.dumps(all_metadata)
 
-@dede_edit_app.route('/edit/get/image/<id>', methods = ['GET'])
+@app.route('/edit/get/image/<id>', methods = ['GET'])
 def get_image(id):
     print "getting image by id {0}".format(id)
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
-@dede_edit_app.route('/edit/store/image', methods = ['POST'])
+@app.route('/edit/store/image', methods = ['POST'])
 @fresh_login_required
 def store_image():
     print "In method: /edit/store/image !"
@@ -310,7 +282,7 @@ def store_image():
             return "ok"
     abort(400) # bad request
 
-@dede_edit_app.route('/edit/delete/image/<id>', methods = ['POST'])
+@app.route('/edit/delete/image/<id>', methods = ['POST'])
 @fresh_login_required
 def delete_image(id):
     mongo.dede.image_metadata.remove(id_query(id))
@@ -379,11 +351,12 @@ def name_query(name):
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
-        dede_edit_app.run(debug=True, port=5000)
-        # dede_edit_app.run(debug=True, port=5000, ssl_context=context)
+        app.run(debug=True, port=5000)
+        # from OpenSSL import SSL # for local https
+        # app.run(debug=True, port=5000, ssl_context=context)
         # context = SSL.Context(SSL.SSLv23_METHOD)
         # context.use_privatekey_file('yourserver.key')
         # context.use_certificate_file('yourserver.crt')
     else:
-        dede_edit_app.run()
+        app.run()
 

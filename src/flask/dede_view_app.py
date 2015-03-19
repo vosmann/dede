@@ -14,27 +14,18 @@ from entities.view_page import ViewPage
 from entities.entry import Entry
 from entities.view_entry import ViewEntry
 
-# Caching note:
-# - Basically everything below should be cached. In its Python object form.
-#   Cache:
-#       * page ids
-#       * page names
-#       * all page views
-# - The cache could never expire (maybe like every 2-3 hours, but it should be invalidated when edits are made.
-
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
-dede_view_app = Flask(__name__)
-dede_view_app.wsgi_app = ProxyFix(dede_view_app.wsgi_app)
+app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 
-# Delivering HTML
-@dede_view_app.route("/")
-def hello():
+@app.route("/")
+def main():
     return send_file('static/view-index.html')
 
-@dede_view_app.route('/get/pageIdsAndNames', methods = ['GET'])
+@app.route('/get/pageIdsAndNames', methods = ['GET'])
 def get_page_ids_and_names():
     db_pages = mongo.dede.pages.find()
     pages = [ Page(db_page) for db_page in db_pages ]
@@ -45,7 +36,7 @@ def get_page_ids_and_names():
     print json.dumps(ids_and_names)
     return json.dumps(ids_and_names)
 
-@dede_view_app.route('/get/page/<page_id>', methods = ['GET'])
+@app.route('/get/page/<page_id>', methods = ['GET'])
 def get_page(page_id):
     db_pages = mongo.dede.pages.find()
     pages = [Page(db_page) for db_page in db_pages if Page(db_page).is_shown] # cache
@@ -72,7 +63,7 @@ def assemble_view_page(page):
     return view_page.json_dict()
 
 
-@dede_view_app.route('/get/entry/<entry_id>', methods = ['GET'])
+@app.route('/get/entry/<entry_id>', methods = ['GET'])
 def get_entry(entry_id):
     raw_entry = mongo.dede.entries.find_one({'name': entry_name}) # Create an index on "name"?
     if raw_entry is not None:
@@ -80,14 +71,14 @@ def get_entry(entry_id):
     else:
         return json.dumps({});
 
-@dede_view_app.route('/get/elementTypes', methods = ['GET'])
+@app.route('/get/elementTypes', methods = ['GET'])
 def get_element_types():
     types = ["title", "text", "image"] # These are hard coded in markup. So, that's just great.
     return json.dumps(types)
 
 
 # Tags
-@dede_view_app.route('/get/tags', methods = ['GET'])
+@app.route('/get/tags', methods = ['GET'])
 def get_tags():
     tags = []
     db_tags = mongo.dede.tags.find()
@@ -100,7 +91,7 @@ def get_tags():
 
 
 # Images
-@dede_view_app.route('/get/image/metadata/<id>', methods = ['GET'])
+@app.route('/get/image/metadata/<id>', methods = ['GET'])
 def get_image_metadata():
     print "id:{0}, query: {1}".format(id, id_query(id))
     db_metadata = mongo.dede.image_metadata.find_one(id_query(id))
@@ -108,7 +99,7 @@ def get_image_metadata():
     print db_metadata
     return json.dumps(db_metadata)
 
-@dede_view_app.route('/get/image/<id>', methods = ['GET'])
+@app.route('/get/image/<id>', methods = ['GET'])
 def get_image(id):
     print "getting image by id {0}".format(id)
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
@@ -120,7 +111,7 @@ def id_query(id):
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
-        dede_view_app.run(debug=True, port=80)
+        app.run(debug=True, port=80)
     else:
-        dede_view_app.run()
+        app.run()
 

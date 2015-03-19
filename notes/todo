@@ -13,3 +13,42 @@ A] Make sense of the JS build lanscape (Bower and RequireJS for dependencies, Gr
 B] Make a nice build process that minifies+obfuscates JS and compiles (and obfuscates?) Python.
 C] Make Docker images with these build products.
 
+
+
+========================
+general todos
+========================
+
+# Caching note:
+# - Basically everything below should be cached. In its Python object form.
+#   Cache:
+#       * page ids
+#       * page names
+#       * all page views
+# - The cache could never expire (maybe like every 2-3 hours, but it should be invalidated when edits are made.
+
+# It would be awesome if adding pages like "projects" or "news stories" on the 
+# edit page would generate the AngularJS controllers automatically.
+
+# Maybe have a special (only when authenticated) interface that serves some page
+# or entry even if it is hidden. So that the user can preview a new page or entry
+# before he really shows it on the live site.
+
+# Have API methods that return a just the shallow JSON of a requested page and one that also returns
+# all the entries contained on the page as fields in the object, or in a separate entries' list of
+# entry objects.
+
+# There is perhaps some redundant conversions from json/dicts to objects and vice-versa.
+# The idea behind using the objects is to give some structure to the domain entities and to not do
+# too much dirty work with dicts everywhere.
+
+# MASSIVE TODOS:
+# - python: remove stupid prints and set up good logging
+# - python: modularize code
+
+# TODO: TAGS Actually, should keep _id *and* display name so that the latter can be changed.
+
+# TODO sanitize login inputs (user & pass).
+
+# Note: Could switch to "Flask-Uploads" at some point for images.
+# Note: flask can also use directories on the filesystem for file storage. For images, for example.
