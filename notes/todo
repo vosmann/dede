@@ -1,3 +1,27 @@
+A] Make sense of the JS build lanscape (Bower and RequireJS for dependencies, Grunt for build tasks...)
+   and Python builders (like zc.buildout).
+   - Maybe having a shell script to do these steps is good enough.
+   - Grunt+RequireJS seems to work for Goekhan.
+B] Make a nice build process that minifies+obfuscates JS and compiles (and obfuscates?) Python.
+C] Make Docker images with these build products.
+
+
+# Set up non-root users for supervisor, gunicorn, mongo, etc.
+
+
+# NOTES ON AUTOMATING DEPLOYMENT
+# I should probably make a nice docker image with ubuntu, https set up, supervisor & gunicorn installed,
+# python, mongo... and then maybe dynamically append an image that would just copy some 
+# private keys/certificates
+# Although... recommended procedure with deploying new code? Add it to the very bottom of the Docker layers?
+# Use nginx as a proxy for gunicorn
+
+# minify and obfuscate code. use:
+#   - browserify.js,
+#   - require.js or
+#   - webpack
+
+
 1. Modularize python code.
 2. Add decent logging.
 3. Set up build that minifies and obfuscates JS _and_ python code.
@@ -6,13 +30,6 @@
    - Allow slashes in the project name. A separate url will then _not_ allow them. -> Add a regex check before anything
      is stored.
 
-
-A] Make sense of the JS build lanscape (Bower and RequireJS for dependencies, Grunt for build tasks...)
-   and Python builders (like zc.buildout).
-   - Maybe having a shell script to do these steps is good enough.
-   - Grunt+RequireJS seems to work for Goekhan.
-B] Make a nice build process that minifies+obfuscates JS and compiles (and obfuscates?) Python.
-C] Make Docker images with these build products.
 
 
 
