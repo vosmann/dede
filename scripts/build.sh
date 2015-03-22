@@ -10,4 +10,3 @@ find *.txt -exec awk 'END {print $0 "," FILENAME}' {} \;
 mkdir -p ../target/dede/
 tar -cvzf ../target/dede.tar.gz ../dede/
 
-
