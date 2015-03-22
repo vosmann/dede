@@ -37,6 +37,9 @@ C] Make Docker images with these build products.
 general todos
 ========================
 
+Have the edit app parse the CSS and automatically offer class names in a drop-down for text and title elements.
+These classes could have some prefixing naming convention.
+
 # Caching note:
 # - Basically everything below should be cached. In its Python object form.
 #   Cache:
