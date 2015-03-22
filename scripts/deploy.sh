@@ -1,12 +1,5 @@
 # Configuration
-HOST=x.x.x.x
-USER=ubuntu
-NGINX_GLOBAL_CONF=/etc/nginx/nginx.conf
-NGINX_EDIT_CONF=/etc/nginx/sites-available/edit-config
-NGINX_VIEW_CONF=/etc/nginx/sites-available/view-config
-DEDE_ARCHIVE_LOCATION=/home/$USER/dede-archived
-DEDE_LOCATION=/home/$USER/dede
-SLEEP_TIME=3
+source dede.conf
 
 # Make remote directories
 ssh -i $SSH_KEY $USER@$HOST "mkdir -p $DEDE_ARCHIVE_LOCATION" # Because single quotes don't expand variables.
