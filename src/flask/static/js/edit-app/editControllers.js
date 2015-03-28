@@ -13,6 +13,7 @@ var dedeEditControllers = angular.module("dedeEditControllers",
         ["ui.bootstrap", "ui.multiselect", "angularFileUpload"]);
 
 
+// TODO remove
 // What a way to check for redirects. At least add httpProvider:
 // $httpProvider.responseInterceptors.push('redirectInterceptor');
 function informOnFailure(result, $modal) {

@@ -1,7 +1,6 @@
 import sys
 from werkzeug.security import generate_password_hash
 
-hashing_method = 'pbkdf2:sha512:1000' # The integer is the number of iterations.
 salt_length = 16
 
 
@@ -11,7 +10,8 @@ def hash_password(password):
     return password_hash 
 
 
-password = sys.argv[1]
+hashing_method = sys.argv[1] # The integer is the number of iterations.
+password = sys.argv[2]
 print "token is: " + password 
 password_hash = hash_password(password)
 print password_hash
