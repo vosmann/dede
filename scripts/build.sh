@@ -55,6 +55,7 @@ function process_css {
 }
 function process_js {
     echo "Processing JS"
+    $(gulp js) # More precisely defined in gulp.js
 }
 
 echo "Started dede.tar.gz build."
