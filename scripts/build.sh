@@ -16,8 +16,8 @@ function process_one_py {
     local TEMP_DIR=$4
     local PY_PATH=$(dirname $PY_FULL_PATH)
     local PY_NAME=$(basename $PY_FULL_PATH)
-    local PY_RELATIVE_PATH=${PY_PATH#$ROOT_DIR} # Chop off prefix, i.e. root dir 
-    # pyminifier --obfuscate PY_FULL_PATH | grep -i "#" > $TEMP_PY_DIR/$PY_NAME # Minify, for kicks
+    local PY_RELATIVE_PATH=${PY_PATH#$ROOT_DIR} # Chop off prefix, i.e. root dir.
+    pyminifier --obfuscate PY_FULL_PATH | grep -i "#" > $TEMP_DIR/$PY_NAME # Minify, for kicks
     echo "PY_FULL_PATH=$PY_FULL_PATH"
     echo "ROOT_DIR=$ROOT_DIR"
     echo "TARGET_DIR=$TARGET_DIR"
