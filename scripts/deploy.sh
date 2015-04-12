@@ -10,16 +10,24 @@ if [ "$USER_INPUT" != "ok" ]; then
     exit 1
 fi;
 
-# Shoot up the config
-scp -i $SSH_KEY_PATH ../config/nginx.conf $USER@$HOST:/tmp/nginx.conf
-scp -i $SSH_KEY_PATH ../config/nginx-edit $USER@$HOST:/tmp/nginx-edit
-scp -i $SSH_KEY_PATH ../config/nginx-view $USER@$HOST:/tmp/nginx-view
-ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/nginx.conf $NGINX_GLOBAL_CONF"
-ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/nginx-edit $NGINX_EDIT_CONF"
-ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/nginx-view $NGINX_VIEW_CONF"
-
 # Make remote server directory
 ssh -i $SSH_KEY_PATH $USER@$HOST "mkdir -p $DEDE_LOCATION" # Because single quotes don't expand variables.
+
+# Shoot up the config: Supervisor
+scp -i $SSH_KEY_PATH ../config/supervisord.conf $USER@$HOST:/tmp/
+ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/supervisord.conf /etc/supervisord.conf"
+
+# Shoot up the config: Gunicorn
+scp -i $SSH_KEY_PATH ../config/gunicorn_dede_edit_app.conf $USER@$HOST:/home/ubuntu/server/
+scp -i $SSH_KEY_PATH ../config/gunicorn_dede_view_app.conf $USER@$HOST:/home/ubuntu/server/
+
+# Shoot up the config: Nginx
+scp -i $SSH_KEY_PATH ../config/nginx.conf $USER@$HOST:/tmp/
+scp -i $SSH_KEY_PATH ../config/nginx-edit $USER@$HOST:/tmp/
+scp -i $SSH_KEY_PATH ../config/nginx-view $USER@$HOST:/tmp/
+ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/nginx.conf /etc/nginx/nginx.conf"
+ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/nginx-edit /etc/nginx/sites-available/nginx-edit"
+ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/nginx-view /etc/nginx/sites-available/nginx-view"
 
 # Shoot up the Dede archive
 scp -i $SSH_KEY_PATH ../target/dede.tar.gz $USER@$HOST:$DEDE_LOCATION/dede.tar.gz

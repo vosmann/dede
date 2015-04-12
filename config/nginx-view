@@ -1,5 +1,5 @@
 upstream view_app_server {
-    server unix:/home/ubuntu/dede/gunicorn-view.sock fail_timeout=0;
+    server unix:/home/ubuntu/server/gunicorn-view.sock fail_timeout=0;
 }
 
 server {
@@ -9,7 +9,7 @@ server {
 
     keepalive_timeout 5;
 
-    root /home/ubuntu/dede/src/flask/static; # path for static files
+    root /home/ubuntu/server/dede/src/flask/static; # path for static files
 
     location / {
         # checks for static file, if not found proxy to app
