@@ -8,7 +8,9 @@ npm init
 sudo ln -s /usr/bin/nodejs /usr/bin/node
 
 
-# what is save-dev?
-npm install --save-dev gulp
-npm install --save-dev gulp-uglify
+# i for install
+npm i gulp --save-dev 
+npm i gulp-uglify --save-dev 
+npm i gulp-htmlmin --save-dev
+npm i gulp-minify-css --save-dev 
 
