@@ -8,8 +8,8 @@ server {
     server_name baubau.berlin www.baubau.berlin;
 
     keepalive_timeout 70; # 5? 10?
-    ssl_certificate /home/ubuntu/ssl/dede-test-https-cert.pem;
-    ssl_certificate_key /home/ubuntu/ssl/dede-test-https-key.pem;
+    ssl_certificate /home/ubuntu/dede-edit-https-cert.pem;
+    ssl_certificate_key /home/ubuntu/dede-edit-https-key.pem;
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_ciphers HIGH:!aNULL:!MD5;
 
