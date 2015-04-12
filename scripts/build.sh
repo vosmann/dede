@@ -5,6 +5,7 @@
 # variables maybe isn't that readable. Perhaps better to just have global vars.
 # Well, I've learned that Bash build scripts may become a bit unreadable.
 # This python-minifying functinality could be extracted into a gulp plugin.
+# Should do everything from Gulp. And get rid of clean.sh and build.sh.
 
 function find_by_extension {
     local ROOT_DIR=$1
@@ -41,23 +42,25 @@ function process_py {
 }
 function process_static {
     echo "Processing JS, HTML and CSS"
-    gulp dede-static # More precisely defined in gulp.js
+    gulp dede-static # See gulp.js
 }
 
 source clean.sh
 echo "Building Dede."
 cd ..
 ROOT_DIR=$(pwd)
-cd scripts
 TARGET_DIR=$ROOT_DIR/target
+# TARGET_DIR_REL=$(echo $TARGET_DIR | awk -F '/target/' '{print $2}')
 echo "ROOT_DIR=$ROOT_DIR"
 echo "TARGET_DIR=$TARGET_DIR"
+cd scripts
 rm -rv $TARGET_DIR
 mkdir -pv $TARGET_DIR
 process_py $ROOT_DIR $TARGET_DIR
 process_static
-# Compression
-#tar -cvzf ../target/dede.tar.gz ../dede/
-#rm -rv ../target/temp
-
+echo "Compressing Dede to .tar.gz."
+cd ../target
+tar -cvzf $TARGET_DIR/dede.tar.gz dede/ 
+rm -rv $TARGET_DIR/dede/
+echo "Done."
 
