@@ -12,7 +12,6 @@ import os
 import gridfs
 import urllib, cStringIO
 
-from utils.faker import create_fakes
 from entities.page import Page
 from entities.entry import Entry, extract_page_name
 from entities.user import User
