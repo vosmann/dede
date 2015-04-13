@@ -1,11 +1,11 @@
 upstream view_app_server {
-    server unix:/home/ubuntu/server/gunicorn-view.sock fail_timeout=0;
+    server unix:/run/gunicorn-dede-view.sock fail_timeout=0;
 }
 
 server {
     listen 80 default;
     client_max_body_size 4G;
-    server_name baubau.berlin www.baubau.berlin;
+    server_name dede.dede www.dede.dede;
 
     keepalive_timeout 5;
 

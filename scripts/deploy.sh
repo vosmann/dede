@@ -15,7 +15,7 @@ ssh -i $SSH_KEY_PATH $USER@$HOST "mkdir -p $DEDE_LOCATION" # Because single quot
 
 # Shoot up the config: Supervisor
 scp -i $SSH_KEY_PATH ../config/supervisord.conf $USER@$HOST:/tmp/
-ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/supervisord.conf /etc/supervisord.conf"
+ssh -i $SSH_KEY_PATH $USER@$HOST "sudo mv /tmp/supervisord.conf /etc/supervisor/supervisord.conf"
 
 # Shoot up the config: Gunicorn
 scp -i $SSH_KEY_PATH ../config/gunicorn_dede_edit_app.conf $USER@$HOST:/home/ubuntu/server/
@@ -39,10 +39,15 @@ ssh -i $SSH_KEY_PATH $USER@$HOST "tar -xvzf $DEDE_LOCATION/dede.tar.gz -C $DEDE_
 echo "Waiting $SLEEP_TIME seconds."
 sleep $SLEEP_TIME
 
-ssh -i $SSH_KEY_PATH $USER@$HOST "sudo service gunicorn restart"
+#ssh -i $SSH_KEY_PATH $USER@$HOST "sudo service gunicorn restart"
+#echo "Waiting $SLEEP_TIME seconds."
+#sleep $SLEEP_TIME
+
+ssh -i $SSH_KEY_PATH $USER@$HOST "sudo service supervisor restart"
 echo "Waiting $SLEEP_TIME seconds."
 sleep $SLEEP_TIME
 
 ssh -i $SSH_KEY_PATH $USER@$HOST "sudo service nginx restart"
+
 echo "Finished deploying Dede to $HOST."
 

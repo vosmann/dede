@@ -1,11 +1,11 @@
 upstream edit_app_server {
-    server unix:/home/ubuntu/dede/gunicorn-edit.sock fail_timeout=0;
+    server unix:/run/gunicorn-dede-edit.sock fail_timeout=0;
 }
 
 server {
     listen 443 ssl; # 5000 ssl;
     client_max_body_size 4G;
-    server_name baubau.berlin www.baubau.berlin;
+    server_name dede.dede www.dede.dede;
 
     keepalive_timeout 70; # 5? 10?
     ssl_certificate /home/ubuntu/dede-edit-https-cert.pem;
