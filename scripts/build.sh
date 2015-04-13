@@ -28,8 +28,8 @@ function process_one_py {
     cp $TEMP_DIR/$PY_NAME $TARGET_DIR/dede/$PY_RELATIVE_PATH
     mkdir -pv $TARGET/$PY_PATH
 }
-function process_py {
-    echo "Processing Python."
+function process_py_min {
+    echo "Processing Python with minification."
     local ROOT_DIR=$1
     local TARGET_DIR=$2
     local TEMP_DIR=$TARGET_DIR/py_temp
@@ -40,9 +40,13 @@ function process_py {
     done
     rm -rv $TEMP_DIR
 }
+function process_py {
+    echo "Processing Python."
+    gulp dede-python
+}
 function process_static {
-    echo "Processing JS, HTML and CSS"
-    gulp dede-static # See gulp.js
+    echo "Processing JS, HTML and CSS."
+    gulp dede-static
 }
 
 source clean.sh
@@ -56,11 +60,12 @@ echo "TARGET_DIR=$TARGET_DIR"
 cd scripts
 rm -rv $TARGET_DIR
 mkdir -pv $TARGET_DIR
-process_py $ROOT_DIR $TARGET_DIR
+# process_py_min $ROOT_DIR $TARGET_DIR
+process_py
 process_static
 echo "Compressing Dede to .tar.gz."
 cd ../target
 tar -cvzf $TARGET_DIR/dede.tar.gz dede/ 
-rm -rv $TARGET_DIR/dede/
+# rm -rv $TARGET_DIR/dede/
 echo "Done."
 

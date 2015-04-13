@@ -32,3 +32,9 @@ gulp.task('css-minify', function() {
         .pipe(gulp.dest('../target/dede/src/flask/static/css'))
 });
 
+gulp.task('dede-python', function() {
+    return gulp.src('../src/flask/**/*.py')
+        .pipe(gulp.dest('../target/dede/src/flask'));
+});
+
+

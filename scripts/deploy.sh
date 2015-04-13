@@ -39,9 +39,9 @@ ssh -i $SSH_KEY_PATH $USER@$HOST "tar -xvzf $DEDE_LOCATION/dede.tar.gz -C $DEDE_
 echo "Waiting $SLEEP_TIME seconds."
 sleep $SLEEP_TIME
 
-#ssh -i $SSH_KEY_PATH $USER@$HOST "sudo service gunicorn restart"
-#echo "Waiting $SLEEP_TIME seconds."
-#sleep $SLEEP_TIME
+ssh -i $SSH_KEY_PATH $USER@$HOST "sudo service gunicorn restart"
+echo "Waiting $SLEEP_TIME seconds."
+sleep $SLEEP_TIME
 
 ssh -i $SSH_KEY_PATH $USER@$HOST "sudo service supervisor restart"
 echo "Waiting $SLEEP_TIME seconds."
