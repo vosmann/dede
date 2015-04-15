@@ -8,9 +8,11 @@ from pprint import pprint
 from PIL import Image
 
 import json
+import sys
 import os
 import gridfs
 import urllib, cStringIO
+import traceback
 
 from entities.page import Page
 from entities.entry import Entry, extract_page_name
@@ -40,7 +42,7 @@ login_manager.login_view = "login"
 
 @app.route("/edit")
 @fresh_login_required
-def main():
+def edit():
     print "/edit was opened. sending the one-page-app edit-index.html"
     return send_file('static/edit-index.html')
 
@@ -62,10 +64,15 @@ def login():
                 login_user(user) 
                 print "3b: current_user (AFTER logging him into flask-login with login_user()):"
                 print current_user.__dict__
-                url = url_for('edit', _external=True)
-                print "got redirect url after login:"
-                print url
-                return redirect(url, code=302)
+                try:
+                    url = url_for('edit', _external=True) # _scheme="https"
+                    print "got redirect url after login:"
+                    print url
+                    return redirect(url, code=302)
+                except:
+                    exc_type, exc_value, exc_traceback = sys.exc_info()
+                    lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+                    print ''.join('!' + line for line in lines)
             else:
                 print "3: login failed"
     return send_file('static/partials/login.html')

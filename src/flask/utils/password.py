@@ -16,3 +16,6 @@ print "token is: " + password
 password_hash = hash_password(password)
 print password_hash
 
+# Print out  the full JSON instead.
+# { "_id" : "x", "id" : "x", "password_hash" : "pbkdf2:sha256:NR_ITER$HASHED_PASS" }
+
