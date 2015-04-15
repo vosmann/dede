@@ -1,21 +1,6 @@
-# It would be awesome if adding pages like "projects" or "news stories" on the edit page would generate
-# the AngularJS controllers automatically.
-
-# Maybe have a special (only when authenticated) interface that serves some page
-# or entry even if it is hidden. So that the user can preview a new page or entry
-# before he really shows it on the live site.
-
-# Have API methods that return a just the shallow JSON of a requested page and one that also returns
-# all the entries contained on the page as fields in the object, or in a separate entries' list of
-# entry objects.
-
-# There is perhaps some redundant conversions from json/dicts to objects and vice-versa.
-# The idea behind using the objects is to give some structure to the domain entities and to not do
-# too much dirty work with dicts everywhere.
-
-# from flask import Flask, request, redirect, url_for
 from flask import Flask, send_file, request, redirect, url_for
-from flask.ext.login import LoginManager, login_user, login_required, fresh_login_required, current_user
+from flask.ext.login import LoginManager, login_user, fresh_login_required, current_user
+from werkzeug.contrib.fixers import ProxyFix
 from werkzeug import secure_filename
 from pymongo import MongoClient
 from time import strftime
@@ -23,88 +8,99 @@ from pprint import pprint
 from PIL import Image
 
 import json
+import sys
 import os
 import gridfs
 import urllib, cStringIO
+import traceback
 
-from utils.faker import create_fakes
 from entities.page import Page
 from entities.entry import Entry, extract_page_name
 from entities.user import User
+from datetime import timedelta
 
 
 ALLOWED_EXTENSIONS = set(['svg', 'png', 'jpg', 'jpeg', 'gif'])
 
-
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
+
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
-# MASSIVE TODO: redirect to /login from everywhere (if there is no session/login.
-
-# the secret key is what the (session) cookies are encrypted with.
-app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b'
-
-# app.config['SERVER_NAME'] = 'localhost:5000'
-# app.config['REMEMBER_COOKIE_NAME'] = 'ed' 
+app.server_name = "localhost"
+app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # this key is what session cookies are encrypted with
+app.session_cookie_name = "ed_session"
+app.config["SESSION_COOKIE_SECURE"] = False # Set to True after HTTPS is set up.
+app.permanent_session_lifetime = timedelta(hours=2)
 
 login_manager = LoginManager()
+login_manager.session_protection = "strong"
 login_manager.init_app(app)
-
-editor_user = None
-
-@app.route("/login", methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        # TODO sanitize inputs?
-        username = request.form['username']
-        password = request.form['password']
-
-        user = User()
-        print "1: created user"
-        print user.__dict__
-        ok = user.login(username, password)
-        print "2: attempted to log him in"
-        print user.__dict__
-        if ok:
-            print "3: logging him into flask-login"
-            print user.__dict__
-            login_user(user) # remember=True
-            print "3b: current_user:"
-            print current_user.__dict__
-
-            editor_user = current_user # oh glob
-            
-            # url = 'localhost:5000' + url_for('edit')
-            url = 'www.google.de'
-            print "4: redirecting to:"
-            print url
-            redirect(url, code = 307)
-            # redirect('/edit') # return redirect(request.args.get("next") or url_for("index"))
-        else:
-            print "3: login failed"
-    return send_file('static/partials/login.html')
-
-# Loads a User (from some DB) using the user_id stored in the session. The User is loaded just to check
-# if he's still active etc.
-@login_manager.user_loader
-def load_user(userid):
-    # Tu smo. Treba samo izbaviti/napraviti nekakvog Usera po id-u i to poslat nazad. #almostthere
-    print "in login_manager.user_loader; about to get User object."
-    # return User.get_editor()
-    return editor_user 
+login_manager.login_view = "login"
 
 
-# Delivering HTML
 @app.route("/edit")
-#@login_required
+@fresh_login_required
 def edit():
     print "/edit was opened. sending the one-page-app edit-index.html"
     return send_file('static/edit-index.html')
 
-# REST methods for Page
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    print "login()"
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = get_user_by_id(username)
+
+        if user is not None:
+            ok = user.login(username, password)
+            print "2: attempted to log him in"
+            if ok:
+                print "3a: current_user (BEFORE logging him into flask-login with login_user()):"
+                print current_user.__dict__
+                login_user(user) 
+                print "3b: current_user (AFTER logging him into flask-login with login_user()):"
+                print current_user.__dict__
+                try:
+                    url = url_for('edit', _external=True) # _scheme="https"
+                    print "got redirect url after login:"
+                    print url
+                    return redirect(url, code=302)
+                except:
+                    exc_type, exc_value, exc_traceback = sys.exc_info()
+                    lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
+                    print ''.join('!' + line for line in lines)
+            else:
+                print "3: login failed"
+    return send_file('static/partials/login.html')
+
+def get_user_by_id(username):
+    print "get_user_by_id()"
+    db_user = mongo.dede.users.find_one(id_query(username))
+    print "retrieved db_user:"
+    print db_user
+    if db_user is not None:
+        user = User(db_user['id'], db_user['password_hash'])
+        print "created User:"
+        print user.__dict__
+        return user
+    else:
+        return None
+
+
+# Loads a User (from some DB) using the user_id stored in the session. The User is loaded just to check
+# if he's still active etc.
+@login_manager.user_loader
+def load_user(username):
+    print "in login_manager.user_loader; about to get User object."
+    return get_user_by_id(username)
+
+# Page
 @app.route('/edit/store/page', methods = ['POST'])
-#@login_required
+@fresh_login_required
 def store_page():
 
     incoming_json = request.get_json() # dict
@@ -122,7 +118,7 @@ def store_page():
     return 'ok'
 
 @app.route('/edit/delete/page', methods = ['POST'])
-#@login_required
+@fresh_login_required
 def delete_page():
     incoming_json = request.get_json() # dict
     mongo.dede.pages.remove(id_query_from_obj(incoming_json))
@@ -146,9 +142,9 @@ def get_page(page_name):
         return json.dumps({});
 
 
-# REST methods for Entry
+# Entry
 @app.route('/edit/store/entry', methods = ['POST'])
-#@login_required
+@fresh_login_required
 def store_entry():
 
     # Store entry.
@@ -179,7 +175,7 @@ def store_entry():
     return 'ok'
 
 @app.route('/edit/delete/entry', methods = ['POST'])
-#@login_required
+@fresh_login_required
 def delete_entry():
     incoming_json = request.get_json() # dict
     mongo.dede.entries.remove(id_query_from_obj(incoming_json))
@@ -194,7 +190,7 @@ def get_entry_names(page_name):
     if db_page is not None:
         page = Page(db_page)
         for entry_id in page.entry_ids:
-            db_entry = mongo.dede.entries.find_one(id_query(entry_id)) # I cri on every fidn.
+            db_entry = mongo.dede.entries.find_one(id_query(entry_id)) # Cry on every find.
             if db_entry is not None:
                 entry = Entry(db_entry)
                 entry_names.append(entry.name)
@@ -218,9 +214,8 @@ def get_element_types():
 
 
 # Tags
-# TODO Actually, should keep _id *and* display name so that the latter can be changed.
 @app.route('/edit/store/tag', methods = ['POST'])
-#@login_required
+@fresh_login_required
 def store_tag():
     incoming_json = request.get_json() # dict
     print "tag:"
@@ -248,8 +243,6 @@ def get_tags():
 
 
 # Images
-# Note: Could switch to "Flask-Uploads" at some point.
-# Note: flask can also use directories on the filesystem for file storage.
 @app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
 def get_image_metadata():
     print "id:{0}, query: {1}".format(id, id_query(id))
@@ -275,7 +268,7 @@ def get_image(id):
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
 @app.route('/edit/store/image', methods = ['POST'])
-#@login_required
+@fresh_login_required
 def store_image():
     print "In method: /edit/store/image !"
     if request.method == 'POST':
@@ -296,12 +289,11 @@ def store_image():
     abort(400) # bad request
 
 @app.route('/edit/delete/image/<id>', methods = ['POST'])
-#@login_required
+@fresh_login_required
 def delete_image(id):
     mongo.dede.image_metadata.remove(id_query(id))
     image_gridfs.delete(id)
     return "ok"
-
 
 
 def is_file_extension_allowed(filename):
@@ -363,8 +355,14 @@ def name_query(name):
     return {'name': name}
 
 
-
-
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0')
+    if len(sys.argv) == 2 and sys.argv[1] == "debug":
+        app.run(debug=True, port=5000)
+        # from OpenSSL import SSL # for local https
+        # app.run(debug=True, port=5000, ssl_context=context)
+        # context = SSL.Context(SSL.SSLv23_METHOD)
+        # context.use_privatekey_file('yourserver.key')
+        # context.use_certificate_file('yourserver.crt')
+    else:
+        app.run()
 

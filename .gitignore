@@ -6,3 +6,6 @@
 **/*.zip
 
 ship/
+target/
+scripts/node_modules/
+scripts/package.json

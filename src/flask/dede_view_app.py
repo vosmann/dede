@@ -1,8 +1,10 @@
 # Clean up imports
 from flask import Flask, send_file, request
+from werkzeug.contrib.fixers import ProxyFix
 from pymongo import MongoClient
 
 import json
+import sys
 import os
 import sys
 import gridfs
@@ -13,23 +15,15 @@ from entities.view_page import ViewPage
 from entities.entry import Entry
 from entities.view_entry import ViewEntry
 
-# Caching note:
-# - Basically everything below should be cached. In its Python object form.
-#   Cache:
-#       * page ids
-#       * page names
-#       * all page views
-# - The cache could never expire (maybe like every 2-3 hours, but it should be invalidated when edits are made.
-
 
 mongo = MongoClient() # Mongo DB client shared among request contexts.
 image_gridfs = gridfs.GridFS(mongo.dede_images)
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 
-# Delivering HTML
 @app.route("/")
-def hello():
+def main():
     return send_file('static/view-index.html')
 
 @app.route('/get/pageIdsAndNames', methods = ['GET'])
@@ -117,7 +111,6 @@ def id_query(id):
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
         app.run(debug=True, port=80)
     else:

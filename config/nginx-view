@@ -1,0 +1,34 @@
+upstream view_app_server {
+    server unix:/run/gunicorn-dede-view.sock fail_timeout=0;
+}
+
+server {
+    listen 80 default;
+    client_max_body_size 4G;
+    server_name dede.dede www.dede.dede;
+
+    keepalive_timeout 5;
+
+    root /home/ubuntu/server/dede/src/flask/static; # path for static files
+
+    location / {
+        # checks for static file, if not found proxy to app
+        try_files $uri @proxy_to_app;
+    }
+
+    location @proxy_to_app {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        # proxy_set_header X-Forwarded-Proto https;
+
+        proxy_pass http://view_app_server;
+    }
+
+    # Error pages
+    # error_page 500 502 503 504 /500.html;
+    # location = /500.html {
+    #     root /path/to/app/current/public;
+    # }
+}
+

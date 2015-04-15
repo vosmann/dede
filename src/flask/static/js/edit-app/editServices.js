@@ -1,8 +1,10 @@
-// Enable Angular's cache on everything using $http?
+port = "443"
 // Perhaps I should switch to $resource.
 
 // Refactor the window.location.hostname into a function or something.
 var dedeEditServices = angular.module('dedeEditServices', ['ngResource']);
+var scheme = "https://"
+var port = "443"
 
 dedeEditServices.service('SelectedPageName', ["PageNames",
     function(PageNames) {
@@ -23,7 +25,7 @@ dedeEditServices.factory('PageNames', ['$http',
     function($http) {
         return { 
             get: function() {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/pageNames");
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/pageNames");
                 return promise;
             }
         }
@@ -32,16 +34,17 @@ dedeEditServices.factory('Page', ['$http',
     function($http) {
         return { 
             get: function(pageName) {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/page/" + pageName);
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/page/" + pageName);
                 return promise;
             },
             store: function(page) {
                 // Always saves, even when overwriting. An improvement would be a modal that 
                 // asks whether to proceed updating the page if it already exists.
-                $http.post("http://" + window.location.hostname + ":5000/edit/store/page", page);
+                var promise = $http.post(scheme + window.location.hostname + ":" + port + "/edit/store/page", page);
+                return promise;
             },
             delete: function(page) {
-                $http.post("http://" + window.location.hostname + ":5000/edit/delete/page", page);
+                $http.post(scheme + window.location.hostname + ":" + port + "/edit/delete/page", page);
             }
         };
     }]);
@@ -66,7 +69,7 @@ dedeEditServices.factory('EntryNames', ['$http',
     function($http) {
         return { 
             get: function(pageName) {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/entryNames/" + pageName);
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/entryNames/" + pageName);
                 return promise;
             }
         }
@@ -75,16 +78,17 @@ dedeEditServices.factory('Entry', ['$http',
     function($http) {
         return { 
             get: function(entryName) {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/entry/" + entryName);
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/entry/" + entryName);
                 return promise;
             },
             store: function(entry) {
                 // Always saves, even when overwriting. An improvement would be a modal that 
                 // asks whether to proceed updating the page if it already exists.
-                $http.post("http://" + window.location.hostname + ":5000/edit/store/entry", entry);
+                var promise = $http.post(scheme + window.location.hostname + ":" + port + "/edit/store/entry", entry);
+                return promise;
             },
             delete: function(entry) {
-                $http.post("http://" + window.location.hostname + ":5000/edit/delete/entry", entry);
+                $http.post(scheme + window.location.hostname + ":" + port + "/edit/delete/entry", entry);
             }
         }
     }]);
@@ -98,7 +102,8 @@ dedeEditServices.factory('Tags', ['$http',
                 return promise;
             },
             store: function(tag) {
-                $http.post("/edit/store/tag", tag);
+                var promise = $http.post("/edit/store/tag", tag);
+                return promise;
             }
         }
     }]);
@@ -121,7 +126,7 @@ dedeEditServices.factory('ElementTypes', ['$http',
     function($http) {
         return { 
             get: function() {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/elementTypes");
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/elementTypes");
                 return promise;
             }
         }
@@ -132,19 +137,19 @@ dedeEditServices.factory('Images', ['$http',
     function($http) {
         return { 
             getMeta: function(id) {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/image/metadata/" + id);
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/image/metadata/" + id);
                 return promise;
             },
             getAllMeta: function() {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/image/metadata/all");
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/image/metadata/all");
                 return promise;
             },
             getImage: function(id) {
-                var promise = $http.get("http://" + window.location.hostname + ":5000/edit/get/image/" + id);
+                var promise = $http.get(scheme + window.location.hostname + ":" + port + "/edit/get/image/" + id);
                 return promise;
             },
             delete: function(id) {
-                $http.post("http://" + window.location.hostname + ":5000/edit/delete/image/" + id);
+                $http.post(scheme + window.location.hostname + ":" + port + "/edit/delete/image/" + id);
             }
         }
     }]);
