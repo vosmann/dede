@@ -5,7 +5,7 @@ var minifycss = require('gulp-minify-css');
 
 
 gulp.task('dede-static', function() {
-    gulp.start('js-minify', 'js-copy-lib', 'html-minify', 'css-minify');
+    gulp.start('js-minify', 'js-copy-lib', 'html-minify', 'css-minify', 'img-copy', 'fonts-copy');
 });
 
 
@@ -30,6 +30,16 @@ gulp.task('css-minify', function() {
     return gulp.src('../src/flask/static/css/**/*.css')
         .pipe(minifycss({keepBreaks:true}))
         .pipe(gulp.dest('../target/dede/src/flask/static/css'))
+});
+
+gulp.task('img-copy', function() {
+    return gulp.src('../src/flask/static/img/**/*')
+        .pipe(gulp.dest('../target/dede/src/flask/static/img'));
+});
+
+gulp.task('fonts-copy', function() {
+    return gulp.src('../src/flask/static/fonts/**/*')
+        .pipe(gulp.dest('../target/dede/src/flask/static/fonts'));
 });
 
 gulp.task('dede-python', function() {
