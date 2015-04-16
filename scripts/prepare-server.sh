@@ -13,7 +13,7 @@ ssh -i $SSH_KEY_PATH $USER@$HOST "sudo apt-get install -y supervisor authbind gu
 
 # https keys
 ssh -i $SSH_KEY_PATH $USER@$HOST "sudo apt-get install -y openssl"
-# ssh -i $SSH_KEY_PATH $USER@$HOST "openssl req -x509 -sha256 -newkey rsa:2048 -nodes -keyout $HTTPS_KEY_PATH -out $HTTPS_CERT_PATH -days 365"
+ssh -i $SSH_KEY_PATH $USER@$HOST "openssl req -x509 -sha256 -newkey rsa:2048 -nodes -keyout $HTTPS_KEY_PATH -out $HTTPS_CERT_PATH -days 365"
 # "-nodes" Makes a certificate without a password phrase.
 
 ssh -i $SSH_KEY_PATH $USER@$HOST "sudo rm /etc/nginx/sites-enabled/*"
