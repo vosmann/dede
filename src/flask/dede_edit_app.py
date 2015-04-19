@@ -357,12 +357,12 @@ def name_query(name):
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
-        app.run(debug=True, port=5000)
-        # from OpenSSL import SSL # for local https
-        # app.run(debug=True, port=5000, ssl_context=context)
-        # context = SSL.Context(SSL.SSLv23_METHOD)
-        # context.use_privatekey_file('yourserver.key')
-        # context.use_certificate_file('yourserver.crt')
+        #from OpenSSL import SSL # for local https
+        #context = SSL.Context(SSL.SSLv23_METHOD)
+        #context.use_privatekey_file('../../.local-https-key')
+        #context.use_certificate_file('../../.local-https-cert')
+        #app.run(debug=True, port=6000, ssl_context=context)
+        app.run(debug=True, port=5001)
     else:
         app.run()
 

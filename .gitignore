@@ -5,6 +5,9 @@
 **/*.gz
 **/*.zip
 
+.local-https-key
+.local-https-cert
+
 ship/
 target/
 scripts/node_modules/
