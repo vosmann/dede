@@ -12,13 +12,7 @@
     <link rel="stylesheet" href="/static/css/image-drop-area.css">
 </head>
 
-<!-- TODO: When everything is functional, cut this up into smaller html files. -->
-<!-- TODO: Add ng-cloak to avoid a flash of {{}} on load. -->
 <body>
-
-    <!-- I want to also be able to edit tags in a third "tab". -->
-    <!-- And maybe even images in a fourth. -->
-    <!-- So, PageOrEntryCtrl should be more general. -->
 
     <h1>Dede edit</h1>
     <tabset>
@@ -249,9 +243,8 @@
                     <div class="row">
                         <div class="col-md-2"></div>
                         <div class="col-md-1">
-                            <!-- Extract to directive or something. -->
                             <button type="button" class="btn btn-default btn-xs"
-                                ng-click="addElementAfter(-1)">+</button> <!-- hack -->
+                                ng-click="addElementAfter(-1)">+</button> <!-- hacky -->
                         </div>
                     </div>
                     <div ng-repeat="element in entry.elements track by $index">
@@ -262,7 +255,7 @@
                                     ng-click="removeElementAt($index)">-</button>
                             </div>
                             <div class="col-md-1">
-                                <!-- TODO think of switching this to angular-ui dropdown too. -->
+                                <!-- Candidate for replacement with angular-ui dropdown. -->
                                 <multiselect class="input"
                                     ng-model="element.type"
                                     options="elementType for elementType in allElementTypes"
@@ -310,7 +303,7 @@
                             <div class="col-md-2"></div>
                             <div class="col-md-1">
                                 <button type="button" class="btn btn-default btn-xs"
-                                    ng-click="addElementAfter($index)">+</button> <!-- Extract to directive or something. -->
+                                    ng-click="addElementAfter($index)">+</button>
                             </div>
                         </div>
                     </div>
@@ -321,7 +314,6 @@
         <tab heading="Images">
             <h3>Upload</h3>
             <div ng-controller="ImageUploadCtrl">
-                <!-- <input type="text" ng-model="myModelObj"> -->
                 <input type="file" ng-file-select="onFileSelect($files)" multiple accept="image/*">
 
                 <div 

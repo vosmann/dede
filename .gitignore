@@ -7,5 +7,8 @@
 
 ship/
 target/
-scripts/node_modules/
+
+scripts/dede.conf
 scripts/package.json
+scripts/node_modules/
+

@@ -1,75 +1,45 @@
-A] Make sense of the JS build lanscape (Bower and RequireJS for dependencies, Grunt for build tasks...)
-   and Python builders (like zc.buildout).
-   - Maybe having a shell script to do these steps is good enough.
-   - Grunt+RequireJS seems to work for Goekhan.
-B] Make a nice build process that minifies+obfuscates JS and compiles (and obfuscates?) Python.
-C] Make Docker images with these build products.
-
-
-# Set up non-root users for supervisor, gunicorn, mongo, etc.
-
-
-# NOTES ON AUTOMATING DEPLOYMENT
-# I should probably make a nice docker image with ubuntu, https set up, supervisor & gunicorn installed,
-# python, mongo... and then maybe dynamically append an image that would just copy some 
-# private keys/certificates
-# Although... recommended procedure with deploying new code? Add it to the very bottom of the Docker layers?
-# Use nginx as a proxy for gunicorn
-
-# minify and obfuscate code. use:
-#   - browserify.js,
-#   - require.js or
-#   - webpack
-
-
-1. Modularize python code.
-2. Add decent logging.
-3. Set up build that minifies and obfuscates JS _and_ python code.
-4. Make a nice, basic, centered layout, based on bootstrap, that is easily extendable with less/sass.
-5. Fix the renaming thing: have a "project id" field and separate "project name" and a separate "url" field.
-   - Allow slashes in the project name. A separate url will then _not_ allow them. -> Add a regex check before anything
-     is stored.
-
-
-
 
 ========================
-general todos
+TODO
 ========================
 
-Have the edit app parse the CSS and automatically offer class names in a drop-down for text and title elements.
-These classes could have some prefixing naming convention.
 
-# Caching note:
-# - Basically everything below should be cached. In its Python object form.
-#   Cache:
-#       * page ids
-#       * page names
-#       * all page views
-# - The cache could never expire (maybe like every 2-3 hours, but it should be invalidated when edits are made.
+FEATURE: Make renaming projects easy: have a "project id" field and separate "project name" and a separate "url" field.
+         - Allow slashes in the project name. A separate url will then _not_ allow them. -> Add a regex check before 
+         anything is stored.
 
-# It would be awesome if adding pages like "projects" or "news stories" on the 
-# edit page would generate the AngularJS controllers automatically.
+FEATURE: Enable google crawler to index all the content, e.g. run prerender.io.
 
-# Maybe have a special (only when authenticated) interface that serves some page
-# or entry even if it is hidden. So that the user can preview a new page or entry
-# before he really shows it on the live site.
+FEATURE: Special (only when authenticated) interface that serves a page
+         or entry even if it is hidden. For user preview of a new page or entry
+         before it gets shown on production.
 
-# Have API methods that return a just the shallow JSON of a requested page and one that also returns
-# all the entries contained on the page as fields in the object, or in a separate entries' list of
-# entry objects.
+FEATURE: Renameable tags: Should keep _id *and* display name so that the latter can be changed. In a separate tab in
+         the editing interface.
 
-# There is perhaps some redundant conversions from json/dicts to objects and vice-versa.
-# The idea behind using the objects is to give some structure to the domain entities and to not do
-# too much dirty work with dicts everywhere.
+FEATURE: Separate tab for editing images in the editing interface.
 
-# MASSIVE TODOS:
-# - python: remove stupid prints and set up good logging
-# - python: modularize code
 
-# TODO: TAGS Actually, should keep _id *and* display name so that the latter can be changed.
+- Modularize python code.
+- Add logging.
+- Sanitize login credential input.
+- Make a nice, basic, centered layout, based on bootstrap, that is easily extendable with less/sass.
+  Generalize the AngularJS code.
 
-# TODO sanitize login inputs (user & pass).
+- Set up less privileged users for supervisor, gunicorn, mongo, etc.
+- Make Docker image with everything installed and configured.
 
-# Note: Could switch to "Flask-Uploads" at some point for images.
-# Note: flask can also use directories on the filesystem for file storage. For images, for example.
+- Improve JS build procedure: download, include, build latest libs.
+- Look into using browserify.js, require.js and webpack.
+- Consider zc.buildout should the need arise.
+
+- Reduce amount of redundant json/dicts-to-object and vice-versa conversions.
+  But keep working with objects that represent abstract domain entities and avoid too much dirty work with dicts.
+
+- Add more caching where necessary. Perhaps page ids, page names, all page views etc.
+  The cache could have a very long lifetime, but must get invalidated after edits are made.
+
+- Remove hard-coded basic redirect location url from viewApps.js.
+
+- Cut edit-index.html into smaller html files.
+
