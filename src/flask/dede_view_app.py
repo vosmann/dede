@@ -112,7 +112,7 @@ def id_query(id):
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "debug":
-        app.run(debug=True, port=5000)
+        app.run(debug=True, port=80)
     else:
         app.run()
 
