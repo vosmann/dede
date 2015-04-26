@@ -24,6 +24,7 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 
 @app.route("/")
 def main():
+    print "Serving view-index.html."
     return send_file('static/view-index.html')
 
 @app.route('/get/pageIdsAndNames', methods = ['GET'])
@@ -31,10 +32,9 @@ def get_page_ids_and_names():
     db_pages = mongo.dede.pages.find()
     pages = [ Page(db_page) for db_page in db_pages ]
     sorted_pages = sorted(pages, key=lambda k: k.creation_date)
-    # Ah, once I too used dict comprehensions.
+    # I too once used dict comprehensions.
     # ids_and_names = { page._id: page.name for page in sorted_pages if page.is_shown }
-    ids_and_names = [ {'id': page._id, 'name': page.name} for page in sorted_pages if page.is_shown ] # cache
-    print json.dumps(ids_and_names)
+    ids_and_names = [ {'id': page._id, 'name': page.name} for page in sorted_pages if page.is_shown ]
     return json.dumps(ids_and_names)
 
 @app.route('/get/page/<page_id>', methods = ['GET'])
@@ -86,23 +86,17 @@ def get_tags():
     for db_tag in db_tags:
         if db_tag.use:
             tags.append(db_tag)
-    print "all tags"
-    print tags
     return json.dumps(tags)
 
 
 # Images
 @app.route('/get/image/metadata/<id>', methods = ['GET'])
 def get_image_metadata():
-    print "id:{0}, query: {1}".format(id, id_query(id))
     db_metadata = mongo.dede.image_metadata.find_one(id_query(id))
-    print "db_metadata:"
-    print db_metadata
     return json.dumps(db_metadata)
 
 @app.route('/get/image/<id>', methods = ['GET'])
 def get_image(id):
-    print "getting image by id {0}".format(id)
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
 

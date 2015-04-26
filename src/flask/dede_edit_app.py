@@ -29,9 +29,9 @@ app = Flask(__name__)
 app.wsgi_app = ProxyFix(app.wsgi_app)
 
 app.server_name = "localhost"
-app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # this key is what session cookies are encrypted with
+app.secret_key = '\xa2\xec\xe7C\xc5\x8b\xd5\x97\xa7\xcf\xb0\x97\xfc\xc9\xf7\xe9\x8b\x0c\x8ch?\xdb\x1f\x1b' # Example (encrypts session cookies).
 app.session_cookie_name = "ed_session"
-app.config["SESSION_COOKIE_SECURE"] = False # Set to True after HTTPS is set up.
+app.config["SESSION_COOKIE_SECURE"] = False # Set to True when using HTTPS.
 app.permanent_session_lifetime = timedelta(hours=2)
 
 login_manager = LoginManager()
@@ -43,12 +43,12 @@ login_manager.login_view = "login"
 @app.route("/edit")
 @fresh_login_required
 def edit():
-    print "/edit was opened. sending the one-page-app edit-index.html"
+    print "Serving edit-index.html."
     return send_file('static/edit-index.html')
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    print "login()"
+    print "Attempting login."
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -57,45 +57,33 @@ def login():
 
         if user is not None:
             ok = user.login(username, password)
-            print "2: attempted to log him in"
             if ok:
-                print "3a: current_user (BEFORE logging him into flask-login with login_user()):"
-                print current_user.__dict__
                 login_user(user) 
-                print "3b: current_user (AFTER logging him into flask-login with login_user()):"
-                print current_user.__dict__
                 try:
                     url = url_for('edit', _external=True) # _scheme="https"
-                    print "got redirect url after login:"
-                    print url
+                    print "Login succeeded."
                     return redirect(url, code=302)
                 except:
                     exc_type, exc_value, exc_traceback = sys.exc_info()
                     lines = traceback.format_exception(exc_type, exc_value, exc_traceback)
                     print ''.join('!' + line for line in lines)
             else:
-                print "3: login failed"
+                print "Login failed."
     return send_file('static/partials/login.html')
 
 def get_user_by_id(username):
-    print "get_user_by_id()"
     db_user = mongo.dede.users.find_one(id_query(username))
-    print "retrieved db_user:"
-    print db_user
     if db_user is not None:
         user = User(db_user['id'], db_user['password_hash'])
-        print "created User:"
-        print user.__dict__
         return user
     else:
         return None
 
 
-# Loads a User (from some DB) using the user_id stored in the session. The User is loaded just to check
-# if he's still active etc.
+# Loads a User from DB using the user_id stored in the session. The User is
+# loaded to check if he's still active etc.
 @login_manager.user_loader
 def load_user(username):
-    print "in login_manager.user_loader; about to get User object."
     return get_user_by_id(username)
 
 # Page
@@ -113,7 +101,6 @@ def store_page():
         incoming_page.creation_date = now()
         mongo.dede.pages.insert(incoming_page.json_dict())
     else:
-        print id_query_from_obj(incoming_json)
         mongo.dede.pages.update(id_query_from_obj(incoming_json), incoming_page.json_dict())
     return 'ok'
 
@@ -169,8 +156,7 @@ def store_entry():
             page.entry_ids.append(incoming_entry._id)
             mongo.dede.pages.update(id_query_from_obj(db_page), page.json_dict())
     else:
-        print "looked for page with name {0} and got None. Will not update page entries".format(page_name)
-
+        print "Page {0} was not found. Not updating page entries".format(page_name)
     
     return 'ok'
 
@@ -195,7 +181,7 @@ def get_entry_names(page_name):
                 entry = Entry(db_entry)
                 entry_names.append(entry.name)
     else:
-        print "No page found with name {0}".format(page_name)
+        print "Page {0} was not found.".format(page_name)
 
     return json.dumps(entry_names)
 
@@ -218,16 +204,11 @@ def get_element_types():
 @fresh_login_required
 def store_tag():
     incoming_json = request.get_json() # dict
-    print "tag:"
-    print incoming_json 
-
 
     db_tag = mongo.dede.tags.find_one(id_query_from_obj(incoming_json))
     if db_tag is None:
-        print "didn't exist, inserting."
         mongo.dede.tags.insert(incoming_json)
     else:
-        print "existed already, updating."
         mongo.dede.tags.update(id_query_from_obj(incoming_json), incoming_json)
     return "ok"
 
@@ -237,18 +218,13 @@ def get_tags():
     db_tags = mongo.dede.tags.find()
     for db_tag in db_tags:
         tags.append(db_tag)
-    print "all tags"
-    print tags
     return json.dumps(tags)
 
 
 # Images
 @app.route('/edit/get/image/metadata/<id>', methods = ['GET'])
 def get_image_metadata():
-    print "id:{0}, query: {1}".format(id, id_query(id))
     db_metadata = mongo.dede.image_metadata.find_one(id_query(id))
-    print "db_metadata:"
-    print db_metadata
     return json.dumps(db_metadata)
 
 @app.route('/edit/get/image/metadata/all', methods = ['GET'])
@@ -258,27 +234,20 @@ def get_all_images_metadata():
     for db_metadata in all_db_metadata:
         all_metadata.append(db_metadata)
 
-    print "all metadata"
-    print all_metadata
     return json.dumps(all_metadata)
 
 @app.route('/edit/get/image/<id>', methods = ['GET'])
 def get_image(id):
-    print "getting image by id {0}".format(id)
     return send_file(image_gridfs.get(id), mimetype='image/jpeg')
 
 @app.route('/edit/store/image', methods = ['POST'])
 @fresh_login_required
 def store_image():
-    print "In method: /edit/store/image !"
     if request.method == 'POST':
         file = request.files['file']
         if file and is_file_extension_allowed(file.filename):
             filename = secure_filename(file.filename)
-            print "About to store file {0}".format(file.filename)
-            print file
             c_string_io = cStringIO.StringIO(file.read()) # copy
-            print c_string_io
 
             pos = c_string_io.tell()
             image_gridfs.put(c_string_io, _id=filename)
@@ -318,7 +287,7 @@ def extract_image_metadata(name, file_obj):
 
     (width, height) = image.size
     size = get_filesize(file_obj)
-    print "extracted width: {0}, height: {1}, size: {2}".format(width, height, size)
+    print "Extracted width: {0}, height: {1}, size: {2}".format(width, height, size)
     return {
         '_id': name,
         'width': width,
@@ -333,11 +302,10 @@ def get_filesize(file_obj): # Not crazily efficient.
         file_obj.seek(0, 2)  #seek to end
         size = file_obj.tell()
         file_obj.seek(pos)  # back to original position
-        print "got size from seek&tell"
     except (AttributeError, IOError):
         pass
     if size == 0:
-        print "size could not be determined. returning zero."
+        print "File size could not be determined. Returning zero."
 
     return size
 
