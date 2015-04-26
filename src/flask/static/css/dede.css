@@ -67,9 +67,6 @@ p {
     width: 940px;
 }
 
-#content-header-wrapper {
-    position: absolute;
-}
 #content-header {
     position: fixed;
     margin-left: -470px; /* Half of the global container's width. */
