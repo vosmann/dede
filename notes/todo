@@ -2,71 +2,47 @@
 TODO
 ========================
 
-BUG: back button on project page doesn't work
-
-BUG: not scrolling all the way up when selecting entry from entries' main page.
 
 FEATURE: Make renaming projects easy: have a "project id" field and separate "project name" and a separate "url" field.
          - Allow slashes in the project name. A separate url will then _not_ allow them. -> Add a regex check before 
          anything is stored.
 
-FEATURE: enable google crawler to index all the content.
+FEATURE: Enable google crawler to index all the content, e.g. run prerender.io.
 
-1. Modularize python code.
-2. Add decent logging.
-# TODO sanitize login inputs (user & pass).
-
-4. Make a nice, basic, centered layout, based on bootstrap, that is easily extendable with less/sass.
-
-# Set up non-root users for supervisor, gunicorn, mongo, etc.
-
-C] Make Docker images with these build products.
-# I should probably make a nice docker image with ubuntu, https set up, supervisor & gunicorn installed,
-# python, mongo... and then maybe dynamically append an image that would just copy some 
-# private keys/certificates
-
-proper JS build procedure that downloads and includes latest angular and other libs.
-maybe use 
-#   - browserify.js,
-#   - require.js or
-#   - webpack
-
-FEATURE: # Maybe have a special (only when authenticated) interface that serves some page
-         # or entry even if it is hidden. So that the user can preview a new page or entry
-         # before he really shows it on the live site.
+FEATURE: Special (only when authenticated) interface that serves a page
+         or entry even if it is hidden. For user preview of a new page or entry
+         before it gets shown on production.
 
 FEATURE: CSS style dropdowns for all text elements (title, text etc.)
          Have the edit app parse the CSS and automatically offer class names in a drop-down for text and title elements.
          These classes could have some prefixing naming convention.
 
-FEATURE: renameable tags: Should keep _id *and* display name so that the latter can be changed.
+FEATURE: Renameable tags: Should keep _id *and* display name so that the latter can be changed. In a separate tab in
+         the editing interface.
 
-# Reduce amount of redundant conversions from json/dicts to objects and vice-versa.
-# The idea behind using the objects is to give some structure to the domain entities and to not do
-# too much dirty work with dicts everywhere.
-
-# Cache these in their Python object form: page ids, page names, all page views
-# The cache could never expire (maybe like every 2-3 hours, but it should be invalidated when edits are made.
-
-# It would be awesome if adding pages like "projects" or "news stories" on the 
-# edit page would generate the AngularJS controllers automatically.
+FEATURE: Separate tab for editing images in the editing interface.
 
 
+- Modularize python code.
+- Add logging.
+- Sanitize login credential input.
+- Make a nice, basic, centered layout, based on bootstrap, that is easily extendable with less/sass.
+  Generalize the AngularJS code.
 
-========================
-DONE
-========================
+- Set up less privileged users for supervisor, gunicorn, mongo, etc.
+- Make Docker image with everything installed and configured.
 
-A] Make sense of the JS build lanscape (Bower and RequireJS for dependencies, Grunt for build tasks...)
-   and Python builders (like zc.buildout).
-   - Maybe having a shell script to do these steps is good enough.
-   - Grunt+RequireJS seems to work for Goekhan.
+- Improve JS build procedure: download, include, build latest libs.
+- Look into using browserify.js, require.js and webpack.
+- Consider zc.buildout should the need arise.
 
-B] Make a nice build process that minifies+obfuscates JS and compiles (and obfuscates?) Python.
+- Reduce amount of redundant json/dicts-to-object and vice-versa conversions.
+  But keep working with objects that represent abstract domain entities and avoid too much dirty work with dicts.
 
-3. Set up build that minifies and obfuscates JS _and_ python code.
+- Add more caching where necessary. Perhaps page ids, page names, all page views etc.
+  The cache could have a very long lifetime, but must get invalidated after edits are made.
 
-# Use nginx as a proxy for gunicorn
+- Remove hard-coded basic redirect location url from viewApps.js.
 
-
+- Cut edit-index.html into smaller html files.
 
