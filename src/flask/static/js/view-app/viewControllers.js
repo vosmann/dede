@@ -114,7 +114,6 @@ dedeViewControllers.controller("EntryCtrl", ["$scope", "$rootScope", "$routePara
                 console.log("currentImageIndex: " + $scope.currentImageIndex);
             }
             $scope.getCurrentImageId = function() {
-                $location.hash("content-header");
                 return $scope.imageIds[$scope.currentImageIndex];
             }
             $scope.toPreviousImage = function() {
