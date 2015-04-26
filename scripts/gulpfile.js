@@ -5,7 +5,8 @@ var minifycss = require('gulp-minify-css');
 
 
 gulp.task('dede-static', function() {
-    gulp.start('js-minify', 'js-copy-lib', 'html-minify', 'css-minify', 'img-copy', 'fonts-copy');
+    gulp.start('js-minify', 'js-copy-lib', 'html-minify', 'css-minify',
+        'img-copy', 'fonts-copy', 'pdf-copy');
 });
 
 
@@ -40,6 +41,11 @@ gulp.task('img-copy', function() {
 gulp.task('fonts-copy', function() {
     return gulp.src('../src/flask/static/fonts/**/*')
         .pipe(gulp.dest('../target/dede/src/flask/static/fonts'));
+});
+
+gulp.task('pdf-copy', function() {
+    return gulp.src('../src/flask/static/pdf/**/*')
+        .pipe(gulp.dest('../target/dede/src/flask/static/pdf'));
 });
 
 gulp.task('dede-python', function() {
